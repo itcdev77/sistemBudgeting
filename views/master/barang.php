@@ -1,36 +1,37 @@
-<?php hakAkses(['admin']); ?>
+<?php hakAkses(['admin']);
+?>
 <script>
-function submit(x) {
-    if (x == 'add') {
-        $('[name="nama_barang"]').val("");
-        $('[name="merek_id"]').val("").trigger('change');
-        $('[name="kategori_id"]').val("").trigger('change');
-        $('[name="keterangan"]').val("");
-        $('#barangModal .modal-title').html('Tambah Barang');
-        $('[name="ubah"]').hide();
-        $('[name="tambah"]').show();
-    } else {
-        $('#barangModal .modal-title').html('Edit Barang');
-        $('[name="tambah"]').hide();
-        $('[name="ubah"]').show();
+    function submit(x) {
+        if (x == 'add') {
+            $('[name="nama_barang"]').val("");
+            $('[name="merek_id"]').val("").trigger('change');
+            $('[name="kategori_id"]').val("").trigger('change');
+            $('[name="keterangan"]').val("");
+            $('#barangModal .modal-title').html('Tambah Barang');
+            $('[name="ubah"]').hide();
+            $('[name="tambah"]').show();
+        } else {
+            $('#barangModal .modal-title').html('Edit Barang');
+            $('[name="tambah"]').hide();
+            $('[name="ubah"]').show();
 
-        $.ajax({
-            type: "POST",
-            data: {
-                id: x
-            },
-            url: '<?=base_url();?>process/view_barang.php',
-            dataType: 'json',
-            success: function(data) {
-                $('[name="idbarang"]').val(data.idbarang);
-                $('[name="merek_id"]').val(data.merek_id).trigger('change');
-                $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
-                $('[name="nama_barang"]').val(data.nama_barang);
-                $('[name="keterangan"]').val(data.keterangan);
-            }
-        });
+            $.ajax({
+                type: "POST",
+                data: {
+                    id: x
+                },
+                url: '<?= base_url(); ?>process/view_barang.php',
+                dataType: 'json',
+                success: function(data) {
+                    $('[name="idbarang"]').val(data.idbarang);
+                    $('[name="merek_id"]').val(data.merek_id).trigger('change');
+                    $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
+                    $('[name="nama_barang"]').val(data.nama_barang);
+                    $('[name="keterangan"]').val(data.keterangan);
+                }
+            });
+        }
     }
-}
 </script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -42,13 +43,18 @@ function submit(x) {
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a href="#" class="btn btn-primary btn-icon-split btn-sm" data-toggle="modal" data-target="#barangModal"
-                onclick="submit('add')">
+            <!-- <a href="#" class="btn btn-primary btn-icon-split btn-sm" data-toggle="modal" data-target="#barangModal" onclick="submit('add')">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
                 <span class="text">Tambah</span>
-            </a>
+            </a> -->
+
+            <form action="<?= base_url(); ?>process/import.php" method="post" enctype="multipart/form-data">
+                <input class="btn btn-primary btn-icon-split btn-sm" type="file" name="excel_file">
+                <input class="btn btn-primary btn-icon-split btn-sm" type="submit" value="Import">
+            </form>
+
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -58,32 +64,30 @@ function submit(x) {
                             <th width="20">NO</th>
                             <th>NAMA BARANG</th>
                             <th>MEREK</th>
-                            <th>KATEGORI</th>
-                            <th>KETERANGAN</th>
+                            <!-- <th>KATEGORI</th>
+                            <th>KETERANGAN</th> -->
                             <th>STOK</th>
                             <th width="50">AKSI</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php 
-                        $n=1;
-                        $query = mysqli_query($con,"SELECT x.*,x1.nama_merek,x2.nama_kategori FROM barang x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC")or die(mysqli_error($con));
-                        while($row = mysqli_fetch_array($query)):
+                        <?php
+                        $n = 1;
+                        $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
+                        while ($row = mysqli_fetch_array($query)) :
                         ?>
-                        <tr>
-                            <td><?= $n++; ?></td>
-                            <td><?= $row['nama_barang']; ?></td>
-                            <td><?= $row['nama_merek']; ?></td>
-                            <td><?= $row['nama_kategori']; ?></td>
-                            <td><?= $row['keterangan']; ?></td>
-                            <td><?= $row['stok']; ?></td>
-                            <td>
-                                <a href="#barangModal" data-toggle="modal" onclick="submit(<?=$row['idbarang'];?>)"
-                                    class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
-                                <a href="<?=base_url();?>/process/barang.php?act=<?=encrypt('delete');?>&id=<?=encrypt($row['idbarang']);?>"
-                                    class="btn btn-sm btn-circle btn-danger btn-hapus"><i class="fas fa-trash"></i></a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?= $n++; ?></td>
+                                <td><?= $row['nama_barang']; ?></td>
+                                <!-- <td><?= $row['nama_merek']; ?></td>
+                                <td><?= $row['nama_kategori']; ?></td> -->
+                                <td><?= $row['keterangan']; ?></td>
+                                <td><?= $row['stok']; ?></td>
+                                <td>
+                                    <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
+                                    <a href="<?= base_url(); ?>/process/barang.php?act=<?= encrypt('delete'); ?>&id=<?= encrypt($row['idbarang']); ?>" class="btn btn-sm btn-circle btn-danger btn-hapus"><i class="fas fa-trash"></i></a>
+                                </td>
+                            </tr>
                         <?php endwhile; ?>
                     </tbody>
                 </table>
@@ -95,11 +99,10 @@ function submit(x) {
 <!-- /.container-fluid -->
 
 <!-- Modal Tambah barang -->
-<div class="modal fade" id="barangModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true" data-backdrop="static">
+<div class="modal fade" id="barangModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form action="<?=base_url();?>process/barang.php" method="post">
+            <form action="<?= base_url(); ?>process/barang.php" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -118,8 +121,7 @@ function submit(x) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="merek_id">Merek Barang <span class="text-danger">*</span></label>
-                                <select name="merek_id" id="merek_id" class="form-control select2" style="width:100%;"
-                                    required>
+                                <select name="merek_id" id="merek_id" class="form-control select2" style="width:100%;" required>
                                     <option value="">-- Pilih Merek --</option>
                                     <?= list_merek(); ?>
                                 </select>
@@ -128,8 +130,7 @@ function submit(x) {
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="kategori_id">Kategori Barang <span class="text-danger">*</span></label>
-                                <select name="kategori_id" id="kategori_id" class="form-control select2"
-                                    style="width:100%;" required>
+                                <select name="kategori_id" id="kategori_id" class="form-control select2" style="width:100%;" required>
                                     <option value="">-- Pilih Kategori --</option>
                                     <?= list_kategori(); ?>
                                 </select>
@@ -138,8 +139,7 @@ function submit(x) {
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"
-                                    required></textarea>
+                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" required></textarea>
                             </div>
                         </div>
                     </div>
