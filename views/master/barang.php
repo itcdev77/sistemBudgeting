@@ -33,12 +33,37 @@
         }
     }
 </script>
+
+<script>
+    function importData() {
+        // Membuat objek FormData untuk mengirim file
+        var formData = new FormData();
+        formData.append('excel_file', $('#excelFile')[0].files[0]);
+
+        // Melakukan request AJAX
+        $.ajax({
+            url: '<?= base_url(); ?>process/import.php',
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                // Menangani respons dari server, misalnya menampilkan pesan sukses
+                alert(response);
+            },
+            error: function(xhr, status, error) {
+                // Menangani kesalahan jika ada
+                console.error(xhr.responseText);
+            }
+        });
+    }
+</script>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Barang</h1>
+        <h1 class="h3 mb-0 text-gray-800">Import Budget</h1>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -50,10 +75,14 @@
                 <span class="text">Tambah</span>
             </a> -->
 
-            <form action="<?= base_url(); ?>process/import.php" method="post" enctype="multipart/form-data">
+            <!-- <form action="<?= base_url(); ?>process/import.php" method="post" enctype="multipart/form-data">
                 <input class="btn btn-primary btn-icon-split btn-sm" type="file" name="excel_file">
                 <input class="btn btn-primary btn-icon-split btn-sm" type="submit" value="Import">
-            </form>
+            </form> -->
+
+            <input type="file" id="excelFile" class="">
+            <button onclick="importData()" class="btn btn-primary btn-icon-split btn-sm">Import</button>
+
 
         </div>
         <div class="card-body">
@@ -62,26 +91,32 @@
                     <thead>
                         <tr>
                             <th width="20">NO</th>
-                            <th>NAMA BARANG</th>
-                            <th>MEREK</th>
-                            <!-- <th>KATEGORI</th>
-                            <th>KETERANGAN</th> -->
-                            <th>STOK</th>
+                            <th width="20">KODE</th>
+                            <th>DESKRIPSI</th>
+                            <th>DEPARTEMEN/DIVISI</th>
+                            <!-- <th>KATEGORI</th> -->
+                            <th>PERUNTUKAN</th>
+                            <th>TOTAL KUANTITAS</th>
                             <th width="50">AKSI</th>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $n = 1;
-                        $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
+                        $i = 1;
+                        // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
+                        $query = mysqli_query($con, "SELECT x.*,x1.nama_merek,x2.nama_kategori FROM barang x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
+
                         while ($row = mysqli_fetch_array($query)) :
                         ?>
                             <tr>
                                 <td><?= $n++; ?></td>
+                                <td><?= $i++; ?></td>
                                 <td><?= $row['nama_barang']; ?></td>
                                 <!-- <td><?= $row['nama_merek']; ?></td>
                                 <td><?= $row['nama_kategori']; ?></td> -->
                                 <td><?= $row['keterangan']; ?></td>
+                                <td><?= $row['nama_barang']; ?></td>
                                 <td><?= $row['stok']; ?></td>
                                 <td>
                                     <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>

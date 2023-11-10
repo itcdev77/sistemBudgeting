@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES["excel_file"])) {
         $file = $_FILES["excel_file"]["tmp_name"];
 
-        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("xlsx"); // Ganti dengan format yang sesuai
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv"); // Ganti dengan format yang sesuai
         $spreadsheet = $reader->load($file);
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray(null, true, true, true);
@@ -24,8 +24,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         foreach ($rows as $row) {
             $data1 = $con->real_escape_string($row['A']);
             $data2 = $con->real_escape_string($row['B']);
+            $data3 = 2;
+            $data4 = 1;
 
-            $sql = "INSERT INTO barang (nama_barang, keterangan) VALUES ('$data1', '$data2')";
+            $sql = "INSERT INTO barang (nama_barang, keterangan, merek_id, kategori_id) VALUES ('$data1', '$data2', '$data3', '$data4')";
 
             if ($con->query($sql) === TRUE) {
                 echo "Data berhasil disimpan ke database.<br>";
