@@ -12,14 +12,7 @@ if (isset($_GET['backup_app'])) {
 } else if (isset($_GET['barang'])) {
     $master = $barang = true;
     $views = 'views/master/barang.php';
-}
-
-// else if(isset($_GET['barang'])){
-//     $master = $barang = true;
-//     $views = 'views/master/import.php';
-// }
-
-else if (isset($_GET['pengguna'])) {
+} else if (isset($_GET['pengguna'])) {
     $master = $pengguna = true;
     $views = 'views/master/pengguna.php';
 } else if (isset($_GET['barang_masuk'])) {
@@ -34,7 +27,40 @@ else if (isset($_GET['pengguna'])) {
 } else if (isset($_GET['lap_barang_keluar'])) {
     $laporan = $lap_barang_keluar = true;
     $views = 'views/laporan/lap_barang_keluar.php';
-} else {
+}
+
+// Edit
+else if (isset($_GET['prodev'])) {
+    $master = $prodev = true;
+    $views = 'views/master/prodev.php';
+} else if (isset($_GET['cpp'])) {
+    $master = $cpp = true;
+    $views = 'views/master/cpp.php';
+} else if (isset($_GET['ea'])) {
+    $master = $ea = true;
+    $views = 'views/master/ea.php';
+} else if (isset($_GET['hse'])) {
+    $master = $hse = true;
+    $views = 'views/master/hse.php';
+} else if (isset($_GET['itc'])) {
+    $master = $itc = true;
+    $views = 'views/master/itc.php';
+} else if (isset($_GET['mep'])) {
+    $master = $mep = true;
+    $views = 'views/master/mep.php';
+} else if (isset($_GET['scm'])) {
+    $master = $scm = true;
+    $views = 'views/master/scm.php';
+} else if (isset($_GET['ship'])) {
+    $master = $ship = true;
+    $views = 'views/master/ship.php';
+} else if (isset($_GET['survey'])) {
+    $master = $survey = true;
+    $views = 'views/master/survey.php';
+}
+// 
+
+else {
     $home = true;
     $views = 'views/home.php';
 }

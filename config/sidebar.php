@@ -38,8 +38,20 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Merek</a>
                     <a class="collapse-item <?= isset($kategori) ? 'active' : ''; ?>" href="?kategori">Kategori</a>
-                    <a class="collapse-item <?= isset($barang) ? 'active' : ''; ?>" href="?barang">Barang</a>
-                    <a class="collapse-item <?= isset($pengguna) ? 'active' : ''; ?>" href="?pengguna">Pengguna</a>
+                    <a class="collapse-item <?= isset($prodev) ? 'active' : ''; ?>" href="?prodev">PRODEV</a>
+                    <a class="collapse-item <?= isset($cpp) ? 'active' : ''; ?>" href="?cpp">CPP</a>
+                    <a class="collapse-item <?= isset($ea) ? 'active' : ''; ?>" href="?ea">EA</a>
+                    <a class="collapse-item <?= isset($hse) ? 'active' : ''; ?>" href="?hse">HSE</a>
+                    <a class="collapse-item <?= isset($itc) ? 'active' : ''; ?>" href="?itc">ITC</a>
+                    <a class="collapse-item <?= isset($mep) ? 'active' : ''; ?>" href="?mep">MEP</a>
+                    <a class="collapse-item <?= isset($scm) ? 'active' : ''; ?>" href="?scm">SCM</a>
+                    <a class="collapse-item <?= isset($ship) ? 'active' : ''; ?>" href="?ship">SHIP</a>
+                    <a class="collapse-item <?= isset($survey) ? 'active' : ''; ?>" href="?survey">SURVEY</a>
+                    <!-- menu untuk super admin -->
+                    <?php if ($_SESSION['level'] == 'it') : ?>
+                        <a class="collapse-item <?= isset($pengguna) ? 'active' : ''; ?>" href="?pengguna">Pengguna</a>
+                    <?php endif; ?>
+                    <!--  -->
                 </div>
             </div>
         </li>
