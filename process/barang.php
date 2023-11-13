@@ -25,10 +25,12 @@ if (isset($_POST['ubah'])) {
     $id = $_POST['idbarang'];
     $merek_id = $_POST['merek_id'];
     $kategori_id = $_POST['kategori_id'];
-    $nama_barang = $_POST['nama_barang'];
-    $keterangan = $_POST['keterangan'];
+    $deskripsi = $_POST['deskripsi'];
+    $price = $_POST['price'];
+    $stok = $_POST['stok'];
 
-    $update = mysqli_query($con, "UPDATE barang SET merek_id='$merek_id', kategori_id='$kategori_id', nama_barang='$nama_barang', keterangan='$keterangan' WHERE idbarang='$id'") or die(mysqli_error($con));
+    $update = mysqli_query($con, "UPDATE prodev SET merek_id='$merek_id', kategori_id='$kategori_id', deskripsi='$deskripsi', price='$price', stok='$stok' WHERE idbarang='$id'") or die(mysqli_error($con));
+
 
     // var_dump($update);die;
     if ($update) {
@@ -38,7 +40,7 @@ if (isset($_POST['ubah'])) {
     }
     $_SESSION['success'] = $success;
     $_SESSION['error'] = $error;
-    header('Location:../?barang');
+    header('Location:../?prodev');
 }
 
 if (decrypt($_GET['act']) == 'delete' && isset($_GET['id']) != "") {

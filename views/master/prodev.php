@@ -10,6 +10,8 @@
 //     $deskripsi = $user_data['deskripsi'];
 // }
 
+include('./config/conn.php');
+
 ?>
 
 
@@ -17,10 +19,11 @@
 <script>
     function submit(x) {
         if (x == 'add') {
-            $('[name="nama_barang"]').val("");
+            $('[name="deskripsi"]').val("");
             $('[name="merek_id"]').val("").trigger('change');
             $('[name="kategori_id"]').val("").trigger('change');
-            $('[name="keterangan"]').val("");
+            $('[name="price"]').val("");
+            $('[name="stok"]').val("");
             $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
             $('[name="tambah"]').show();
@@ -45,8 +48,11 @@
                     $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
                     $('[name="departemen"]').val(data.departemen);
                     $('[name="deskripsi"]').val(data.deskripsi);
-                    $('[name="price"]').val(formattedPrice);
+                    $('[name="price"]').val(data.price);
+                    $('[name="price_perUnit"]').val(data.price_perUnit);
                     $('[name="stok"]').val(data.stok);
+                    $('[name="stok_update"]').val(data.stok);
+                    $('[name="price_update"]').val(data.stok);
                 }
             });
         }
@@ -100,6 +106,78 @@
     });
 </script>
 
+<!-- <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Temukan elemen input stok
+        var stokInput = document.querySelector('input[name="stok"]');
+
+        // Tambahkan event listener untuk perubahan nilai pada input stok
+        stokInput.addEventListener("input", function() {
+            // Temukan elemen input harga
+            var hargaInput = document.querySelector('input[name="price"]');
+
+            // Dapatkan nilai stok baru
+            var stokValue = parseFloat(stokInput.value);
+
+            // Lakukan operasi atau perhitungan apapun untuk mengganti nilai harga sesuai kebutuhan Anda
+            // Misalnya, Anda ingin mengganti harga menjadi dua kali lipat dari nilai stok
+            var newPrice = stokValue * 1;
+
+            // Update nilai input harga
+            hargaInput.value = newPrice;
+        });
+    });
+</script> -->
+
+<script>
+    var originalStokValue; // Menyimpan nilai stok sebelum perubahan
+
+    function updateBudget() {
+        var price = parseFloat(document.getElementById('price').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var stok = parseFloat(document.getElementById('stok').value) || 0;
+
+        // Validasi agar price_perUnit tidak melebihi batas stok
+        var maxPricePerUnit = price / stok;
+        if (price_perUnit > maxPricePerUnit) {
+            alert('Harga per unit tidak boleh melebihi batas stok. Harga per unit akan disetel ke nilai maksimum yang diperbolehkan.');
+            document.getElementById('price_perUnit').value = maxPricePerUnit;
+            price_perUnit = maxPricePerUnit;
+        }
+
+        var budget = price - price_perUnit;
+        document.getElementById('budget').value = budget;
+    }
+
+    function confirmUpdateStok() {
+        console.log('confirmUpdateStok called');
+        var stokElement = document.getElementById('stok');
+        originalStokValue = parseFloat(stokElement.value) || 0; // Simpan nilai stok sebelum perubahan
+
+        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
+            console.log('User pressed OK');
+            updateStok();
+        } else {
+            console.log('User pressed Cancel');
+            stokElement.value = originalStokValue; // Kembalikan nilai stok jika pengguna menekan Cancel
+        }
+    }
+
+    function updateStok() {
+        var stok = parseFloat(document.getElementById('stok').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var newPrice = stok * price_perUnit;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+
+        if (newPrice < currentPrice) {
+            document.getElementById('price').value = newPrice;
+            updateBudget();
+        } else {
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+</script>
+
 
 
 <!-- Begin Page Content -->
@@ -139,10 +217,15 @@
                         <tr>
                             <th width="10">KODE</th>
                             <th>WAKTU</th>
+                            <th>PERUSAHAAN</th>
+                            <th>KATEGORI</th>
                             <th>DESKRIPSI</th>
                             <th>PERUNTUKAN</th>
+                            <th width="100">UNIT PRICE</th>
+                            <th>QTY BF</th>
                             <th>QTY</th>
-                            <th width="100">PRICE</th>
+                            <th width="100">BGT BF</th>
+                            <th width="100">BGT</th>
                             <th width="50">AKSI</th>
                         </tr>
                     </thead>
@@ -150,7 +233,7 @@
                         <?php
                         $i = 1;
                         // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
-                        $query = mysqli_query($con, "SELECT x.*,x1.nama_merek,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
+                        $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
 
                         while ($row = mysqli_fetch_array($query)) :
                         ?>
@@ -158,9 +241,14 @@
                                 <td><?= $i++; ?></td>
 
                                 <td><?= $row['waktu_input']; ?></td>
+                                <td><?= $row['keterangan']; ?></td>
+                                <td><?= $row['nama_kategori']; ?></td>
                                 <td><?= $row['deskripsi']; ?></td>
                                 <td><?= $row['peruntukan']; ?></td>
+                                <td>Rp. <?= $row['price_perUnit']; ?></td>
+                                <td><?= $row['stok_update']; ?></td>
                                 <td><?= $row['stok']; ?></td>
+                                <td>Rp. <?= $row['price_update']; ?></td>
                                 <td>Rp. <?= $row['price']; ?></td>
                                 <td>
                                     <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
@@ -193,6 +281,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
 
+
                                 <input type="hidden" name="idbarang" class="form-control">
 
                                 <div class="row">
@@ -201,22 +290,35 @@
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="price">Price:</label>
-                                        <input type="text" class="form-control" name="price" readonly>
+                                        <label for="price">Budget:</label>
+                                        <input type="number" class="form-control" name="price" id="price" onchange="updateBudget()" readonly>
                                     </div>
                                     <div class="col-md-6 mt-2">
-                                        <label for="price">Stok:</label>
-                                        <input type="text" class="form-control" name="stok" readonly>
+                                        <label for="price_perUnit">Price Per Unit:</label>
+                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateBudget()">
                                     </div>
-                                </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label for="stok">Qty:</label>
+                                        <input type="number" class="form-control" name="stok" id="stok" oninput="confirmUpdateStok()">
+                                    </div>
 
+                                </div>
 
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="merek_id">Split budget dengan :</label>
-                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;">
+                                <!-- <label for="merek_id">Perusahaan :</label> -->
+                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;" hidden>
+                                    <option value="">-- Deskripsi Barang --</option>
+                                    <?= list_merek(); ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <!-- <label for="merek_id">Split budget dengan :</label> -->
+                                <select name="" id="merek_id" class="form-select select2" style="width:100%;" hidden>
                                     <option value="">-- Deskripsi Barang --</option>
                                     <?= aset_prodev(); ?>
                                 </select>
@@ -224,17 +326,25 @@
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kategori_id">Price Split :</label>
-                                <select name="kategori_id" id="price_split" class="form-control select2" style="width:100%;" required>
-                                    <option value="">-- Pilih Kategori --</option>
-                                    <?= list_kategori(); ?>
+                                <label for="merek_id">Split budget dengan :</label>
+                                <select name="" id="merek_id" class="form-select select2" style="width:100%;">
+                                    <option value="">-- Deskripsi Barang --</option>
+                                    <?= aset_prodev(); ?>
                                 </select>
                             </div>
                         </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="kategori_id">Budget :</label>
+                                <input type="number" class="form-control" name="" id="price" readonly>
+                            </div>
+                        </div>
+
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" required></textarea>
+                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
