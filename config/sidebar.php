@@ -36,7 +36,7 @@
             </a>
             <div id="master" class="collapse <?= isset($master) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Merek</a>
+                    <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Perusahaan</a>
                     <a class="collapse-item <?= isset($kategori) ? 'active' : ''; ?>" href="?kategori">Kategori</a>
                     <a class="collapse-item <?= isset($prodev) ? 'active' : ''; ?>" href="?prodev">PRODEV</a>
                     <a class="collapse-item <?= isset($cpp) ? 'active' : ''; ?>" href="?cpp">CPP</a>

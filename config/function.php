@@ -57,6 +57,16 @@ function list_merek()
     }
     return $opt;
 }
+function aset_prodev()
+{
+    include('conn.php');
+    $query = mysqli_query($con, "SELECT * FROM prodev ORDER BY deskripsi ASC");
+    $opt = "";
+    while ($row = mysqli_fetch_array($query)) {
+        $opt .= "<option value=\"" . $row['idbarang'] . "\">" . $row['deskripsi'] . "</option>";
+    }
+    return $opt;
+}
 
 function list_kategori()
 {

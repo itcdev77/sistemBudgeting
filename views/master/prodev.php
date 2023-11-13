@@ -37,11 +37,16 @@
                 url: '<?= base_url(); ?>process/view_barang.php',
                 dataType: 'json',
                 success: function(data) {
+
+                    var formattedPrice = 'Rp. ' + data.price;
+
                     $('[name="idbarang"]').val(data.idbarang);
                     $('[name="merek_id"]').val(data.merek_id).trigger('change');
                     $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
-                    $('[name="nama_barang"]').val(data.nama_barang);
-                    $('[name="keterangan"]').val(data.keterangan);
+                    $('[name="departemen"]').val(data.departemen);
+                    $('[name="deskripsi"]').val(data.deskripsi);
+                    $('[name="price"]').val(formattedPrice);
+                    $('[name="stok"]').val(data.stok);
                 }
             });
         }
@@ -72,6 +77,31 @@
         });
     }
 </script>
+
+
+
+<script>
+    // Menambahkan event listener ke dropdown
+    document.getElementById("deskripsi").addEventListener("change", function() {
+        // Mendapatkan nilai username yang dipilih
+        var selectedUsername = this.value;
+
+        // Menggunakan AJAX untuk mengambil jabatan berdasarkan username
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "./process/get_deskripsi.php", true);
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                // Memasukkan jabatan ke dalam input jabatan
+                document.getElementById("price_split").value = xhr.responseText;
+            }
+        };
+        xhr.send("username=" + selectedUsername);
+    });
+</script>
+
+
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -162,24 +192,40 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="nama_barang">Nama Barang <span class="text-danger">*</span></label>
+
                                 <input type="hidden" name="idbarang" class="form-control">
-                                <input type="text" class="form-control" id="nama_barang" name="nama_barang" required>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="deskripsi">Deskripsi:</label>
+                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="price">Price:</label>
+                                        <input type="text" class="form-control" name="price" readonly>
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <label for="price">Stok:</label>
+                                        <input type="text" class="form-control" name="stok" readonly>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="merek_id">Merek Barang <span class="text-danger">*</span></label>
-                                <select name="merek_id" id="merek_id" class="form-control select2" style="width:100%;" required>
-                                    <option value="">-- Pilih Merek --</option>
-                                    <?= list_merek(); ?>
+                                <label for="merek_id">Split budget dengan :</label>
+                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;">
+                                    <option value="">-- Deskripsi Barang --</option>
+                                    <?= aset_prodev(); ?>
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kategori_id">Kategori Barang <span class="text-danger">*</span></label>
-                                <select name="kategori_id" id="kategori_id" class="form-control select2" style="width:100%;" required>
+                                <label for="kategori_id">Price Split :</label>
+                                <select name="kategori_id" id="price_split" class="form-control select2" style="width:100%;" required>
                                     <option value="">-- Pilih Kategori --</option>
                                     <?= list_kategori(); ?>
                                 </select>

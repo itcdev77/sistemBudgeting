@@ -44,7 +44,7 @@ if (isset($_POST['ubah'])) {
 if (decrypt($_GET['act']) == 'delete' && isset($_GET['id']) != "") {
     // echo $_GET['act'];die;
     $id = decrypt($_GET['id']);
-    $delete = mysqli_query($con, "DELETE FROM barang WHERE idbarang='$id'") or die(mysqli_error($con));
+    $delete = mysqli_query($con, "DELETE FROM prodev WHERE idbarang='$id'") or die(mysqli_error($con));
     if ($delete) {
         $success = "Data barang berhasil dihapus";
     } else {
@@ -52,5 +52,5 @@ if (decrypt($_GET['act']) == 'delete' && isset($_GET['id']) != "") {
     }
     $_SESSION['success'] = $success;
     $_SESSION['error'] = $error;
-    header('Location:../?barang');
+    header('Location:../?prodev');
 }
