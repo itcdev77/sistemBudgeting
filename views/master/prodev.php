@@ -24,6 +24,9 @@ include('./config/conn.php');
             $('[name="kategori_id"]').val("").trigger('change');
             $('[name="price"]').val("");
             $('[name="stok"]').val("");
+            $('[name="price_perUnit"]').val("");
+            $('[name="split-budget"]').val("");
+
             $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
             $('[name="tambah"]').show();
@@ -59,6 +62,8 @@ include('./config/conn.php');
     }
 </script>
 
+
+
 <script>
     function importData() {
         // Membuat objek FormData untuk mengirim file
@@ -85,26 +90,33 @@ include('./config/conn.php');
 </script>
 
 
-
 <script>
     // Menambahkan event listener ke dropdown
-    document.getElementById("deskripsi").addEventListener("change", function() {
+    document.getElementById("username").addEventListener("change", function() {
         // Mendapatkan nilai username yang dipilih
         var selectedUsername = this.value;
 
-        // Menggunakan AJAX untuk mengambil jabatan berdasarkan username
+        // Menggunakan AJAX untuk mengambil data split-budget berdasarkan username
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "./process/get_deskripsi.php", true);
+        xhr.open("POST", "get_budget.php", true);
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                // Memasukkan jabatan ke dalam input jabatan
-                document.getElementById("price_split").value = xhr.responseText;
+                // Mendapatkan data split-budget dari response
+                var responseArray = xhr.responseText.split(',');
+
+                // Memasukkan data split-budget ke dalam input split-budget
+                document.getElementById("split-budget").value = responseArray[0];
             }
         };
         xhr.send("username=" + selectedUsername);
     });
 </script>
+
+
+
+
+
 
 <!-- <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -128,6 +140,56 @@ include('./config/conn.php');
         });
     });
 </script> -->
+
+<!-- <script>
+    function updateBudget() {
+        var price = parseFloat(document.getElementById('price').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var budget = price - price_perUnit;
+        document.getElementById('budget').value = budget;
+    }
+
+    function confirmUpdateStok() {
+        console.log('confirmUpdateStok dipanggil');
+        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
+            console.log('User menekan OK');
+            updateStok();
+        } else {
+            console.log('User menekan Cancel');
+            var stok = parseFloat(document.getElementById('stok').value) || 0;
+            var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+            var currentPrice = stok * price_perUnit;
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+
+    function updateStok() {
+        var stok = parseFloat(document.getElementById('stok').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var newPrice = stok * price_perUnit;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+
+        if (newPrice < currentPrice) {
+            document.getElementById('price').value = newPrice;
+            updateBudget();
+        } else {
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+
+    function updatePriceFromSplitBudget() {
+        var splitBudget = parseFloat(document.getElementById('split-budget').value) || 0;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+        var newPrice = currentPrice - splitBudget;
+
+        // Setel nilai price
+        document.getElementById('price').value = newPrice;
+
+        // Update budget setelah mengubah price
+        updateBudget();
+    }
+</script> -->
+
 
 <script>
     var originalStokValue; // Menyimpan nilai stok sebelum perubahan
@@ -190,12 +252,12 @@ include('./config/conn.php');
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a href="#" class="btn btn-primary btn-icon-split btn-sm" data-toggle="modal" data-target="#barangModal" onclick="submit('add')">
+            <!-- <a href="#" class="btn btn-primary btn-icon-split btn-sm" data-toggle="modal" data-target="#barangModal" onclick="submit('add')">
                 <span class="icon text-white-50">
                     <i class="fas fa-plus"></i>
                 </span>
                 <span class="text">Tambah</span>
-            </a>
+            </a> -->
 
             <!-- <form action="<?= base_url(); ?>process/import.php" method="post" enctype="multipart/form-data">
                 <input class="btn btn-primary btn-icon-split btn-sm" type="file" name="excel_file">
@@ -252,7 +314,7 @@ include('./config/conn.php');
                                 <td>Rp. <?= $row['price']; ?></td>
                                 <td>
                                     <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
-                                    <a href="<?= base_url(); ?>/process/barang.php?act=<?= encrypt('delete'); ?>&id=<?= encrypt($row['idbarang']); ?>" class="btn btn-sm btn-circle btn-danger btn-hapus"><i class="fas fa-trash"></i></a>
+                                    <!-- <a href="<?= base_url(); ?>/process/barang.php?act=<?= encrypt('delete'); ?>&id=<?= encrypt($row['idbarang']); ?>" class="btn btn-sm btn-circle btn-danger btn-hapus"><i class="fas fa-trash"></i></a> -->
                                 </td>
                             </tr>
                         <?php endwhile; ?>
@@ -308,8 +370,8 @@ include('./config/conn.php');
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <!-- <label for="merek_id">Perusahaan :</label> -->
-                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;" hidden>
+                                <label for="merek_id">Perusahaan :</label>
+                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;">
                                     <option value="">-- Deskripsi Barang --</option>
                                     <?= list_merek(); ?>
                                 </select>
@@ -317,27 +379,55 @@ include('./config/conn.php');
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <!-- <label for="merek_id">Split budget dengan :</label> -->
-                                <select name="" id="merek_id" class="form-select select2" style="width:100%;" hidden>
-                                    <option value="">-- Deskripsi Barang --</option>
-                                    <?= aset_prodev(); ?>
+                                <label for="merek_id">Kategori :</label>
+                                <select name="kategori_id" id="kategori_id" class="form-select select2" style="width:100%;" hidden>
+                                    <option value="">-- Kategori Barang --</option>
+                                    <?= list_kategori(); ?>
                                 </select>
                             </div>
                         </div>
+
+
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="merek_id">Split budget dengan :</label>
-                                <select name="" id="merek_id" class="form-select select2" style="width:100%;">
-                                    <option value="">-- Deskripsi Barang --</option>
-                                    <?= aset_prodev(); ?>
+                                <select name="split" id="username" class="form-select select2" style="width:100%;">
+                                    <!-- <option value="">-- Deskripsi Barang --</option>
+                                     -->
+                                    <?php
+
+                                    // Menghubungkan ke database
+                                    // $con = mysqli_connect("localhost", "root", "", "inventaris");
+                                    include('../config/conn.php');
+
+                                    // Periksa koneksi
+                                    if (!$con) {
+                                        die("Koneksi ke database gagal: " . mysqli_connect_error());
+                                    }
+                                    // Query untuk mengambil nama pengguna dari tabel
+                                    // $query = "SELECT name FROM user WHERE level <= 4";
+                                    // $result = mysqli_query($koneksi, $query);
+                                    $sau = "SELECT * FROM prodev ORDER BY deskripsi ASC";
+                                    $query2 = mysqli_query($con, "$sau") or die('mysql_error');
+
+                                    // Loop melalui hasil query dan membuat pilihan dropdown
+                                    while ($user_data = mysqli_fetch_array($query2)) {
+                                        echo "<option value=\"" . $user_data['idbarang'] . "\">" . $user_data['deskripsi'] . "</option>";
+                                    }
+
+
+                                    // Tutup koneksi ke database
+                                    // mysqli_close($con);
+                                    ?>
                                 </select>
                             </div>
                         </div>
 
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="kategori_id">Budget :</label>
-                                <input type="number" class="form-control" name="" id="price" readonly>
+                                <label for="kategori_id">Jumlah budget yang di ambil :</label>
+                                <input type="number" class="form-control" name="split-budget" id="split-budget" oninput="updatePriceFromSplitBudget()">
+
                             </div>
                         </div>
 

@@ -17,7 +17,7 @@
     <li class="nav-item <?= isset($home) ? 'active' : ''; ?>">
         <a class="nav-link" href="?#">
             <i class="fas fa-fw fa-home"></i>
-            <span>Beranda</span></a>
+            <span>Ddashboard</span></a>
     </li>
 
     <!-- Divider -->
@@ -32,12 +32,12 @@
         <li class="nav-item <?= isset($master) ? 'active' : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#master" aria-expanded="true" aria-controls="master">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Master</span>
+                <span>Budget Departemen</span>
             </a>
             <div id="master" class="collapse <?= isset($master) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Perusahaan</a>
-                    <a class="collapse-item <?= isset($kategori) ? 'active' : ''; ?>" href="?kategori">Kategori</a>
+                    <!-- <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Perusahaan</a> -->
+                    <!-- <a class="collapse-item <?= isset($kategori) ? 'active' : ''; ?>" href="?kategori">Kategori</a> -->
                     <a class="collapse-item <?= isset($prodev) ? 'active' : ''; ?>" href="?prodev">PRODEV</a>
                     <a class="collapse-item <?= isset($cpp) ? 'active' : ''; ?>" href="?cpp">CPP</a>
                     <a class="collapse-item <?= isset($ea) ? 'active' : ''; ?>" href="?ea">EA</a>
@@ -59,17 +59,17 @@
         <li class="nav-item <?= isset($transaksi) ? 'active' : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksi" aria-expanded="true" aria-controls="transaksi">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Transaksi</span>
+                <span>Log Transaksi</span>
             </a>
             <div id="transaksi" class="collapse <?= isset($transaksi) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
-                    <a class="collapse-item <?= isset($barang_masuk) ? 'active' : ''; ?>" href="?barang_masuk">Barang Masuk</a>
-                    <a class="collapse-item <?= isset($barang_keluar) ? 'active' : ''; ?>" href="?barang_keluar">Barang Keluar</a>
+                    <!-- <a class="collapse-item <?= isset($barang_masuk) ? 'active' : ''; ?>" href="?barang_masuk">Barang Masuk</a> -->
+                    <a class="collapse-item <?= isset($barang_keluar) ? 'active' : ''; ?>" href="?barang_keluar">Log Prodev</a>
                 </div>
             </div>
         </li>
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item <?= isset($laporan) ? 'active' : ''; ?>">
+        <!-- <li class="nav-item <?= isset($laporan) ? 'active' : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#laporan" aria-expanded="true" aria-controls="laporan">
                 <i class="fas fa-fw fa-folder"></i>
                 <span>Laporan</span>
@@ -84,7 +84,7 @@
                         Barang</a>
                 </div>
             </div>
-        </li>
+        </li> -->
     <?php endif; ?>
 
     <!-- Divider -->

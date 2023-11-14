@@ -57,8 +57,10 @@ else if (isset($_GET['prodev'])) {
 } else if (isset($_GET['survey'])) {
     $master = $survey = true;
     $views = 'views/master/survey.php';
+} else if (isset($_GET['get_budget'])) {
+    $master = $get_budget = true;
+    $views = 'views/master/get_budget.php';
 }
-
 // 
 
 else {
