@@ -432,7 +432,7 @@ include('./config/conn.php');
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="price_perUnit">Price Per Unit:</label>
-                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateBudget()" readonly>
+                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateBudget()">
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Qty:</label>
