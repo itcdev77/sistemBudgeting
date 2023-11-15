@@ -29,16 +29,19 @@ if (isset($_POST['ubah'])) {
     $price = $_POST['price'];
     $stok = $_POST['stok'];
     $price_perUnit = $_POST['price_perUnit'];
-    $split_budget = $_POST['split-budget'];
+
 
     $update = mysqli_query($con, "UPDATE prodev SET merek_id='$merek_id', kategori_id='$kategori_id', deskripsi='$deskripsi', price='$price', stok='$stok', price_perUnit='$price_perUnit' WHERE idbarang='$id'") or die(mysqli_error($con));
 
+    //split budget
+    // $split = $_POST['split'];
+    // $split_budget = $_POST['split-budget'];
     //split budget..
-    // $update = mysqli_query($con, "UPDATE prodev SET price='$price' WHERE deskripsi='$deskripsi2'") or die(mysqli_error($con));
+    // $update2 = mysqli_query($con, "UPDATE prodev SET price='$split_budget' WHERE deskripsi='$split'") or die(mysqli_error($con));
 
 
     // var_dump($update);die;
-    if ($update) {
+    if ($update || $update2) {
         $success = 'Berhasil mengubah data barang';
     } else {
         $error = 'Gagal mengubah data barang';

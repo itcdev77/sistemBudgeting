@@ -27,7 +27,7 @@
     <div class="sidebar-heading">
         Menu
     </div>
-    <?php if ($_SESSION['level'] == 'admin') : ?>
+    <?php if ($_SESSION['level'] == 'admin' || $_SESSION['level'] == 'user') : ?>
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item <?= isset($master) ? 'active' : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#master" aria-expanded="true" aria-controls="master">
@@ -48,7 +48,7 @@
                     <a class="collapse-item <?= isset($ship) ? 'active' : ''; ?>" href="?ship">SHIP</a>
                     <a class="collapse-item <?= isset($survey) ? 'active' : ''; ?>" href="?survey">SURVEY</a>
                     <!-- menu untuk super admin -->
-                    <?php if ($_SESSION['level'] == 'it') : ?>
+                    <?php if ($_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($pengguna) ? 'active' : ''; ?>" href="?pengguna">Pengguna</a>
                     <?php endif; ?>
                     <!--  -->

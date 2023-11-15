@@ -1,14 +1,4 @@
-<?php hakAkses(['admin']);
-
-// $id = strtoupper($_SESSION['iduser']);
-// $s = "select*from users where id='$_SESSION[iduser]'";
-// $qu = mysqli_query($con, $s);
-// $fe = mysqli_fetch_assoc($qu);
-
-// $result = mysqli_query($con, "SELECT * FROM prodev WHERE id=$id");
-// while ($user_data = mysqli_fetch_array($result)) {
-//     $deskripsi = $user_data['deskripsi'];
-// }
+<?php hakAkses(['admin', 'user']);
 
 include('./config/conn.php');
 
@@ -25,6 +15,8 @@ include('./config/conn.php');
             $('[name="price"]').val("");
             $('[name="stok"]').val("");
             $('[name="price_perUnit"]').val("");
+            //split budget
+            $('[name="split"]').val("");
             $('[name="split-budget"]').val("");
 
             $('#barangModal .modal-title').html('Tambah Barang');
@@ -56,6 +48,10 @@ include('./config/conn.php');
                     $('[name="stok"]').val(data.stok);
                     $('[name="stok_update"]').val(data.stok);
                     $('[name="price_update"]').val(data.stok);
+
+                    //split budget
+                    // $('[name="split"]').val(data.split);
+                    // $('[name="split-budget"]').val(data.split_budget);
                 }
             });
         }
@@ -141,6 +137,7 @@ include('./config/conn.php');
     });
 </script> -->
 
+<!-- js jadi -->
 <!-- <script>
     function updateBudget() {
         var price = parseFloat(document.getElementById('price').value) || 0;
@@ -191,7 +188,7 @@ include('./config/conn.php');
 </script> -->
 
 
-<script>
+<!-- <script>
     var originalStokValue; // Menyimpan nilai stok sebelum perubahan
 
     function updateBudget() {
@@ -238,6 +235,58 @@ include('./config/conn.php');
             document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
         }
     }
+</script> -->
+
+
+<script>
+    function updateBudget() {
+        var price = parseFloat(document.getElementById('price').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var budget = price - price_perUnit;
+        document.getElementById('budget').value = budget;
+    }
+
+    function confirmUpdateStok() {
+        console.log('confirmUpdateStok called');
+        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
+            console.log('User pressed OK');
+            updateStok();
+        } else {
+            console.log('User pressed Cancel');
+            var stok = parseFloat(document.getElementById('stok').value) || 0;
+            var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+            var currentPrice = stok * price_perUnit;
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+
+    function updateStok() {
+        var stok = parseFloat(document.getElementById('stok').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var newPrice = stok * price_perUnit;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+
+        if (newPrice < currentPrice) {
+            document.getElementById('price').value = newPrice;
+            updateBudget();
+        } else {
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+
+    function confirmAndUpdateSplitBudget() {
+        var splitBudget = parseFloat(document.getElementById('split-budget').value) || 0;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+
+        // Konfirmasi sebelum menjumlahkan split-budget dengan price
+        if (confirm('Anda akan melakukan split budget!!. Lanjutkan?')) {
+            // Jika pengguna menekan OK, update nilai price dan budget
+            document.getElementById('price').value = currentPrice - splitBudget;
+
+            updateBudget();
+
+        }
+    }
 </script>
 
 
@@ -263,10 +312,11 @@ include('./config/conn.php');
                 <input class="btn btn-primary btn-icon-split btn-sm" type="file" name="excel_file">
                 <input class="btn btn-primary btn-icon-split btn-sm" type="submit" value="Import">
             </form> -->
-
-            <input type="file" id="excelFile" class="">
-            <!-- <input type="text" id="" class="" value="<?= strtoupper($_SESSION['iduser']); ?>" hidden> -->
-            <button onclick="importData()" class="btn btn-primary btn-icon-split btn-sm">Import</button>
+            <?php if ($_SESSION['level'] == 'admin') { ?>
+                <input type="file" id="excelFile" class="">
+                <!-- <input type="text" id="" class="" value="<?= strtoupper($_SESSION['iduser']); ?>" hidden> -->
+                <button onclick="importData()" class="btn btn-primary btn-icon-split btn-sm">Import</button>
+            <?php }; ?>
 
             <!-- <p><?= $user_data['deskripsi'] ?></p> -->
 
@@ -283,12 +333,18 @@ include('./config/conn.php');
                             <th>KATEGORI</th>
                             <th>DESKRIPSI</th>
                             <th>PERUNTUKAN</th>
-                            <th width="100">UNIT PRICE</th>
-                            <th>QTY BF</th>
-                            <th>QTY</th>
-                            <th width="100">BGT BF</th>
-                            <th width="100">BGT</th>
-                            <th width="50">AKSI</th>
+
+                            <?php if ($_SESSION['level'] == 'admin') : ?>
+                                <th width="100">UNIT PRICE</th>
+                                <th>QTY BF</th>
+                                <th>QTY</th>
+                                <th width="100">BGT BF</th>
+                                <th width="100">BGT</th>
+                            <?php endif; ?>
+
+                            <?php if ($_SESSION['level'] == 'user') : ?>
+                                <th width="50">AKSI</th>
+                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
@@ -303,19 +359,38 @@ include('./config/conn.php');
                                 <td><?= $i++; ?></td>
 
                                 <td><?= $row['waktu_input']; ?></td>
+
                                 <td><?= $row['keterangan']; ?></td>
+
                                 <td><?= $row['nama_kategori']; ?></td>
+
                                 <td><?= $row['deskripsi']; ?></td>
+
                                 <td><?= $row['peruntukan']; ?></td>
-                                <td>Rp. <?= $row['price_perUnit']; ?></td>
+
+                                <?php if ($_SESSION['level'] == 'admin') : ?>
+                                    <td>Rp. <?= $row['price_perUnit']; ?></td>
+                                <?php endif; ?>
+
                                 <td><?= $row['stok_update']; ?></td>
+
                                 <td><?= $row['stok']; ?></td>
-                                <td>Rp. <?= $row['price_update']; ?></td>
-                                <td>Rp. <?= $row['price']; ?></td>
-                                <td>
-                                    <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
-                                    <!-- <a href="<?= base_url(); ?>/process/barang.php?act=<?= encrypt('delete'); ?>&id=<?= encrypt($row['idbarang']); ?>" class="btn btn-sm btn-circle btn-danger btn-hapus"><i class="fas fa-trash"></i></a> -->
-                                </td>
+
+                                <?php if ($_SESSION['level'] == 'admin') : ?>
+                                    <td>Rp. <?= $row['price_update']; ?></td>
+                                <?php endif; ?>
+
+                                <?php if ($_SESSION['level'] == 'admin') : ?>
+                                    <td>Rp. <?= $row['price']; ?></td>
+                                <?php endif; ?>
+
+                                <?php if ($_SESSION['level'] == 'user') : ?>
+                                    <td>
+                                        <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
+                                        <!-- <a href="<?= base_url(); ?>/process/barang.php?act=<?= encrypt('delete'); ?>&id=<?= encrypt($row['idbarang']); ?>" class="btn btn-sm btn-circle btn-danger btn-hapus"><i class="fas fa-trash"></i></a> -->
+                                    </td>
+                                <?php endif; ?>
+
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
@@ -357,7 +432,7 @@ include('./config/conn.php');
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="price_perUnit">Price Per Unit:</label>
-                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateBudget()">
+                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateBudget()" readonly>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Qty:</label>
@@ -431,7 +506,12 @@ include('./config/conn.php');
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6 mt-2 ">
+                            <a style="margin-left: 180%;" class="btn btn-danger" onclick="confirmAndUpdateSplitBudget()"><i style="color: white;" class="fa fa-plus"></i>
+                            </a>
+                        </div>
+
+                        <div class="col-md-12 mt-3">
                             <div class="form-group">
                                 <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
                                 <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
