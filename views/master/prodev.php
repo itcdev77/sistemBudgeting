@@ -237,8 +237,9 @@ include('./config/conn.php');
     }
 </script> -->
 
+<!-- complete script -->
 
-<script>
+<!-- <script>
     function updateBudget() {
         var price = parseFloat(document.getElementById('price').value) || 0;
         var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
@@ -287,6 +288,82 @@ include('./config/conn.php');
 
         }
     }
+</script> -->
+<!-- <script>
+    function updateBudget() {
+        var price = parseFloat(document.getElementById('price').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var budget = price - price_perUnit;
+        document.getElementById('budget').value = budget;
+    }
+
+    function confirmUpdateStok() {
+        console.log('confirmUpdateStok called');
+        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
+            console.log('User pressed OK');
+            updateStok();
+        } else {
+            console.log('User pressed Cancel');
+            var stok = parseFloat(document.getElementById('stok').value) || 0;
+            var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+            var currentPrice = stok * price_perUnit;
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+
+    function updateStok() {
+        var stok = parseFloat(document.getElementById('stok').value) || 0;
+        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
+        var newPrice = stok * price_perUnit;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+
+        if (newPrice < currentPrice) {
+            document.getElementById('price').value = newPrice;
+            updateBudget();
+        } else {
+            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
+        }
+    }
+
+    function confirmAndUpdateSplitBudget() {
+        var splitBudget = parseFloat(document.getElementById('split-budget').value) || 0;
+        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
+
+        // Konfirmasi sebelum menjumlahkan split-budget dengan price
+        if (confirm('Anda akan melakukan split budget!!. Lanjutkan?')) {
+            // Jika pengguna menekan OK, update nilai price dan budget
+            document.getElementById('price').value = currentPrice - splitBudget;
+
+            updateBudget();
+
+        }
+    }
+</script> -->
+
+<script>
+    function updateStok() {
+        var budget = $('#price').val();
+        var pricePerUnit = $('#price_perUnit').val();
+
+        if (budget && pricePerUnit) {
+            var stok = (budget / pricePerUnit).toFixed(2);
+            $('#stok').val(stok);
+        }
+    }
+
+    function updatePrice() {
+        var budget = $('#price').val();
+        var stok = $('#stok').val();
+
+        if (budget && stok) {
+            var pricePerUnit = (budget / stok).toFixed(2);
+            $('#price_perUnit').val(pricePerUnit);
+        }
+    }
+
+    function confirmChanges() {
+        alert("Perubahan berhasil dikonfirmasi!");
+    }
 </script>
 
 
@@ -314,7 +391,7 @@ include('./config/conn.php');
             </form> -->
             <?php if ($_SESSION['level'] == 'admin') { ?>
                 <input type="file" id="excelFile" class="">
-                <!-- <input type="text" id="" class="" value="<?= strtoupper($_SESSION['iduser']); ?>" hidden> -->
+
                 <button onclick="importData()" class="btn btn-primary btn-icon-split btn-sm">Import</button>
             <?php }; ?>
 
@@ -428,15 +505,18 @@ include('./config/conn.php');
                                     </div>
                                     <div class="col-md-6">
                                         <label for="price">Budget:</label>
-                                        <input type="number" class="form-control" name="price" id="price" onchange="updateBudget()" readonly>
+                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="price_perUnit">Price Per Unit:</label>
-                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateBudget()" readonly>
+                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateStok()">
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Qty:</label>
-                                        <input type="number" class="form-control" name="stok" id="stok" oninput="confirmUpdateStok()">
+                                        <input type="number" class="form-control" name="stok" id="stok" oninput="updatePrice()">
+                                    </div>
+                                    <div class="col-md-6 mt-2">
+                                        <a onclick="confirmChanges()">Konfirmasi Perubahan</a>
                                     </div>
 
                                 </div>
@@ -510,6 +590,11 @@ include('./config/conn.php');
                             <a style="margin-left: 180%;" class="btn btn-danger" onclick="confirmAndUpdateSplitBudget()"><i style="color: white;" class="fa fa-plus"></i>
                             </a>
                         </div>
+
+                        <div class="col-md-6 mt-2">
+            <!-- Tombol Konfirmasi -->
+            <a id="confirmBtn" class="btn btn-primary">Konfirmasi Perubahan</a>
+        </div>
 
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
