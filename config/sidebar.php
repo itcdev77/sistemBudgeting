@@ -38,15 +38,42 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Perusahaan</a> -->
                     <!-- <a class="collapse-item <?= isset($kategori) ? 'active' : ''; ?>" href="?kategori">Kategori</a> -->
-                    <a class="collapse-item <?= isset($prodev) ? 'active' : ''; ?>" href="?prodev">PRODEV</a>
-                    <a class="collapse-item <?= isset($cpp) ? 'active' : ''; ?>" href="?cpp">CPP</a>
-                    <a class="collapse-item <?= isset($ea) ? 'active' : ''; ?>" href="?ea">EA</a>
-                    <a class="collapse-item <?= isset($hse) ? 'active' : ''; ?>" href="?hse">HSE</a>
-                    <a class="collapse-item <?= isset($itc) ? 'active' : ''; ?>" href="?itc">ITC</a>
-                    <a class="collapse-item <?= isset($mep) ? 'active' : ''; ?>" href="?mep">MEP</a>
-                    <a class="collapse-item <?= isset($scm) ? 'active' : ''; ?>" href="?scm">SCM</a>
-                    <a class="collapse-item <?= isset($ship) ? 'active' : ''; ?>" href="?ship">SHIP</a>
-                    <a class="collapse-item <?= isset($survey) ? 'active' : ''; ?>" href="?survey">SURVEY</a>
+                    <?php if ($_SESSION['username'] == 'PRODEV') : ?>
+                        <a class="collapse-item <?= isset($prodev) ? 'active' : ''; ?>" href="?prodev">PRODEV</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'CPP') : ?>
+                        <a class="collapse-item <?= isset($cpp) ? 'active' : ''; ?>" href="?cpp">CPP</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'EA') : ?>
+                        <a class="collapse-item <?= isset($ea) ? 'active' : ''; ?>" href="?ea">EA</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'HSE') : ?>
+                        <a class="collapse-item <?= isset($hse) ? 'active' : ''; ?>" href="?hse">HSE</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'ITC') : ?>
+                        <a class="collapse-item <?= isset($itc) ? 'active' : ''; ?>" href="?itc">ITC</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'MEP') : ?>
+                        <a class="collapse-item <?= isset($mep) ? 'active' : ''; ?>" href="?mep">MEP</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'SCM') : ?>
+                        <a class="collapse-item <?= isset($scm) ? 'active' : ''; ?>" href="?scm">SCM</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'SHIP') : ?>
+                        <a class="collapse-item <?= isset($ship) ? 'active' : ''; ?>" href="?ship">SHIP</a>
+                    <?php endif; ?>
+
+                    <?php if ($_SESSION['username'] == 'SURVEY') : ?>
+                        <a class="collapse-item <?= isset($survey) ? 'active' : ''; ?>" href="?survey">SURVEY</a>
+                    <?php endif; ?>
+
                     <!-- menu untuk super admin -->
                     <?php if ($_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($pengguna) ? 'active' : ''; ?>" href="?pengguna">Pengguna</a>
