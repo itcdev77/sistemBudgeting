@@ -761,7 +761,7 @@ include('./config/conn.php');
 
                                     </div>
                                     <div class="col-md-6 mt-4">
-                                        <a class="btn btn-primary" style="color: white;" onclick="proceedUpdateAmbilStok()">Ambil Stok</a>
+                                        <a class="btn btn-primary" style="color: white;" onclick="proceedUpdateAmbilStok()">Kurangi Stok</a>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <div id="result"></div>
