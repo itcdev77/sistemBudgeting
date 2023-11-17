@@ -390,7 +390,7 @@ include('./config/conn.php');
         document.getElementById('budget').value = budget;
     }
 
-    function confirmUpdateStok() {
+    function confirmUpdateAmbilStok() {
         console.log('confirmUpdateStok called');
         var stokElement = document.getElementById('ambil-stok');
         originalStokValue = parseFloat(stokElement.value) || 0; // Simpan nilai stok sebelum perubahan
@@ -400,7 +400,7 @@ include('./config/conn.php');
         confirmation.style.display = 'block';
     }
 
-    function updateStok() {
+    function updateAmbilStok() {
         var stok = parseFloat(document.getElementById('ambil-stok').value) || 0;
         var price_perUnit = parseFloat(document.getElementById('ambil-price_perUnit').value) || 0;
         var newPrice = stok * price_perUnit;
@@ -408,14 +408,14 @@ include('./config/conn.php');
 
         if (newPrice < currentPrice) {
             document.getElementById('ambil-price').value = newPrice;
-            updateBudget();
+            updateAmbilBudget();
         } else {
             document.getElementById('ambil-stok').value = Math.ceil(currentPrice / price_perUnit);
         }
     }
 
     function updateAmbilBudget() {
-        updateBudget();
+        updateAmbilBudget();
         // Tampilkan hasil setelah menetapkan nilai baru
         document.getElementById('result').innerText = "Price: " + document.getElementById('ambil-price').value +
             ", Price Per Unit: " + document.getElementById('ambil-price_perUnit').value +
@@ -424,7 +424,7 @@ include('./config/conn.php');
     }
 
     function confirmUpdateAmbilStok() {
-        confirmUpdateStok();
+        confirmUpdateAmbilStok();
         // Tampilkan hasil setelah menetapkan nilai baru
         document.getElementById('result').innerText = "Price: " + document.getElementById('ambil-price').value +
             ", Price Per Unit: " + document.getElementById('ambil-price_perUnit').value +
@@ -432,9 +432,9 @@ include('./config/conn.php');
             ", Budget: " + document.getElementById('budget').value;
     }
 
-    function proceedUpdateStok() {
+    function proceedUpdateAmbilStok() {
         console.log('User pressed OK');
-        updateStok();
+        updateAmbilStok();
         closeConfirmation();
     }
 
@@ -761,7 +761,7 @@ include('./config/conn.php');
 
                                     </div>
                                     <div class="col-md-6 mt-4">
-                                        <a class="btn btn-primary" style="color: white;" onclick="proceedUpdateStok()">Ambil Stok</a>
+                                        <a class="btn btn-primary" style="color: white;" onclick="proceedUpdateAmbilStok()">Ambil Stok</a>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <div id="result"></div>
