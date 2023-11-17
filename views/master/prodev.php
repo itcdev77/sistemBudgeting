@@ -374,7 +374,7 @@ include('./config/conn.php');
 <script>
     var originalStokValue; // Menyimpan nilai stok sebelum perubahan
 
-    function updateBudget() {
+    function updateAmbilBudget() {
         var price = parseFloat(document.getElementById('ambil-price').value) || 0;
         var price_perUnit = parseFloat(document.getElementById('ambil-price_perUnit').value) || 0;
         var stok = parseFloat(document.getElementById('ambil-stok').value) || 0;
@@ -414,28 +414,16 @@ include('./config/conn.php');
         }
     }
 
-    function updateAmbilBudget() {
-        updateAmbilBudget();
-        // Tampilkan hasil setelah menetapkan nilai baru
-        document.getElementById('result').innerText = "Price: " + document.getElementById('ambil-price').value +
-            ", Price Per Unit: " + document.getElementById('ambil-price_perUnit').value +
-            ", Stok: " + document.getElementById('ambil-stok').value +
-            ", Budget: " + document.getElementById('budget').value;
-    }
-
-    function confirmUpdateAmbilStok() {
-        confirmUpdateAmbilStok();
-        // Tampilkan hasil setelah menetapkan nilai baru
-        document.getElementById('result').innerText = "Price: " + document.getElementById('ambil-price').value +
-            ", Price Per Unit: " + document.getElementById('ambil-price_perUnit').value +
-            ", Stok: " + document.getElementById('ambil-stok').value +
-            ", Budget: " + document.getElementById('budget').value;
-    }
-
     function proceedUpdateAmbilStok() {
-        console.log('User pressed OK');
-        updateAmbilStok();
-        closeConfirmation();
+        var confirmation = confirm("Anda yakin akan mengurangi stok?");
+
+        if (confirmation) {
+            console.log('User pressed OK');
+            updateAmbilStok();
+            closeConfirmation();
+        } else {
+            console.log('User pressed Cancel');
+        }
     }
 
     function closeConfirmation() {
@@ -756,7 +744,9 @@ include('./config/conn.php');
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Stok:</label>
+
                                         <div id="confirmation-message" style="display: none;"></div>
+
                                         <input type="number" class="form-control" name="stok" id="ambil-stok" oninput="confirmUpdateAmbilStok()">
 
                                     </div>
