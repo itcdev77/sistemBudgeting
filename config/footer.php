@@ -83,6 +83,11 @@ $(document).ready(function() {
     });
 })
 </script>
+
+
+<!-- vendor -->
+
+
 </body>
 
 </html>
