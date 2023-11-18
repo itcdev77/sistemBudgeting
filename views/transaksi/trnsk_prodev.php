@@ -30,7 +30,6 @@
                             <th width="20">KODE BUDGET</th>
                             <th>WAKTU TRANSAKSI</th>
                             <th>DESKRIPSI</th>
-                            <th>PERUNTUKAN</th>
                             <th>KETERANGAN</th>
 
                             <?php if ($_SESSION['level'] == 'admin') : ?>
@@ -43,8 +42,8 @@
 
 
                             <?php if ($_SESSION['level'] == 'user') : ?>
-                                <th>QTY BF</th>
-                                <th>QTY</th>
+                                <!-- <th>QTY BF</th> -->
+                                <th>QTY SISA</th>
                             <?php endif; ?>
                         </tr>
                     </thead>
@@ -53,21 +52,22 @@
                         // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
                         $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
 
+                        if (mysqli_num_rows($query) > 0) {
                         while ($row = mysqli_fetch_array($query)) :
+
                         ?>
                             <tr>
                                 <td><?= $row['kode_budget']; ?></td>
                                 <td><?= $row['waktu_trnsk']; ?></td>
                                 <td><?= $row['deskripsi']; ?></td>
 
-                                <td><?= $row['peruntukan']; ?></td>
-                                <td><?= $row['peruntukan']; ?></td>
+                                <td><?= $row['ket']; ?></td>
 
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
                                     <td>Rp. <?= $row['price_perUnit']; ?></td>
                                 <?php endif; ?>
 
-                                <td><?= $row['stok_update']; ?></td>
+                                <!-- <td><?= $row['stok_update']; ?></td> -->
 
                                 <td><?= $row['stok']; ?></td>
 
@@ -81,7 +81,14 @@
 
 
                             </tr>
-                        <?php endwhile; ?>
+                        <?php endwhile; }
+                        else {
+                            echo '
+                            <tr>
+                            <td class="text-center" colspan="7">Belum Ada Transaksi Yang Terjadi</td>
+                            </tr>';
+                        }
+                        ?>
                     </tbody>
                 </table>
             </div>
@@ -92,53 +99,3 @@
 <!-- /.container-fluid -->
 
 <!-- Modal Tambah barang -->
-<div class="modal fade" id="barang_keluar" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <form action="<?= base_url(); ?>process/barang_keluar.php" method="post">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Tambah Barang Keluar</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="tanggal">Tanggal<span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="tanggal" name="tanggal" value="<?= date('Y-m-d'); ?>" required>
-                            </div>
-                        </div>
-                        <div class="col-md-5">
-                            <div class="form-group">
-                                <label for="barang_id">Nama Barang <span class="text-danger">*</span></label>
-                                <select name="barang_id" id="barang_id" class="form-control select2" style="width:100%;" required>
-                                    <option value="">-- Pilih Barang --</option>
-                                    <?= list_barang(); ?>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <label for="jumlah">Jumlah<span class="text-danger">*</span></label>
-                                <input type="text" class="form-control uang" id="jumlah" name="jumlah" required>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" required></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <hr class="sidebar-divider">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fas fa-times"></i>
-                        Batal</button>
-                    <button class="btn btn-primary float-right" type="submit" name="tambah"><i class="fas fa-save"></i>
-                        Tambah</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>

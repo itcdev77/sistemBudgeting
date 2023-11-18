@@ -118,7 +118,7 @@ $now = date('Y-m-d'); ?>
                             </div>
                             <div class="card-body pt-0 mt-2">
                                 <div class="row">
-                                    <div class="col-9">
+                                    <div class="col-12">
 
                                         <?php
                                         $queryTotal = mysqli_query($con, "SELECT SUM(price_update) as total_price FROM prodev") or die(mysqli_error($con));
@@ -143,20 +143,29 @@ $now = date('Y-m-d'); ?>
                                         $i = 1;
                                         $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC LIMIT 4") or die(mysqli_error($con));
 
+                                        if (mysqli_num_rows($query) > 0) {
+
                                         while ($row = mysqli_fetch_array($query)) :
                                         ?>
 
                                             <ul class="ml-1 mb-0 fa-ul text-muted">
-
+                                                <hr>
                                                 <li class="small"><b>Kode : </b> <?= $row['kode_budget']; ?></li>
                                                 <li class="small"><b>Deskripsi : </b> <?= $row['deskripsi']; ?></li>
-                                                <li class="small"><b>Jumlah Stok : </b> <?= $row['stok_update']; ?></li>
+                                                <!-- <li class="small"><b>Jumlah Stok : </b> <?= $row['stok_update']; ?></li> -->
                                                 <li class="small"><b>Sisa Stok : </b> <?= $row['stok']; ?></li>
                                                 <li class="small"><b>Tanggal : </b> <?= date('Y-m-d') ?></li>
                                                 <hr>
                                             </ul>
 
-                                        <?php endwhile; ?>
+                                        <?php endwhile; }
+                                         else {
+                                            echo '
+                                            <tr>
+                                            <td class="text-center" colspan="7">Belum Ada Transaksi Yang Terjadi</td>
+                                            </tr>';
+                                        }
+                                        ?>
 
                                     </div>
                                     <!-- <div class="col-5 text-center">

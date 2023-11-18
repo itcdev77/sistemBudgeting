@@ -18,6 +18,9 @@ include('./config/conn.php');
             //split budget
             $('[name="split"]').val("");
             $('[name="split-budget"]').val("");
+            //
+            $('[name="kode_budget"]').val("");
+            $('[name="ket"]').val("");
 
             // $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
@@ -50,6 +53,8 @@ include('./config/conn.php');
                     $('[name="stok"]').val(data.stok);
                     $('[name="stok_update"]').val(data.stok);
                     $('[name="price_update"]').val(data.stok);
+                    $('[name="kode_budget"]').val(data.kode_budget);
+                    $('[name="ket"]').val(data.ket);
 
                     //split budget
                     // $('[name="split"]').val(data.split);
@@ -524,7 +529,7 @@ include('./config/conn.php');
                         while ($row = mysqli_fetch_array($query)) :
                         ?>
                             <tr>
-                                <td>PRDV-0<?= $i++; ?>-<?= substr($row['waktu_input'], 0, 4); ?></td>
+                                <td><?= $row['kode_budget']; ?></td>
 
                                 <td><?= $row['waktu_input']; ?></td>
 
@@ -577,7 +582,7 @@ include('./config/conn.php');
 <div class="modal fade" id="barangModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form action="<?= base_url(); ?>process/barang.php" method="post">
+            <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -591,6 +596,7 @@ include('./config/conn.php');
 
 
                                 <input type="hidden" name="idbarang" class="form-control">
+                                <input type="hidden" name="kode_budget" class="form-control">
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -681,7 +687,7 @@ include('./config/conn.php');
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
                                 <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
+                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
@@ -708,7 +714,7 @@ include('./config/conn.php');
 <div class="modal fade" id="ambilStock" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form action="<?= base_url(); ?>process/barang.php" method="post">
+            <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel"></h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
@@ -722,6 +728,8 @@ include('./config/conn.php');
 
 
                                 <input type="hidden" name="idbarang" class="form-control">
+                                <input type="hidden" name="kode_budget" class="form-control">
+
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -783,7 +791,7 @@ include('./config/conn.php');
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
                                 <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control"></textarea>
+                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control"></textarea>
                             </div>
                         </div>
                     </div>
