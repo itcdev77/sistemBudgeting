@@ -462,7 +462,7 @@ include('./config/conn.php');
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Import Budget PRODEV</h1>
+        <h1 class="h3 mb-0 text-gray-800">Import Budget <?= strtoupper($_SESSION['fullname']); ?></h1>
     </div>
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
@@ -483,8 +483,6 @@ include('./config/conn.php');
 
                 <button onclick="importData()" class="btn btn-primary btn-icon-split btn-sm">Import</button>
             <?php }; ?>
-
-            <!-- <p><?= $user_data['deskripsi'] ?></p> -->
 
 
         </div>
@@ -507,10 +505,11 @@ include('./config/conn.php');
                                 <th width="100">BGT BF</th>
                                 <th width="100">BGT</th>
                             <?php endif; ?>
-                            <th width="100">BGT BF</th>
-                            <th width="100">BGT</th>
+
 
                             <?php if ($_SESSION['level'] == 'user') : ?>
+                                <th>QTY BF</th>
+                                <th>QTY</th>
                                 <th width="50">Ubh Price Unit</th>
                                 <th width="50">Ambil Stok</th>
                             <?php endif; ?>

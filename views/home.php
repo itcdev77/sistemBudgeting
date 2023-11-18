@@ -1,4 +1,5 @@
-<?php hakAkses(['admin']);
+<?php hakAkses(['admin', 'user']);
+
 $now = date('Y-m-d'); ?>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -103,3 +104,103 @@ $now = date('Y-m-d'); ?>
     </div>
 </div> -->
     <!-- /.container-fluid -->
+
+    <!-- dashboard PRODEV -->
+    <div class="card card-solid">
+        <div class="card-body pb-0">
+            <div class="row">
+
+                <?php if ($_SESSION['username'] == 'PRODEV' || $_SESSION['level'] == 'admin') : ?>
+                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+                        <div class="card bg-light d-flex flex-fill">
+                            <div style="background-color:#29ADB2" class="card-header text-muted border-bottom-0 text-center">
+                                <h4 class="text-white"> <b>TRANSAKSI TERBARU</b></h4>
+                            </div>
+                            <div class="card-body pt-0 mt-2">
+                                <div class="row">
+                                    <div class="col-9">
+
+                                        <?php
+                                        $queryTotal = mysqli_query($con, "SELECT SUM(price_update) as total_price FROM prodev") or die(mysqli_error($con));
+                                        $queryTersisa = mysqli_query($con, "SELECT SUM(price) as total_tersisa FROM prodev") or die(mysqli_error($con));
+
+
+                                        $resultTotal = mysqli_fetch_assoc($queryTotal);
+                                        $totalPrice = $resultTotal['total_price'];
+
+                                        $resultTersisa = mysqli_fetch_assoc($queryTersisa);
+                                        $totalBudget = $resultTersisa['total_tersisa'];
+
+                                        // $budgetTersisa = $totalBudget - $totalPrice;
+                                        ?>
+                                        <?php if ($_SESSION['level'] == 'admin') { ?>
+                                            <h5 class="text-muted text-sm"><b>Total Budget : Rp. <?= number_format($totalPrice, 0, ',', '.'); ?></b></h5>
+                                            <h6 class="text-muted text-sm"><b>Budget Tersisa : Rp. <?= number_format($totalBudget, 0, ',', '.'); ?></b></h6>
+                                            <hr>
+                                        <?php }; ?>
+
+                                        <?php
+                                        $i = 1;
+                                        $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC LIMIT 4") or die(mysqli_error($con));
+
+                                        while ($row = mysqli_fetch_array($query)) :
+                                        ?>
+
+                                            <ul class="ml-1 mb-0 fa-ul text-muted">
+
+                                                <li class="small"><b>Kode : </b> <?= $row['kode_budget']; ?></li>
+                                                <li class="small"><b>Deskripsi : </b> <?= $row['deskripsi']; ?></li>
+                                                <li class="small"><b>Jumlah Stok : </b> <?= $row['stok_update']; ?></li>
+                                                <li class="small"><b>Sisa Stok : </b> <?= $row['stok']; ?></li>
+                                                <li class="small"><b>Tanggal : </b> <?= date('Y-m-d') ?></li>
+                                                <hr>
+                                            </ul>
+
+                                        <?php endwhile; ?>
+
+                                    </div>
+                                    <!-- <div class="col-5 text-center">
+                                    <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">
+                                </div> -->
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <div class="text-right">
+                                    <a href="?trnsk_prodev" class="btn btn-sm btn-primary">
+                                        <!-- <i class="fas fa-user"></i> View Profile -->
+                                        View Detail Log
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- informasi -->
+                    <?php if ($_SESSION['username'] == 'PRODEV') : ?>
+
+                        <ul class="list-group col-3">
+                            <li class="list-group-item" style="background-color: #7C93C3;">
+                                <h4 class="text-center text-white"><b>BUDGET <?= strtoupper($_SESSION['fullname']); ?></b></h4>
+                            </li>
+                            <li class="list-group-item">
+                                <h5 class="text-muted text-sm"><b>Total Budget : Rp. <?= number_format($totalPrice, 0, ',', '.'); ?></b></h5>
+                                <h6 class="text-muted text-sm"><b>Budget Tersisa : Rp. <?= number_format($totalBudget, 0, ',', '.'); ?></b></h6>
+                            </li>
+
+                        </ul>
+
+
+                    <?php endif; ?>
+                    <!-- // -->
+                <?php endif; ?>
+
+
+
+
+
+            </div>
+        </div>
+        <!-- /.card-body -->
+
+
+    </div>

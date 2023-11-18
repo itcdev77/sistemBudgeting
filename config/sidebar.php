@@ -38,39 +38,40 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <a class="collapse-item <?= isset($merek) ? 'active' : ''; ?>" href="?merek">Perusahaan</a> -->
                     <!-- <a class="collapse-item <?= isset($kategori) ? 'active' : ''; ?>" href="?kategori">Kategori</a> -->
-                    <?php if ($_SESSION['username'] == 'PRODEV') : ?>
+
+                    <?php if ($_SESSION['username'] == 'PRODEV' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($prodev) ? 'active' : ''; ?>" href="?prodev">PRODEV</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'CPP') : ?>
+                    <?php if ($_SESSION['username'] == 'CPP' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($cpp) ? 'active' : ''; ?>" href="?cpp">CPP</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'EA') : ?>
+                    <?php if ($_SESSION['username'] == 'EA' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($ea) ? 'active' : ''; ?>" href="?ea">EA</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'HSE') : ?>
+                    <?php if ($_SESSION['username'] == 'HSE' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($hse) ? 'active' : ''; ?>" href="?hse">HSE</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'ITC') : ?>
+                    <?php if ($_SESSION['username'] == 'ITC' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($itc) ? 'active' : ''; ?>" href="?itc">ITC</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'MEP') : ?>
+                    <?php if ($_SESSION['username'] == 'MEP' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($mep) ? 'active' : ''; ?>" href="?mep">MEP</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'SCM') : ?>
+                    <?php if ($_SESSION['username'] == 'SCM' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($scm) ? 'active' : ''; ?>" href="?scm">SCM</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'SHIP') : ?>
+                    <?php if ($_SESSION['username'] == 'SHIP' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($ship) ? 'active' : ''; ?>" href="?ship">SHIP</a>
                     <?php endif; ?>
 
-                    <?php if ($_SESSION['username'] == 'SURVEY') : ?>
+                    <?php if ($_SESSION['username'] == 'SURVEY' || $_SESSION['level'] == 'admin') : ?>
                         <a class="collapse-item <?= isset($survey) ? 'active' : ''; ?>" href="?survey">SURVEY</a>
                     <?php endif; ?>
 
@@ -91,7 +92,7 @@
             <div id="transaksi" class="collapse <?= isset($transaksi) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <a class="collapse-item <?= isset($barang_masuk) ? 'active' : ''; ?>" href="?barang_masuk">Barang Masuk</a> -->
-                    <a class="collapse-item <?= isset($barang_keluar) ? 'active' : ''; ?>" href="?barang_keluar">Log Prodev</a>
+                    <a class="collapse-item <?= isset($trnsk_prodev) ? 'active' : ''; ?>" href="?trnsk_prodev">Log Prodev</a>
                 </div>
             </div>
         </li>
