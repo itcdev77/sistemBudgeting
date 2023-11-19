@@ -1,4 +1,60 @@
 <?php hakAkses(['admin', 'user']); ?>
+
+
+<script>
+    function submit(x) {
+        if (x == 'add') {
+            $('[name="deskripsi"]').val("");
+            $('[name="merek_id"]').val("").trigger('change');
+            $('[name="kategori_id"]').val("").trigger('change');
+            $('[name="price"]').val("");
+            $('[name="stok"]').val("");
+            $('[name="price_perUnit"]').val("");
+            //split budget
+            $('[name="split"]').val("");
+            $('[name="split-budget"]').val("");
+            //
+            $('[name="kode_budget"]').val("");
+            $('[name="ket"]').val("");
+
+            // $('#barangModal .modal-title').html('Tambah Barang');
+            $('[name="ubah"]').hide();
+            $('[name="tambah"]').show();
+        } else {
+            $('#barangModal .modal-title').html('Edit Price Per Unit');
+            $('#ambilStock .modal-title').html('Ambil Stok');
+            $('[name="tambah"]').hide();
+            $('[name="ubah"]').show();
+
+            $.ajax({
+                type: "POST",
+                data: {
+                    id: x
+                },
+                url: '<?= base_url(); ?>process/view_prodev.php',
+                dataType: 'json',
+                success: function(data) {
+
+                    // var formattedPrice = 'Rp. ' + data.price;
+
+                    $('[name="idbarang"]').val(data.idbarang);
+                    $('[name="merek_id"]').val(data.merek_id).trigger('change');
+                    $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
+                    $('[name="deskripsi"]').val(data.deskripsi);
+                    $('[name="price"]').val(data.price);
+                    $('[name="stok"]').val(data.stok);
+                    $('[name="kode_budget"]').val(data.kode_budget);
+                    $('[name="ket"]').val(data.ket);
+
+                    //split budget
+                    // $('[name="split"]').val(data.split);
+                    // $('[name="split-budget"]').val(data.split_budget);
+                }
+            });
+        }
+    }
+</script>
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -33,11 +89,8 @@
                             <th>KETERANGAN</th>
 
                             <?php if ($_SESSION['level'] == 'admin') : ?>
-                                <th width="100">UNIT PRICE</th>
-                                <th>QTY BF</th>
-                                <th>QTY</th>
-                                <th width="100">BGT BF</th>
-                                <th width="100">BGT</th>
+                                <th>QTY SISA</th>
+                                <th width="100">BGT SISA</th>
                             <?php endif; ?>
 
 
@@ -57,23 +110,13 @@
 
                         ?>
                             <tr>
-                                <td><?= $row['kode_budget']; ?></td>
+                                <td><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><?= $row['kode_budget']; ?></a></td>
                                 <td><?= $row['waktu_trnsk']; ?></td>
                                 <td><?= $row['deskripsi']; ?></td>
 
                                 <td><?= $row['ket']; ?></td>
 
-                                <?php if ($_SESSION['level'] == 'admin') : ?>
-                                    <td>Rp. <?= $row['price_perUnit']; ?></td>
-                                <?php endif; ?>
-
-                                <!-- <td><?= $row['stok_update']; ?></td> -->
-
                                 <td><?= $row['stok']; ?></td>
-
-                                <?php if ($_SESSION['level'] == 'admin') : ?>
-                                    <td>Rp. <?= $row['price_update']; ?></td>
-                                <?php endif; ?>
 
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
                                     <td>Rp. <?= $row['price']; ?></td>
@@ -98,4 +141,60 @@
 </div>
 <!-- /.container-fluid -->
 
-<!-- Modal Tambah barang -->
+<!-- Modal View Detail -->
+
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+
+                                <input type="hidden" name="idbarang" class="form-control">
+                                <input type="hidden" name="kode_budget" class="form-control">
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="deskripsi">Deskripsi:</label>
+                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
+                                    </div>
+                                
+                                    <div class="col-md-6">
+                                        <label for="price"><span style="color: red;">Budget :</span></label>
+                                        <input type="number" class="form-control" name="price" id="ambil-price" readonly>
+                                    </div>
+                  
+                                    <div class="col-md-2 mt-2">
+                                        <label for="stok">Stok:</label>
+
+                                        <div id="confirmation-message" style="display: none;"></div>
+
+                                        <input type="number" class="form-control text-center" name="stok" id="ambil-stok" readonly>
+
+                                    </div>
+
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+            
+
+                    </div>
+        
+                    
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

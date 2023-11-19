@@ -66,8 +66,8 @@ if (isset($_POST['cek_login'])) {
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-5 d-none d-lg-block text-center">
-                                <img src="<?= $base_url; ?>assets/img/login.png" width="420" height="400">
+                            <div class="col-lg-5 d-none d-lg-block text-center mt-4">
+                                <img src="<?= $base_url; ?>assets/img/Logo Sebuku.png" width="390" height="330">
                             </div>
                             <div class="col-lg-7">
                                 <div class="p-5">
@@ -83,7 +83,7 @@ if (isset($_POST['cek_login'])) {
                                         <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
                                         <br>
                                         <center>
-                                            <p>Repost by <a href='https://valcoding.com/' title='valcoding.com' target='_blank'>valcoding.com</a></p>
+                                            <p>Selamat Datang di Sistem Kontrol Budget SCG</p>
                                         </center>
 
                                     </div>

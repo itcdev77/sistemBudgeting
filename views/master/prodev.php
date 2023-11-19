@@ -529,6 +529,7 @@ include('./config/conn.php');
                         while ($row = mysqli_fetch_array($query)) :
                         ?>
                             <tr>
+                              
                                 <td><?= $row['kode_budget']; ?></td>
 
                                 <td><?= $row['waktu_input']; ?></td>
@@ -556,6 +557,8 @@ include('./config/conn.php');
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
                                     <td>Rp. <?= $row['price']; ?></td>
                                 <?php endif; ?>
+
+                            
 
                                 <?php if ($_SESSION['level'] == 'user') : ?>
                                     <td>

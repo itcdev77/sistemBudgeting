@@ -187,13 +187,13 @@ $now = date('Y-m-d'); ?>
                     <!-- informasi -->
                     <?php if ($_SESSION['username'] == 'PRODEV') : ?>
 
-                        <ul class="list-group col-3">
+                        <ul class="list-group col-4">
                             <li class="list-group-item" style="background-color: #7C93C3;">
                                 <h4 class="text-center text-white"><b>BUDGET <?= strtoupper($_SESSION['fullname']); ?></b></h4>
                             </li>
                             <li class="list-group-item">
-                                <h5 class="text-muted text-sm"><b>Total Budget : Rp. <?= number_format($totalPrice, 0, ',', '.'); ?></b></h5>
-                                <h6 class="text-muted text-sm"><b>Budget Tersisa : Rp. <?= number_format($totalBudget, 0, ',', '.'); ?></b></h6>
+                                <h6 class="text-muted text-sm">Total Budget : <b>Rp. <?= number_format($totalPrice, 0, ',', '.'); ?></b></h6>
+                                <h5 class="text-muted text-sm">Budget Tersisa : <b>Rp. <?= number_format($totalBudget, 0, ',', '.'); ?></></h5>
                             </li>
 
                         </ul>
