@@ -29,7 +29,7 @@ if (isset($_POST['ubah'])) {
     $price = $_POST['price'];
     $stok = $_POST['stok'];
     $price_perUnit = $_POST['price_perUnit'];
-    
+
 
 
     //unutk update di table departement terkait
@@ -38,8 +38,9 @@ if (isset($_POST['ubah'])) {
     $kode_budget = $_POST['kode_budget'];
     $ket = $_POST['ket'];
     $waktu_trnsk = date("Y-m-d H:i:s");
+    $departemen = $_POST['departemen'];
     //untuk insert di table log departemen terkait
-    $log_update = mysqli_query($con, "INSERT INTO trnsk_prodev (kode_budget, merek_id, kategori_id, deskripsi, price, stok, ket, waktu_trnsk) VALUES ('$kode_budget', '$merek_id', '$kategori_id', '$deskripsi', '$price', '$stok', '$ket', '$waktu_trnsk')") or die("Error: " . mysqli_error($con));
+    $log_update = mysqli_query($con, "INSERT INTO trnsk_prodev (kode_budget, merek_id, kategori_id, deskripsi, price, stok, ket, waktu_trnsk, departemen) VALUES ('$kode_budget', '$merek_id', '$kategori_id', '$deskripsi', '$price', '$stok', '$ket', '$waktu_trnsk', '$departemen')") or die("Error: " . mysqli_error($con));
 
     if ($update || $log_update) {
         $success = 'Berhasil mengubah data barang';

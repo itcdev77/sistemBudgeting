@@ -21,6 +21,7 @@ include('./config/conn.php');
             //
             $('[name="kode_budget"]').val("");
             $('[name="ket"]').val("");
+            $('[name="dapartemen"]').val("");
 
             // $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
@@ -55,6 +56,7 @@ include('./config/conn.php');
                     $('[name="price_update"]').val(data.stok);
                     $('[name="kode_budget"]').val(data.kode_budget);
                     $('[name="ket"]').val(data.ket);
+                    // $('[name="departemen"]').val(data.departemen);
 
                     //split budget
                     // $('[name="split"]').val(data.split);
@@ -115,235 +117,6 @@ include('./config/conn.php');
 </script>
 
 
-
-
-
-
-<!-- <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Temukan elemen input stok
-        var stokInput = document.querySelector('input[name="stok"]');
-
-        // Tambahkan event listener untuk perubahan nilai pada input stok
-        stokInput.addEventListener("input", function() {
-            // Temukan elemen input harga
-            var hargaInput = document.querySelector('input[name="price"]');
-
-            // Dapatkan nilai stok baru
-            var stokValue = parseFloat(stokInput.value);
-
-            // Lakukan operasi atau perhitungan apapun untuk mengganti nilai harga sesuai kebutuhan Anda
-            // Misalnya, Anda ingin mengganti harga menjadi dua kali lipat dari nilai stok
-            var newPrice = stokValue * 1;
-
-            // Update nilai input harga
-            hargaInput.value = newPrice;
-        });
-    });
-</script> -->
-
-<!-- js jadi -->
-<!-- <script>
-    function updateBudget() {
-        var price = parseFloat(document.getElementById('price').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var budget = price - price_perUnit;
-        document.getElementById('budget').value = budget;
-    }
-
-    function confirmUpdateStok() {
-        console.log('confirmUpdateStok dipanggil');
-        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
-            console.log('User menekan OK');
-            updateStok();
-        } else {
-            console.log('User menekan Cancel');
-            var stok = parseFloat(document.getElementById('stok').value) || 0;
-            var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-            var currentPrice = stok * price_perUnit;
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-
-    function updateStok() {
-        var stok = parseFloat(document.getElementById('stok').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var newPrice = stok * price_perUnit;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-
-        if (newPrice < currentPrice) {
-            document.getElementById('price').value = newPrice;
-            updateBudget();
-        } else {
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-
-    function updatePriceFromSplitBudget() {
-        var splitBudget = parseFloat(document.getElementById('split-budget').value) || 0;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-        var newPrice = currentPrice - splitBudget;
-
-        // Setel nilai price
-        document.getElementById('price').value = newPrice;
-
-        // Update budget setelah mengubah price
-        updateBudget();
-    }
-</script> -->
-
-
-<!-- <script>
-    var originalStokValue; // Menyimpan nilai stok sebelum perubahan
-
-    function updateBudget() {
-        var price = parseFloat(document.getElementById('price').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var stok = parseFloat(document.getElementById('stok').value) || 0;
-
-        // Validasi agar price_perUnit tidak melebihi batas stok
-        var maxPricePerUnit = price / stok;
-        if (price_perUnit > maxPricePerUnit) {
-            alert('Harga per unit tidak boleh melebihi batas stok. Harga per unit akan disetel ke nilai maksimum yang diperbolehkan.');
-            document.getElementById('price_perUnit').value = maxPricePerUnit;
-            price_perUnit = maxPricePerUnit;
-        }
-
-        var budget = price - price_perUnit;
-        document.getElementById('budget').value = budget;
-    }
-
-    function confirmUpdateStok() {
-        console.log('confirmUpdateStok called');
-        var stokElement = document.getElementById('stok');
-        originalStokValue = parseFloat(stokElement.value) || 0; // Simpan nilai stok sebelum perubahan
-
-        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
-            console.log('User pressed OK');
-            updateStok();
-        } else {
-            console.log('User pressed Cancel');
-            stokElement.value = originalStokValue; // Kembalikan nilai stok jika pengguna menekan Cancel
-        }
-    }
-
-    function updateStok() {
-        var stok = parseFloat(document.getElementById('stok').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var newPrice = stok * price_perUnit;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-
-        if (newPrice < currentPrice) {
-            document.getElementById('price').value = newPrice;
-            updateBudget();
-        } else {
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-</script> -->
-
-<!-- complete script -->
-
-<!-- <script>
-    function updateBudget() {
-        var price = parseFloat(document.getElementById('price').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var budget = price - price_perUnit;
-        document.getElementById('budget').value = budget;
-    }
-
-    function confirmUpdateStok() {
-        console.log('confirmUpdateStok called');
-        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
-            console.log('User pressed OK');
-            updateStok();
-        } else {
-            console.log('User pressed Cancel');
-            var stok = parseFloat(document.getElementById('stok').value) || 0;
-            var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-            var currentPrice = stok * price_perUnit;
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-
-    function updateStok() {
-        var stok = parseFloat(document.getElementById('stok').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var newPrice = stok * price_perUnit;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-
-        if (newPrice < currentPrice) {
-            document.getElementById('price').value = newPrice;
-            updateBudget();
-        } else {
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-
-    function confirmAndUpdateSplitBudget() {
-        var splitBudget = parseFloat(document.getElementById('split-budget').value) || 0;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-
-        // Konfirmasi sebelum menjumlahkan split-budget dengan price
-        if (confirm('Anda akan melakukan split budget!!. Lanjutkan?')) {
-            // Jika pengguna menekan OK, update nilai price dan budget
-            document.getElementById('price').value = currentPrice - splitBudget;
-
-            updateBudget();
-
-        }
-    }
-</script> -->
-<!-- <script>
-    function updateBudget() {
-        var price = parseFloat(document.getElementById('price').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var budget = price - price_perUnit;
-        document.getElementById('budget').value = budget;
-    }
-
-    function confirmUpdateStok() {
-        console.log('confirmUpdateStok called');
-        if (confirm('Anda akan mengurangi stok. Lanjutkan?')) {
-            console.log('User pressed OK');
-            updateStok();
-        } else {
-            console.log('User pressed Cancel');
-            var stok = parseFloat(document.getElementById('stok').value) || 0;
-            var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-            var currentPrice = stok * price_perUnit;
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-
-    function updateStok() {
-        var stok = parseFloat(document.getElementById('stok').value) || 0;
-        var price_perUnit = parseFloat(document.getElementById('price_perUnit').value) || 0;
-        var newPrice = stok * price_perUnit;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-
-        if (newPrice < currentPrice) {
-            document.getElementById('price').value = newPrice;
-            updateBudget();
-        } else {
-            document.getElementById('stok').value = Math.ceil(currentPrice / price_perUnit);
-        }
-    }
-
-    function confirmAndUpdateSplitBudget() {
-        var splitBudget = parseFloat(document.getElementById('split-budget').value) || 0;
-        var currentPrice = parseFloat(document.getElementById('price').value) || 0;
-
-        // Konfirmasi sebelum menjumlahkan split-budget dengan price
-        if (confirm('Anda akan melakukan split budget!!. Lanjutkan?')) {
-            // Jika pengguna menekan OK, update nilai price dan budget
-            document.getElementById('price').value = currentPrice - splitBudget;
-
-            updateBudget();
-
-        }
-    }
-</script> -->
 
 <!-- script untuk membuat stock menyesuaikan dengan price per unit -->
 <script>
@@ -487,7 +260,9 @@ include('./config/conn.php');
                 <input type="file" id="excelFile" class="">
 
                 <button onclick="importData()" class="btn btn-primary btn-icon-split btn-sm">Import</button>
+
             <?php }; ?>
+
 
 
         </div>
@@ -529,7 +304,7 @@ include('./config/conn.php');
                         while ($row = mysqli_fetch_array($query)) :
                         ?>
                             <tr>
-                              
+
                                 <td><?= $row['kode_budget']; ?></td>
 
                                 <td><?= $row['waktu_input']; ?></td>
@@ -558,7 +333,7 @@ include('./config/conn.php');
                                     <td>Rp. <?= $row['price']; ?></td>
                                 <?php endif; ?>
 
-                            
+
 
                                 <?php if ($_SESSION['level'] == 'user') : ?>
                                     <td>
@@ -573,6 +348,7 @@ include('./config/conn.php');
                             </tr>
                         <?php endwhile; ?>
                     </tbody>
+
                 </table>
             </div>
         </div>
@@ -600,6 +376,7 @@ include('./config/conn.php');
 
                                 <input type="hidden" name="idbarang" class="form-control">
                                 <input type="hidden" name="kode_budget" class="form-control">
+                                <input type="hidden" name="departemen" class="form-control">
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -732,7 +509,7 @@ include('./config/conn.php');
 
                                 <input type="hidden" name="idbarang" class="form-control">
                                 <input type="hidden" name="kode_budget" class="form-control">
-
+                                <input type="hidden" name="departemen" class="form-control">
 
                                 <div class="row">
                                     <div class="col-md-6">

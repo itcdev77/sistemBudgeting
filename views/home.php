@@ -145,21 +145,21 @@ $now = date('Y-m-d'); ?>
 
                                         if (mysqli_num_rows($query) > 0) {
 
-                                        while ($row = mysqli_fetch_array($query)) :
+                                            while ($row = mysqli_fetch_array($query)) :
                                         ?>
 
-                                            <ul class="ml-1 mb-0 fa-ul text-muted">
-                                                <hr>
-                                                <li class="small"><b>Kode : </b> <?= $row['kode_budget']; ?></li>
-                                                <li class="small"><b>Deskripsi : </b> <?= $row['deskripsi']; ?></li>
-                                                <!-- <li class="small"><b>Jumlah Stok : </b> <?= $row['stok_update']; ?></li> -->
-                                                <li class="small"><b>Sisa Stok : </b> <?= $row['stok']; ?></li>
-                                                <li class="small"><b>Tanggal : </b> <?= date('Y-m-d') ?></li>
-                                                <hr>
-                                            </ul>
+                                                <ul class="ml-1 mb-0 fa-ul text-muted">
+                                                    <hr>
+                                                    <li class="small"><b>Kode : </b> <?= $row['kode_budget']; ?></li>
+                                                    <li class="small"><b>Deskripsi : </b> <?= $row['deskripsi']; ?></li>
+                                                    <!-- <li class="small"><b>Jumlah Stok : </b> <?= $row['stok_update']; ?></li> -->
+                                                    <li class="small"><b>Sisa Stok : </b> <?= $row['stok']; ?></li>
+                                                    <li class="small"><b>Tanggal : </b> <?= date('Y-m-d') ?></li>
+                                                    <hr>
+                                                </ul>
 
-                                        <?php endwhile; }
-                                         else {
+                                        <?php endwhile;
+                                        } else {
                                             echo '
                                             <tr>
                                             <td class="text-center" colspan="7">Belum Ada Transaksi Yang Terjadi</td>
@@ -193,7 +193,8 @@ $now = date('Y-m-d'); ?>
                             </li>
                             <li class="list-group-item">
                                 <h6 class="text-muted text-sm">Total Budget : <b>Rp. <?= number_format($totalPrice, 0, ',', '.'); ?></b></h6>
-                                <h5 class="text-muted text-sm">Budget Tersisa : <b>Rp. <?= number_format($totalBudget, 0, ',', '.'); ?></></h5>
+                                <h5 class="text-muted text-sm">Budget Tersisa : <b>Rp. <?= number_format($totalBudget, 0, ',', '.'); ?></>
+                                </h5>
                             </li>
 
                         </ul>

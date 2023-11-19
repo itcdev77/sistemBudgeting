@@ -4,22 +4,7 @@
 <script>
     function submit(x) {
         if (x == 'add') {
-            $('[name="deskripsi"]').val("");
-            $('[name="merek_id"]').val("").trigger('change');
-            $('[name="kategori_id"]').val("").trigger('change');
-            $('[name="price"]').val("");
-            $('[name="stok"]').val("");
-            $('[name="price_perUnit"]').val("");
-            //split budget
-            $('[name="split"]').val("");
-            $('[name="split-budget"]').val("");
-            //
-            $('[name="kode_budget"]').val("");
-            $('[name="ket"]').val("");
-
-            // $('#barangModal .modal-title').html('Tambah Barang');
-            $('[name="ubah"]').hide();
-            $('[name="tambah"]').show();
+            // kosong
         } else {
             $('#barangModal .modal-title').html('Edit Price Per Unit');
             $('#ambilStock .modal-title').html('Ambil Stok');
@@ -45,6 +30,7 @@
                     $('[name="stok"]').val(data.stok);
                     $('[name="kode_budget"]').val(data.kode_budget);
                     $('[name="ket"]').val(data.ket);
+                    $('[name="departemen"]').val(data.departemen);
 
                     //split budget
                     // $('[name="split"]').val(data.split);
@@ -85,6 +71,7 @@
                         <tr>
                             <th width="20">KODE BUDGET</th>
                             <th>WAKTU TRANSAKSI</th>
+                            <th>DEPARTEMEN</th>
                             <th>DESKRIPSI</th>
                             <th>KETERANGAN</th>
 
@@ -106,32 +93,37 @@
                         $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
 
                         if (mysqli_num_rows($query) > 0) {
-                        while ($row = mysqli_fetch_array($query)) :
+                            while ($row = mysqli_fetch_array($query)) :
 
                         ?>
-                            <tr>
-                                <td><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><?= $row['kode_budget']; ?></a></td>
-                                <td><?= $row['waktu_trnsk']; ?></td>
-                                <td><?= $row['deskripsi']; ?></td>
+                                <tr>
+                                    <td><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><?= $row['kode_budget']; ?></a></td>
+                                    <td><?= $row['waktu_trnsk']; ?></td>
+                                    <td><?= $row['departemen']; ?></td>
+                                    <td><?= $row['deskripsi']; ?></td>
 
-                                <td><?= $row['ket']; ?></td>
+                                    <td><?= $row['ket']; ?></td>
 
-                                <td><?= $row['stok']; ?></td>
-
-                                <?php if ($_SESSION['level'] == 'admin') : ?>
-                                    <td>Rp. <?= $row['price']; ?></td>
-                                <?php endif; ?>
+                                    <td><?= $row['stok']; ?></td>
 
 
-                            </tr>
-                        <?php endwhile; }
-                        else {
+                                    <?php if ($_SESSION['level'] == 'admin') : ?>
+                                        <td>Rp. <?= $row['price']; ?></td>
+                                    <?php endif; ?>
+
+
+
+                                </tr>
+                        <?php endwhile;
+                        } else {
                             echo '
                             <tr>
                             <td class="text-center" colspan="7">Belum Ada Transaksi Yang Terjadi</td>
                             </tr>';
                         }
                         ?>
+
+
                     </tbody>
                 </table>
             </div>
@@ -168,12 +160,12 @@
                                         <label for="deskripsi">Deskripsi:</label>
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
                                     </div>
-                                
+
                                     <div class="col-md-6">
                                         <label for="price"><span style="color: red;">Budget :</span></label>
                                         <input type="number" class="form-control" name="price" id="ambil-price" readonly>
                                     </div>
-                  
+
                                     <div class="col-md-2 mt-2">
                                         <label for="stok">Stok:</label>
 
@@ -183,16 +175,16 @@
 
                                     </div>
 
-                                    
+
                                 </div>
 
                             </div>
                         </div>
-            
+
 
                     </div>
-        
-                    
+
+
                 </div>
             </form>
         </div>
