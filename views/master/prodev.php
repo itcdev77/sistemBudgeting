@@ -14,6 +14,7 @@ include('./config/conn.php');
             $('[name="kategori_id"]').val("").trigger('change');
             $('[name="price"]').val("");
             $('[name="stok"]').val("");
+            $('[name="stok_update"]').val("");
             $('[name="price_perUnit"]').val("");
             //split budget
             $('[name="split"]').val("");
@@ -22,6 +23,7 @@ include('./config/conn.php');
             $('[name="kode_budget"]').val("");
             $('[name="ket"]').val("");
             $('[name="dapartemen"]').val("");
+            $('[name="price_perUnit_upd"]').val("");
 
             // $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
@@ -52,10 +54,11 @@ include('./config/conn.php');
                     $('[name="price_display"]').val(data.price);
                     $('[name="price_perUnit"]').val(data.price_perUnit);
                     $('[name="stok"]').val(data.stok);
-                    $('[name="stok_update"]').val(data.stok);
-                    $('[name="price_update"]').val(data.stok);
+                    $('[name="stok_update"]').val(data.stok_update);
+                    $('[name="price_update"]').val(data.price_update);
                     $('[name="kode_budget"]').val(data.kode_budget);
                     $('[name="ket"]').val(data.ket);
+                    $('[name="price_perUnit_upd"]').val(data.price_perUnit_upd);
                     // $('[name="departemen"]').val(data.departemen);
 
                     //split budget
@@ -67,6 +70,7 @@ include('./config/conn.php');
     }
 </script>
 
+<!-- script untuk import data excel -->
 <script>
     function importData() {
         // Membuat objek FormData untuk mengirim file
@@ -269,21 +273,23 @@ include('./config/conn.php');
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
-                    <thead>
+                    <thead class="text-white text-center" style="background-color: #7C93C3;">
                         <tr>
+                            <th width="10">NO</th>
                             <th width="20">KODE BUDGET</th>
                             <th>WAKTU</th>
                             <th>PERUSAHAAN</th>
                             <th>KATEGORI</th>
-                            <th>DESKRIPSI</th>
+                            <th width="500">DESKRIPSI</th>
                             <th>PERUNTUKAN</th>
 
                             <?php if ($_SESSION['level'] == 'admin') : ?>
-                                <th width="100">UNIT PRICE</th>
+                                <th width="200">UNIT PRICE</th>
+                                <!-- <th width="200">SELISIH BERKURANG</th> -->
                                 <th>QTY BF</th>
                                 <th>QTY</th>
-                                <th width="100">BGT BF</th>
-                                <th width="100">BGT</th>
+                                <th width="200">BGT BF</th>
+                                <th width="200">BGT</th>
                             <?php endif; ?>
 
 
@@ -299,11 +305,17 @@ include('./config/conn.php');
                         <?php
                         $i = 1;
                         // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
-                        $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
+                        $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang ASC") or die(mysqli_error($con));
 
                         while ($row = mysqli_fetch_array($query)) :
+
+                            $stokAwal = $row['price_perUnit_upd'];
+                            $stokKurang = $row['price_perUnit'];
+                            $selisihPirceUnit = $stokAwal - $stokKurang;
                         ?>
                             <tr>
+
+                                <td><?= $i++; ?></td>
 
                                 <td><?= $row['kode_budget']; ?></td>
 
@@ -318,7 +330,8 @@ include('./config/conn.php');
                                 <td><?= $row['peruntukan']; ?></td>
 
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
-                                    <td>Rp. <?= $row['price_perUnit']; ?></td>
+                                    <td>Rp. <?= number_format($row['price_perUnit'], 0, ',', '.'); ?></td>
+                                    <!-- <td>Rp. <?= number_format($selisihPirceUnit, 0, ',', '.'); ?></td> -->
                                 <?php endif; ?>
 
                                 <td><?= $row['stok_update']; ?></td>
@@ -326,11 +339,12 @@ include('./config/conn.php');
                                 <td><?= $row['stok']; ?></td>
 
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
-                                    <td>Rp. <?= $row['price_update']; ?></td>
+                                    <td>Rp. <?= number_format($row['price_update'], 0, ',', '.'); ?></td>
                                 <?php endif; ?>
 
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
-                                    <td>Rp. <?= $row['price']; ?></td>
+                                    <td>Rp. <?= number_format($row['price'], 0, ',', '.'); ?></td>
+
                                 <?php endif; ?>
 
 
@@ -377,6 +391,8 @@ include('./config/conn.php');
                                 <input type="hidden" name="idbarang" class="form-control">
                                 <input type="hidden" name="kode_budget" class="form-control">
                                 <input type="hidden" name="departemen" class="form-control">
+                                <input type="hidden" name="stok_update" class="form-control">
+                                <input type="hidden" name="price_perUnit_upd" class="form-control">
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -389,11 +405,11 @@ include('./config/conn.php');
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="price_perUnit">Price Per Unit:</label>
-                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateStok()">
+                                        <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateStok()" require>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Qty:</label>
-                                        <input type="text" class="form-control" name="stok" id="stok" oninput="updatePrice()">
+                                        <input type="text" class="form-control" name="stok" id="stok" oninput="updatePrice()" readonly>
                                     </div>
                                     <div class="col-md-6 mt-3">
                                         <a class="btn btn-primary" onclick="confirmChanges()"><span style="color: white;">Edit</span></a>
@@ -466,8 +482,8 @@ include('./config/conn.php');
 
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
-                                <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control"></textarea>
+                                <label for="keterangan">Keterangan (Wajib di isi) <span class="text-danger">*</span></label>
+                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" require></textarea>
                             </div>
                         </div>
                     </div>
@@ -480,6 +496,10 @@ include('./config/conn.php');
                         Ubah</button>
                 </div>
             </form>
+            <br>
+            <div class="container">
+                <p><i>Sebelum anda mengurangi atau menambahkan price per unit, Periksalah kembali apakah data yang anda masukan itu sudah benar !!. <span style="color: red"> Jika ada kendala hubungi Admin !!</span></i></p>
+            </div>
         </div>
     </div>
 </div>
@@ -510,6 +530,7 @@ include('./config/conn.php');
                                 <input type="hidden" name="idbarang" class="form-control">
                                 <input type="hidden" name="kode_budget" class="form-control">
                                 <input type="hidden" name="departemen" class="form-control">
+                                <input type="hidden" name="stok_update" class="form-control">
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -522,7 +543,7 @@ include('./config/conn.php');
                                         <input type="number" class="form-control" name="price_display" readonly>
                                     </div>
                                     <div class="col-md-6 mt-3">
-                                        <label for="price"><span style="color: red;">Budget Di Ambil:</span></label>
+                                        <label for="price"><span style="color: red;">Budget Sisa:</span></label>
                                         <input type="number" class="form-control" name="price" id="ambil-price" onchange="updateAmbilBudget()" readonly>
                                     </div>
                                     <div class="col-md-6 mt-3">
@@ -538,7 +559,7 @@ include('./config/conn.php');
 
                                     </div>
                                     <div class="col-md-6 mt-4">
-                                        <a class="btn btn-primary" style="color: white;" onclick="proceedUpdateAmbilStok()">Kurangi Stok</a>
+                                        <a class="btn btn-primary mt-3" style="color: white;" onclick="proceedUpdateAmbilStok()">Kurangi Stok</a>
                                     </div>
                                     <div class="col-md-6 mt-2">
                                         <div id="result"></div>
@@ -570,8 +591,8 @@ include('./config/conn.php');
 
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
-                                <label for="keterangan">Keterangan <span class="text-danger">*</span></label>
-                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control"></textarea>
+                                <label for="keterangan">Keterangan (Wajib di isi) <span class="text-danger">*</span></label>
+                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" require></textarea>
                             </div>
                         </div>
                     </div>
@@ -584,6 +605,11 @@ include('./config/conn.php');
                         Ubah</button>
                 </div>
             </form>
+
+            <br>
+            <div class="container">
+                <p><i>Sebelum anda mengurangi stok, Periksalah kembali apakah stok yang anda kurangi itu sudah benar !!. <span style="color: red">Stok tidak bisa di tambahkan kembali jika sudah di kurangi !!</span></i></p>
+            </div>
         </div>
     </div>
 </div>

@@ -7,7 +7,7 @@
             // kosong
         } else {
             $('#barangModal .modal-title').html('Edit Price Per Unit');
-            $('#ambilStock .modal-title').html('Ambil Stok');
+            $('#ambilStock .modal-title').html('Kurangi Stok');
             $('[name="tambah"]').hide();
             $('[name="ubah"]').show();
 
@@ -31,6 +31,7 @@
                     $('[name="kode_budget"]').val(data.kode_budget);
                     $('[name="ket"]').val(data.ket);
                     $('[name="departemen"]').val(data.departemen);
+                    $('[name="stok_upd"]').val(data.stok_upd);
 
                     //split budget
                     // $('[name="split"]').val(data.split);
@@ -69,6 +70,7 @@
                 <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>
+                            <th width="10">NO</th>
                             <th width="20">KODE BUDGET</th>
                             <th>WAKTU TRANSAKSI</th>
                             <th>DEPARTEMEN</th>
@@ -76,27 +78,32 @@
                             <th>KETERANGAN</th>
 
                             <?php if ($_SESSION['level'] == 'admin') : ?>
-                                <th>QTY SISA</th>
                                 <th width="100">BGT SISA</th>
                             <?php endif; ?>
 
+                            <th>QTY BF</th>
+                            <th>QTY UPD</th>
+                            <th>SELISIH</th>
 
-                            <?php if ($_SESSION['level'] == 'user') : ?>
-                                <!-- <th>QTY BF</th> -->
-                                <th>QTY SISA</th>
-                            <?php endif; ?>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
+                        $n = 1;
                         // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
                         $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
 
                         if (mysqli_num_rows($query) > 0) {
                             while ($row = mysqli_fetch_array($query)) :
 
+                                //rumus untuk melihat selisih stok keluar..
+                                $stokAwal = $row['stok_upd'];
+                                $stokKurang = $row['stok'];
+                                $selisihStok = $stokAwal - $stokKurang;
+
                         ?>
                                 <tr>
+                                    <td><?= $n++ ?></td>
                                     <td><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><?= $row['kode_budget']; ?></a></td>
                                     <td><?= $row['waktu_trnsk']; ?></td>
                                     <td><?= $row['departemen']; ?></td>
@@ -104,12 +111,14 @@
 
                                     <td><?= $row['ket']; ?></td>
 
-                                    <td><?= $row['stok']; ?></td>
-
-
                                     <?php if ($_SESSION['level'] == 'admin') : ?>
-                                        <td>Rp. <?= $row['price']; ?></td>
+                                        <td>Rp. <?= number_format($row['price'], 0, ',', '.'); ?></td>
                                     <?php endif; ?>
+
+
+                                    <td><?= $row['stok_upd']; ?></td>
+                                    <td><?= $row['stok']; ?></td>
+                                    <td><?= $selisihStok ?></td>
 
 
 
@@ -166,10 +175,14 @@
                                         <input type="number" class="form-control" name="price" id="ambil-price" readonly>
                                     </div>
 
-                                    <div class="col-md-2 mt-2">
-                                        <label for="stok">Stok:</label>
+                                    <div class="col-md-3 mt-3">
+                                        <label for="stok">Qty Sebelumnya:</label>
 
-                                        <div id="confirmation-message" style="display: none;"></div>
+                                        <input type="number" class="form-control text-center" name="stok_upd" id="ambil-stok" readonly>
+
+                                    </div>
+                                    <div class="col-md-2 mt-3">
+                                        <label for="stok">Qty Update:</label>
 
                                         <input type="number" class="form-control text-center" name="stok" id="ambil-stok" readonly>
 

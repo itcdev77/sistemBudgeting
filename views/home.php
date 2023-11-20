@@ -154,7 +154,7 @@ $now = date('Y-m-d'); ?>
                                                     <li class="small"><b>Deskripsi : </b> <?= $row['deskripsi']; ?></li>
                                                     <!-- <li class="small"><b>Jumlah Stok : </b> <?= $row['stok_update']; ?></li> -->
                                                     <li class="small"><b>Sisa Stok : </b> <?= $row['stok']; ?></li>
-                                                    <li class="small"><b>Tanggal : </b> <?= date('Y-m-d') ?></li>
+                                                    <li class="small"><b>Tanggal : </b> <?= $row['waktu_trnsk'] ?></li>
                                                     <hr>
                                                 </ul>
 
