@@ -236,7 +236,36 @@ include('./config/conn.php');
     }
 </script> -->
 
+<!-- script untuk ambil stok -->
+<script>
+    function konfirmasiPenambahanStok() {
+        var jumlahStokInput = document.getElementById('ambil-stok');
+        var jumlahAmbilStokInput = document.getElementById('jumlah-ambil-stok');
 
+        // Mendapatkan nilai jumlah stok dari input
+        var jumlahStok = parseFloat(jumlahStokInput.value);
+
+        // Mendapatkan nilai jumlah stok yang akan diambil
+        var jumlahAmbilStok = parseFloat(jumlahAmbilStokInput.value);
+
+        // Memastikan bahwa jumlah yang diambil tidak melebihi jumlah stok yang tersedia
+        if (jumlahAmbilStok <= jumlahStok) {
+            // Mengurangkan jumlah stok dengan jumlah yang diambil
+            jumlahStok -= jumlahAmbilStok;
+
+            // Memperbarui nilai input jumlah stok
+            jumlahStokInput.value = jumlahStok.toFixed(1); // Menampilkan satu angka desimal
+
+            // Menampilkan pesan konfirmasi (optional)
+            var confirmationMessage = document.getElementById('confirmation-message');
+            confirmationMessage.innerHTML = 'Stok berhasil dikurangkan.';
+            confirmationMessage.style.display = 'block';
+        } else {
+            // Menampilkan pesan error jika jumlah yang diambil melebihi jumlah stok yang tersedia
+            alert('Jumlah stok yang diambil melebihi stok yang tersedia.');
+        }
+    }
+</script>
 
 
 <!-- Begin Page Content -->
@@ -550,17 +579,37 @@ include('./config/conn.php');
                                         <label for="price_perUnit">Price Per Unit:</label>
                                         <input type="number" class="form-control" name="price_perUnit" id="ambil-price_perUnit" onchange="updateAmbilBudget()" readonly>
                                     </div>
+
+
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Stok:</label>
 
                                         <div id="confirmation-message" style="display: none;"></div>
 
-                                        <input type="number" class="form-control" name="stok" id="ambil-stok" oninput="confirmUpdateAmbilStok()">
+                                        <input type="number" step="0.1" class="form-control" name="stok" id="ambil-stok" oninput="confirmUpdateAmbilStok()" readonly>
 
                                     </div>
-                                    <div class="col-md-6 mt-4">
-                                        <a class="btn btn-primary mt-3" style="color: white;" onclick="proceedUpdateAmbilStok()">Kurangi Stok</a>
+
+                                    <div class="col-md-6 mt-2">
+                                        <label for="stok">Jumlah stok yang di ambil:</label>
+
+                                        <div id="confirmation-message" style="display: none;"></div>
+
+                                        <input type="number"  class="form-control" name="" id="jumlah-ambil-stok">
+
                                     </div>
+
+
+                                    <!-- button 1 -->
+                                    <div class="col-md-6 mt-4">
+                                        <a class="btn btn-primary " style="color: white;" onclick="proceedUpdateAmbilStok()">Konfirmasi</a>
+                                    </div>
+
+                                    <!-- button 2 -->
+                                    <div class="col-md-6 mt-4">
+                                        <a class="btn btn-danger text-white" onclick="konfirmasiPenambahanStok()">Ambil</a>
+                                    </div>
+                                    
                                     <div class="col-md-6 mt-2">
                                         <div id="result"></div>
                                     </div>
