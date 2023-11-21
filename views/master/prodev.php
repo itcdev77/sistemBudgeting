@@ -13,8 +13,11 @@ include('./config/conn.php');
             $('[name="merek_id"]').val("").trigger('change');
             $('[name="kategori_id"]').val("").trigger('change');
             $('[name="price"]').val("");
+            //stok
             $('[name="stok"]').val("");
             $('[name="stok_update"]').val("");
+            $('[name="ambil_stok"]').val("");
+            //
             $('[name="price_perUnit"]').val("");
             //split budget
             $('[name="split"]').val("");
@@ -24,6 +27,11 @@ include('./config/conn.php');
             $('[name="ket"]').val("");
             $('[name="dapartemen"]').val("");
             $('[name="price_perUnit_upd"]').val("");
+
+            //insert jenis transaksi
+
+            $('[name="trnsk"]').val("");
+
 
             // $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
@@ -214,27 +222,6 @@ include('./config/conn.php');
     }
 </script>
 
-<!-- <script>
-    function updateStokValue() {
-        // Mendapatkan nilai dari input
-        var stokInput = document.getElementById("ambil_stok");
-        var stokValue = stokInput.value;
-
-        // Memisahkan angka di depan dan di belakang koma
-        var parts = stokValue.split(".");
-        var frontPart = parseFloat(parts[0]);
-        var backPart = parts[1] || "0"; // Jika tidak ada bagian belakang, maka dianggap 0
-
-        // Mengurangi nilai angka di depan koma
-        frontPart = Math.max(0, frontPart - 1);
-
-        // Menggabungkan kembali angka di depan dan di belakang koma
-        var newStokValue = frontPart + "." + backPart;
-
-        // Memperbarui nilai input dengan hasil baru
-        stokInput.value = newStokValue;
-    }
-</script> -->
 
 <!-- script untuk ambil stok -->
 <script>
@@ -278,17 +265,12 @@ include('./config/conn.php');
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <!-- <a href="#" class="btn btn-primary btn-icon-split btn-sm" data-toggle="modal" data-target="#barangModal" onclick="submit('add')">
-                <span class="icon text-white-50">
-                    <i class="fas fa-plus"></i>
-                </span>
-                <span class="text">Tambah</span>
-            </a> -->
 
             <!-- <form action="<?= base_url(); ?>process/import.php" method="post" enctype="multipart/form-data">
                 <input class="btn btn-primary btn-icon-split btn-sm" type="file" name="excel_file">
                 <input class="btn btn-primary btn-icon-split btn-sm" type="submit" value="Import">
             </form> -->
+
             <?php if ($_SESSION['level'] == 'admin') { ?>
                 <input type="file" id="excelFile" class="">
 
@@ -332,19 +314,20 @@ include('./config/conn.php');
                     </thead>
                     <tbody>
                         <?php
-                        $i = 1;
+                        $n = 1;
                         // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
                         $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang ASC") or die(mysqli_error($con));
 
                         while ($row = mysqli_fetch_array($query)) :
 
-                            $stokAwal = $row['price_perUnit_upd'];
-                            $stokKurang = $row['price_perUnit'];
-                            $selisihPirceUnit = $stokAwal - $stokKurang;
+                            //code untuk melihat selisih transaksi price per unit
+                            $priceAwal = $row['price_perUnit_upd'];
+                            $priceKurang = $row['price_perUnit'];
+                            $selisihPirceUnit = $priceAwal - $priceKurang;
                         ?>
                             <tr>
 
-                                <td><?= $i++; ?></td>
+                                <td><?= $n++; ?></td>
 
                                 <td><?= $row['kode_budget']; ?></td>
 
@@ -422,32 +405,38 @@ include('./config/conn.php');
                                 <input type="hidden" name="departemen" class="form-control">
                                 <input type="hidden" name="stok_update" class="form-control">
                                 <input type="hidden" name="price_perUnit_upd" class="form-control">
+                                <input type="hidden" name="trnsk" value="price" class="form-control">
 
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label for="deskripsi">Deskripsi:</label>
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
                                     </div>
+
                                     <div class="col-md-6">
-                                        <label for="price">Budget:</label>
-                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly>
+                                        <!-- <label for="price">Budget:</label> -->
+                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly hidden>
                                     </div>
-                                    <div class="col-md-6 mt-2">
+
+
+                                    <div class="col-md-6 mt-3">
                                         <label for="price_perUnit">Price Per Unit:</label>
                                         <input type="number" class="form-control" name="price_perUnit" id="price_perUnit" onchange="updateStok()" require>
                                     </div>
-                                    <div class="col-md-6 mt-2">
+                                    <div class="col-md-6 mt-3">
                                         <label for="stok">Qty:</label>
                                         <input type="text" class="form-control" name="stok" id="stok" oninput="updatePrice()" readonly>
                                     </div>
-                                    <div class="col-md-6 mt-3">
-                                        <a class="btn btn-primary" onclick="confirmChanges()"><span style="color: white;">Edit</span></a>
+                                    <div class="col-md-6 mt-5">
+                                        <a class="btn btn-primary" onclick="confirmChanges()"><span style="color: white;">Ubah</span></a>
                                     </div>
 
                                 </div>
 
                             </div>
                         </div>
+
+                        <!-- ini nanti akan di ganti dengan get data dari excel -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <!-- <label for="merek_id">Perusahaan :</label> -->
@@ -466,48 +455,8 @@ include('./config/conn.php');
                                 </select>
                             </div>
                         </div>
+                        <!-- // -->
 
-
-                        <!-- <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="merek_id">Split budget dengan :</label>
-                                <select name="split" id="username" class="form-select select2" style="width:100%;">
-                                    <option value="">-- Deskripsi Barang --</option>
-                                    
-                                    <?php
-
-
-                                    include('../config/conn.php');
-
-
-                                    if (!$con) {
-                                        die("Koneksi ke database gagal: " . mysqli_connect_error());
-                                    }
-
-                                    $sau = "SELECT * FROM prodev ORDER BY deskripsi ASC";
-                                    $query2 = mysqli_query($con, "$sau") or die('mysql_error');
-
-                                    while ($user_data = mysqli_fetch_array($query2)) {
-                                        echo "<option value=\"" . $user_data['idbarang'] . "\">" . $user_data['deskripsi'] . "</option>";
-                                    }
-
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="kategori_id">Jumlah budget yang di ambil :</label>
-                                <input type="number" class="form-control" name="split-budget" id="split-budget" oninput="updatePriceFromSplitBudget()">
-
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 mt-2 ">
-                            <a style="margin-left: 180%;" class="btn btn-danger" onclick="confirmAndUpdateSplitBudget()"><i style="color: white;" class="fa fa-plus"></i>
-                            </a>
-                        </div> -->
 
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
@@ -560,6 +509,8 @@ include('./config/conn.php');
                                 <input type="hidden" name="kode_budget" class="form-control">
                                 <input type="hidden" name="departemen" class="form-control">
                                 <input type="hidden" name="stok_update" class="form-control">
+                                <input type="hidden" name="trnsk" value="stok" class="form-control">
+
 
                                 <div class="row">
                                     <div class="col-md-6">
@@ -567,14 +518,18 @@ include('./config/conn.php');
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
                                     </div>
                                     <!--  -->
+
                                     <div class="col-md-6">
                                         <label for="price">Budget:</label>
                                         <input type="number" class="form-control" name="price_display" readonly>
                                     </div>
+
                                     <div class="col-md-6 mt-3">
                                         <label for="price"><span style="color: red;">Budget Sisa:</span></label>
                                         <input type="number" class="form-control" name="price" id="ambil-price" onchange="updateAmbilBudget()" readonly>
                                     </div>
+
+
                                     <div class="col-md-6 mt-3">
                                         <label for="price_perUnit">Price Per Unit:</label>
                                         <input type="number" class="form-control" name="price_perUnit" id="ambil-price_perUnit" onchange="updateAmbilBudget()" readonly>
@@ -584,9 +539,9 @@ include('./config/conn.php');
                                     <div class="col-md-6 mt-2">
                                         <label for="stok">Stok:</label>
 
-                                        <div id="confirmation-message" style="display: none;"></div>
 
                                         <input type="number" step="0.1" class="form-control" name="stok" id="ambil-stok" oninput="confirmUpdateAmbilStok()" readonly>
+                                        <div id="confirmation-message" style="display: none;"></div>
 
                                     </div>
 
@@ -595,7 +550,7 @@ include('./config/conn.php');
 
                                         <div id="confirmation-message" style="display: none;"></div>
 
-                                        <input type="number"  class="form-control" name="" id="jumlah-ambil-stok">
+                                        <input type="number" class="form-control" name="ambil_stok" id="jumlah-ambil-stok">
 
                                     </div>
 
@@ -609,7 +564,7 @@ include('./config/conn.php');
                                     <div class="col-md-6 mt-4">
                                         <a class="btn btn-danger text-white" onclick="konfirmasiPenambahanStok()">Ambil</a>
                                     </div>
-                                    
+
                                     <div class="col-md-6 mt-2">
                                         <div id="result"></div>
                                     </div>
@@ -618,6 +573,8 @@ include('./config/conn.php');
 
                             </div>
                         </div>
+
+                        <!-- ini nanti akan di ganti dengan get data dari excel -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <!-- <label for="merek_id">Perusahaan :</label> -->
@@ -636,6 +593,7 @@ include('./config/conn.php');
                                 </select>
                             </div>
                         </div>
+                        <!-- // -->
 
 
                         <div class="col-md-12 mt-3">
@@ -644,6 +602,7 @@ include('./config/conn.php');
                                 <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" require></textarea>
                             </div>
                         </div>
+
                     </div>
                     <hr class="sidebar-divider">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fas fa-times"></i>

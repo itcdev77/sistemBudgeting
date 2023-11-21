@@ -1,4 +1,5 @@
-<?php hakAkses(['admin', 'user']); ?>
+<?php hakAkses(['admin', 'user']);
+?>
 
 
 <script>
@@ -6,7 +7,7 @@
         if (x == 'add') {
             // kosong
         } else {
-            $('#detailModal .modal-title').html('Detail Transaksi Price Per Unit');
+            $('#detailModal .modal-title').html('Detail Transaksi Stok');
             $('[name="tambah"]').hide();
             $('[name="ubah"]').show();
 
@@ -43,6 +44,7 @@
     }
 </script>
 
+
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -53,7 +55,18 @@
     <!-- DataTales Example -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-
+            <!-- <a href="#" class="btn btn-primary btn-icon-split btn-sm" data-toggle="modal" data-target="#barang_keluar">
+                <span class="icon text-white-50">
+                    <i class="fas fa-plus"></i>
+                </span>
+                <span class="text">Tambah</span>
+            </a> -->
+            <!-- <a href="<?= base_url(); ?>process/cetak_barang_keluar.php" target="_blank" class="btn btn-info btn-icon-split btn-sm float-right">
+                <span class="icon text-white-50">
+                    <i class="fas fa-print"></i>
+                </span>
+                <span class="text">Cetak</span>
+            </a> -->
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -72,10 +85,9 @@
                                 <th width="100">BGT SISA</th>
                             <?php endif; ?>
 
-                            <th>PRICE UNIT</th>
                             <th>QTY BF</th>
                             <th>QTY UPD</th>
-
+                            <th>DI AMBIL</th>
                             <th>SELISIH</th>
 
                         </tr>
@@ -94,8 +106,8 @@
                                 $selisihStok = $stokAwal - $stokKurang;
 
                                 // Tambahkan kondisi untuk menentukan jenis transaksi yang ingin ditampilkan
-                                $jenisTransaksi = "price"; // Ganti dengan "price" jika ingin menampilkan transaksi price
-                                if ($row['jenis_trnsk'] == $jenisTransaksi || $row['departemen'] == $_SESSION['fullname'] && $_SESSION['level'] == 'admin') {
+                                $jenisTransaksiYangInginDitampilkan = "stok"; // Ganti dengan "price" jika ingin menampilkan transaksi price
+                                if ($row['jenis_trnsk'] == $jenisTransaksiYangInginDitampilkan && $row['departemen'] == $_SESSION['fullname']) :
                         ?>
                                     <tr>
                                         <td><?= $n++ ?></td>
@@ -110,15 +122,15 @@
                                             <td>Rp. <?= number_format($row['price'], 0, ',', '.'); ?></td>
                                         <?php endif; ?>
 
-                                        <td>Rp. <?= number_format($row['price_perUnit'], 0, ',', '.'); ?></td>
+                                        <td><?= $row['stok_upd']; ?>
 
-                                        <td><?= $row['stok_upd']; ?></td>
-                                        <td><?= $row['stok']; ?></td>
-
+                                        </td>
+                                        <td><?= $row['stok']; ?> <i class="fas fa-arrow-down"></i></td>
+                                        <td><?= $row['di_ambil']; ?></td>
                                         <td><?= $selisihStok ?></td>
                                     </tr>
                         <?php
-                                };
+                                endif;
                             endwhile;
                         } else {
                             echo '<tr><td class="text-center" colspan="7">Belum Ada Transaksi Yang Terjadi</td></tr>';
@@ -168,10 +180,12 @@
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
                                     </div>
 
-                                    <div class="col-md-6 mt-3">
-                                        <label for="price"><span style="color: red;">Budget :</span></label>
-                                        <input type="number" class="form-control" name="price" id="ambil-price" readonly>
-                                    </div>
+                                    <?php if ($_SESSION['level'] == 'admin') : ?>
+                                        <div class="col-md-6 mt-3">
+                                            <label for="price"><span style="color: red;">Budget :</span></label>
+                                            <input type="number" class="form-control" name="price" id="ambil-price" readonly>
+                                        </div>
+                                    <?php endif; ?>
 
                                     <div class="col-md-3 mt-3">
                                         <label for="stok">Qty Sebelumnya:</label>

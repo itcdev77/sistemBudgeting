@@ -41,8 +41,14 @@ if (isset($_POST['ubah'])) {
     $waktu_trnsk = date("Y-m-d H:i:s");
     $departemen = $_POST['departemen'];
     $stok_upd = $_POST['stok_update'];
+    $di_ambil = $_POST['ambil_stok'];
+
+    //jenis transaksi
+    $jenis_trnsk = $_POST['trnsk'];
+
+
     //untuk insert di table log departemen terkait
-    $log_update = mysqli_query($con, "INSERT INTO trnsk_prodev (kode_budget, merek_id, kategori_id, deskripsi, price, stok, ket, waktu_trnsk, departemen, stok_upd) VALUES ('$kode_budget', '$merek_id', '$kategori_id', '$deskripsi', '$price', '$stok', '$ket', '$waktu_trnsk', '$departemen', '$stok_upd')") or die("Error: " . mysqli_error($con));
+    $log_update = mysqli_query($con, "INSERT INTO trnsk_prodev (kode_budget, merek_id, kategori_id, deskripsi, price, price_perUnit, stok, ket, waktu_trnsk, departemen, stok_upd, di_ambil, jenis_trnsk) VALUES ('$kode_budget', '$merek_id', '$kategori_id', '$deskripsi', '$price', '$price_perUnit', '$stok', '$ket', '$waktu_trnsk', '$departemen', '$stok_upd', '$di_ambil', '$jenis_trnsk')") or die("Error: " . mysqli_error($con));
 
     if ($update || $log_update) {
         $success = 'Berhasil mengubah data barang';

@@ -23,9 +23,11 @@
     <!-- Custom styles for this page -->
     <link href="<?= base_url(); ?>assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
 
+
+
     <!-- vendor -->
     <!-- Theme style -->
-    <link rel="stylesheet" href="../vendor/dist/css/adminlte.min.css">
+    <link rel=" stylesheet" href="../vendor/dist/css/adminlte.min.css">
 
 
 

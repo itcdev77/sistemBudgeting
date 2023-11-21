@@ -92,7 +92,8 @@
             <div id="transaksi" class="collapse <?= isset($transaksi) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <a class="collapse-item <?= isset($barang_masuk) ? 'active' : ''; ?>" href="?barang_masuk">Barang Masuk</a> -->
-                    <a class="collapse-item <?= isset($trnsk_prodev) ? 'active' : ''; ?>" href="?trnsk_prodev">Log Prodev</a>
+                    <a class="collapse-item <?= isset($trnsk_prodev) ? 'active' : ''; ?>" href="?trnsk_prodev">Transaksi Price</a>
+                    <a class="collapse-item <?= isset($trnsk_stok) ? 'active' : ''; ?>" href="?trnsk_stok">Transaksi Stok</a>
                 </div>
             </div>
         </li>
