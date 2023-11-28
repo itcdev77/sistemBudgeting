@@ -80,6 +80,8 @@
                         <a class="collapse-item <?= isset($pengguna) ? 'active' : ''; ?>" href="?pengguna">Pengguna</a>
                     <?php endif; ?>
                     <!--  -->
+                    <a class="collapse-item <?= isset($split) ? 'active' : ''; ?>" href="?split">Split Budget</a>
+
                 </div>
             </div>
         </li>

@@ -1,18 +1,41 @@
 <?php
-// Menghubungkan ke database
-include('./config/conn.php');
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "inventaris";
 
-// Ambil split dari permintaan AJAX
-$split = $_POST['username']; // Sesuaikan dengan nama yang dikirimkan melalui AJAX
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// Query untuk mengambil split-budget berdasarkan split
-$query = "SELECT price FROM prodev WHERE deskripsi = '" . mysqli_real_escape_string($con, $split) . "'";
-$result = mysqli_query($con, $query);
-
-if ($result && mysqli_num_rows($result) > 0) {
-    $row = mysqli_fetch_assoc($result);
-    $price = $row['price'];
-    echo $price;
-} else {
-    echo "--"; // Jika tidak ada data yang ditemukan
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
+
+$merekId = $_POST['merek_id'];
+
+$sql = "SELECT price FROM prodev WHERE deskripsi = ?";
+$stmt = $conn->prepare($sql);
+
+if ($stmt) {
+    $stmt->bind_param("s", $merekId); // "s" indicates a string parameter
+    $stmt->execute();
+
+    $result = $stmt->get_result();
+
+    if ($result !== false) {
+        if ($result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $harga = $row['price'];
+            echo $harga;
+        } else {
+            echo "error";
+        }
+    } else {
+        echo "Error: " . $sql . "<br>" . $stmt->error;
+    }
+
+    $stmt->close();
+} else {
+    echo "Error in preparing statement: " . $conn->error;
+}
+
+$conn->close();

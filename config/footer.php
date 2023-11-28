@@ -81,6 +81,35 @@
     })
 </script>
 
+<script>
+    $(document).ready(function() {
+        // Menangani perubahan pada pilihan barang
+        $('#deskripsi_budget').change(function() {
+            var merekId = $(this).val(); // Mengambil nilai merek_id yang dipilih
+
+            // Mengambil base URL secara dinamis
+            // var baseUrl = window.location.origin;
+
+            // Mengirim permintaan AJAX
+            $.ajax({
+                type: 'POST',
+                // url: baseUrl + '/?get_budget', // Menggunakan base URL
+                url: './views/master/get_budget.php', // Menggunakan base URL
+                data: {
+                    merek_id: merekId
+                },
+                success: function(response) {
+                    // Menetapkan nilai harga ke input dengan id 'price'
+                    $('#price_budget').val(response);
+                }
+            });
+        });
+    });
+</script>
+
+
+
+
 
 <!-- vendor -->
 

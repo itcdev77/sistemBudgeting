@@ -29,7 +29,4 @@
     <!-- Theme style -->
     <link rel=" stylesheet" href="../vendor/dist/css/adminlte.min.css">
 
-
-
-
 </head>

@@ -465,8 +465,6 @@ include('./config/conn.php');
                     <hr class="sidebar-divider">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fas fa-times"></i>
                         Batal</button>
-                    <button class="btn btn-primary float-right" type="submit" name="tambah"><i class="fas fa-save"></i>
-                        Tambah</button>
                     <button class="btn btn-primary float-right" type="submit" name="ubah"><i class="fas fa-save"></i>
                         Ubah</button>
                 </div>
