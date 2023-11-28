@@ -222,7 +222,6 @@ include('./config/conn.php');
     }
 </script>
 
-
 <!-- script untuk ambil stok -->
 <script>
     function konfirmasiPenambahanStok() {
@@ -360,7 +359,6 @@ include('./config/conn.php');
                                 <?php endif; ?>
 
 
-
                                 <?php if ($_SESSION['level'] == 'user') : ?>
                                     <td>
                                         <a href="#barangModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-info"><i class="fas fa-edit"></i></a>
@@ -398,7 +396,6 @@ include('./config/conn.php');
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-
 
                                 <input type="hidden" name="idbarang" class="form-control">
                                 <input type="hidden" name="kode_budget" class="form-control">
