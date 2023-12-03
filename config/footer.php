@@ -81,6 +81,8 @@
     })
 </script>
 
+<!-- SCRIPT UNTUK FUNGSI SPLIT BUDGET -->
+
 <script>
     $(document).ready(function() {
         // Menangani perubahan pada pilihan barang
@@ -107,7 +109,34 @@
     });
 </script>
 
+<!-- script untuk barang yang akan di split -->
+<script>
+    $(document).ready(function() {
+        // Menangani perubahan pada pilihan barang
+        $('#split1').change(function() {
+            var merekId = $(this).val(); // Mengambil nilai merek_id yang dipilih
 
+            // Mengambil base URL secara dinamis
+            // var baseUrl = window.location.origin;
+
+            // Mengirim permintaan AJAX
+            $.ajax({
+                type: 'POST',
+                // url: baseUrl + '/?get_budget', // Menggunakan base URL
+                url: './views/master/get_budget2.php', // Menggunakan base URL
+                data: {
+                    merek_id: merekId
+                },
+                success: function(response) {
+                    // Menetapkan nilai harga ke input dengan id 'price'
+                    $('#split2').val(response);
+                }
+            });
+        });
+    });
+</script>
+
+<!-- END OF SCRIPT FUNGSI SPLIT BUDGET -->
 
 
 

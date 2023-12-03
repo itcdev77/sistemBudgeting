@@ -411,8 +411,8 @@ include('./config/conn.php');
                                     </div>
 
                                     <div class="col-md-6">
-                                        <!-- <label for="price">Budget:</label> -->
-                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly hidden>
+                                        <label for="price">Budget:</label>
+                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly >
                                     </div>
 
 
