@@ -125,7 +125,7 @@
                                         <td><?= $row['stok_upd']; ?>
 
                                         </td>
-                                        <td><?= $row['stok']; ?> <i class="fas fa-arrow-down"></i></td>
+                                        <td><?= $row['stok']; ?> <i class="fas fa-arrow-down" style="color: orange"></i></td>
                                         <td><?= $row['di_ambil']; ?></td>
                                         <td><?= $selisihStok ?></td>
                                     </tr>

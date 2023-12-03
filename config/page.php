@@ -61,6 +61,10 @@ else if (isset($_GET['prodev'])) {
     $master = $get_budget = true;
     $views = 'views/master/get_budget.php';
 }
+else if (isset($_GET['get_budget2'])) {
+    $master = $get_budget = true;
+    $views = 'views/master/get_budget2.php';
+}
 
 //page untuk split budget..
 else if (isset($_GET['split'])) {

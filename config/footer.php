@@ -81,6 +81,8 @@
     })
 </script>
 
+<!-- SCRIPT UNTUK FUNGSI SPLIT BUDGET -->
+
 <script>
     $(document).ready(function() {
         // Menangani perubahan pada pilihan barang
@@ -93,21 +95,85 @@
             // Mengirim permintaan AJAX
             $.ajax({
                 type: 'POST',
-                // url: baseUrl + '/?get_budget', // Menggunakan base URL
-                url: './views/master/get_budget.php', // Menggunakan base URL
+                url: './views/master/get_budget.php',
                 data: {
                     merek_id: merekId
                 },
+                dataType: 'json', // Menetapkan tipe data yang diharapkan
                 success: function(response) {
-                    // Menetapkan nilai harga ke input dengan id 'price'
-                    $('#price_budget').val(response);
+                    // Menetapkan nilai harga ke input dengan id 'split2'
+                    $('#price_budget').val(response.harga);
+
+                    // Menetapkan nilai stok ke input dengan id 'qty_test'
+                    $('#qty_test1').val(response.stok);
+
+                    $('#kode_budget').val(response.kode_budget);
+
+                    $('#perice_perUnit').val(response.perice_perUnit);
                 }
             });
         });
     });
 </script>
 
+<!-- script untuk barang yang akan di split -->
+<script>
+    $(document).ready(function() {
+        // Menangani perubahan pada pilihan barang
+        $('#split1').change(function() {
+            var merekId = $(this).val(); // Mengambil nilai merek_id yang dipilih
 
+            // Mengirim permintaan AJAX
+            $.ajax({
+                type: 'POST',
+                url: './views/master/get_budget2.php',
+                data: {
+                    merek_id: merekId
+                },
+                dataType: 'json', // Menetapkan tipe data yang diharapkan
+                success: function(response) {
+                    // Menetapkan nilai harga ke input dengan id 'split2'
+                    $('#split2').val(response.harga);
+
+                    // Menetapkan nilai stok ke input dengan id 'qty_test'
+                    $('#qty_test').val(response.stok);
+
+                    $('#kode_budget2').val(response.kode_budget2);
+                }
+            });
+        });
+    });
+</script>
+<!--  -->
+
+<!-- script untuk barang yang akan di split -->
+<!-- <script>
+    $(document).ready(function() {
+        // Menangani perubahan pada pilihan barang
+        $('#split1').change(function() {
+            var merekId = $(this).val(); // Mengambil nilai merek_id yang dipilih
+
+            // Mengambil base URL secara dinamis
+            // var baseUrl = window.location.origin;
+
+            // Mengirim permintaan AJAX
+            $.ajax({
+                type: 'POST',
+                // url: baseUrl + '/?get_budget', // Menggunakan base URL
+                url: './views/master/get_budget2.php', // Menggunakan base URL
+                data: {
+                    merek_id: merekId
+                },
+                success: function(response) {
+                    // Menetapkan nilai harga ke input dengan id 'price'
+                    $('#split2').val(response);
+                }
+            });
+        });
+    });
+</script> -->
+
+<!-- END OF SCRIPT FUNGSI SPLIT BUDGET -->
 
 
 

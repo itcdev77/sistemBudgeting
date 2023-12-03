@@ -4,144 +4,376 @@ include('./config/conn.php');
 
 ?>
 
+
 <script>
-    $(document).ready(function() {
-        // Menangani perubahan pada pilihan barang
-        $('#deskripsi_budget').change(function() {
-            var merekId = $(this).val(); // Mengambil nilai merek_id yang dipilih
+    function submit(x) {
+        if (x == 'add') {
+            // kosong
+        } else {
+            $('#split .modal-title').html('Action Tambah Barang');
+            $('[name="tambah"]').hide();
+            $('[name="ubah"]').show();
 
-            // Mengambil base URL secara dinamis
-            var baseUrl = window.location.origin;
-
-            // Mengirim permintaan AJAX
             $.ajax({
-                type: 'POST',
-                url: baseUrl + '/get_budget.php', // Menggunakan base URL
+                type: "POST",
                 data: {
-                    merek_id: merekId
+                    id: x
                 },
-                success: function(response) {
-                    // Menetapkan nilai harga ke input dengan id 'price'
-                    $('#price_budget').val(response);
+                url: '<?= base_url(); ?>process/view_prodev.php',
+                dataType: 'json',
+                success: function(data) {
+
+                    // var formattedPrice = 'Rp. ' + data.price;
+
+                    // $('[name="idbarang"]').val(data.idbarang);
+                    // $('[name="merek_id"]').val(data.merek_id).trigger('change');
+                    // $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
+                    // $('[name="deskripsi"]').val(data.deskripsi);
+                    // $('[name="price"]').val(data.price);
+                    // $('[name="stok"]').val(data.stok);
+                    // $('[name="kode_budget"]').val(data.kode_budget);
+                    // $('[name="ket"]').val(data.ket);
+                    // $('[name="departemen"]').val(data.departemen);
+                    // $('[name="stok_upd"]').val(data.stok_upd);
+                    // $('[name="di_ambil"]').val(data.di_ambil);
+                    // $('[name="waktu_trnsk"]').val(data.waktu_trnsk);
+
+                    //split budget
+                    // $('[name="split"]').val(data.split);
+                    // $('[name="split-budget"]').val(data.split_budget);
                 }
             });
-        });
-    });
+        }
+    }
 </script>
-
 
 <div class="container-fluid">
 
+    <div class="card">
+        <div class="card-body shadow mb-4">
 
-    <div class="container">
-        <div class="d-sm-flex align-items-center justify-content-center mb-4 text-center">
+            <div class="container">
+                <div class="d-sm-flex align-items-center justify-content-center mb-4 text-center">
 
-            <h1 class="h3 mb-0 text-gray-800 text-center">REQUEST SPLIT BUDGET <?= strtoupper($_SESSION['fullname']); ?></h1>
+                    <h1 class="h3 mb-0 text-gray-800 text-center">REQUEST SPLIT BUDGET <?= strtoupper($_SESSION['fullname']); ?></h1>
 
-        </div>
-        <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
-            <div class="row">
-                <div class="col-md-12 mt-3">
-                    <div class="form-group">
+                </div>
+                <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
+                    <div class="row">
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
 
 
-                        <div class="row">
+                                <div class="row">
 
-                            <!-- form split budget -->
+                                    <!-- form split budget -->
 
-                            <!-- Kode budget -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="merek_id">Pilih barang :</label>
-                                    <select class="form-control select2" type="text" name="atasan" id="deskripsi_budget" required>
-                                        <?php
+                                    <!-- Kode budget -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="merek_id">Pilih barang :</label>
+                                            <select class="form-control select2" type="text" name="atasan" id="deskripsi_budget" required>
+                                                <?php
 
-                                        // Menghubungkan ke database
-                                        $koneksi = mysqli_connect("localhost", "root", "password", "inventaris");
+                                                // Menghubungkan ke database
+                                                $koneksi = mysqli_connect("localhost", "root", "password", "inventaris");
 
-                                        // Periksa koneksi
-                                        if (!$koneksi) {
-                                            die("Koneksi ke database gagal: " . mysqli_connect_error());
-                                        }
+                                                // Periksa koneksi
+                                                if (!$koneksi) {
+                                                    die("Koneksi ke database gagal: " . mysqli_connect_error());
+                                                }
 
-                                        $sau = "SELECT * FROM prodev ORDER BY deskripsi ASC";
-                                        $query2 = mysqli_query($con, "$sau") or die('mysql_error');
+                                                $sau = "SELECT * FROM prodev ORDER BY deskripsi ASC";
+                                                $query2 = mysqli_query($con, "$sau") or die('mysql_error');
 
-                                        // Loop melalui hasil query dan membuat pilihan dropdown
-                                        echo '<option value="">-- Pilih Barang --</option>';
-                                        while ($user_data = mysqli_fetch_array($query2)) {
-                                            echo '<option value="' . $user_data['deskripsi'] . '">' . $user_data['deskripsi'] . '</option>';
-                                        }
-                                        //
-                                        echo 'error';
+                                                // Loop melalui hasil query dan membuat pilihan dropdown
+                                                echo '<option value="">-- Pilih Barang --</option>';
+                                                while ($user_data = mysqli_fetch_array($query2)) {
+                                                    echo '<option value="' . $user_data['deskripsi'] . '">' . $user_data['deskripsi'] . ' / ' . $user_data['kode_budget'] . '</option>';
+                                                }
+                                                //
+                                                echo 'error';
 
-                                        // Tutup koneksi ke database
-                                        mysqli_close($koneksi);
-                                        ?>
-                                    </select>
+                                                // Tutup koneksi ke database
+                                                mysqli_close($koneksi);
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- input untuk split budget -->
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="merek_id">Split dengan :</label>
+                                            <select class="form-control select2" type="text" name="atasan" id="split1" required>
+                                                <?php
+
+                                                // Menghubungkan ke database
+                                                $koneksi = mysqli_connect("localhost", "root", "password", "inventaris");
+
+                                                // Periksa koneksi
+                                                if (!$koneksi) {
+                                                    die("Koneksi ke database gagal: " . mysqli_connect_error());
+                                                }
+
+                                                $sau = "SELECT * FROM prodev ORDER BY deskripsi ASC";
+                                                $query2 = mysqli_query($con, "$sau") or die('mysql_error');
+
+                                                // Loop melalui hasil query dan membuat pilihan dropdown
+                                                echo '<option value="">-- Pilih Barang --</option>';
+                                                while ($user_data = mysqli_fetch_array($query2)) {
+                                                    echo '<option value="' . $user_data['deskripsi'] . '">' . $user_data['deskripsi'] . ' / ' . $user_data['kode_budget'] . '</option>';
+                                                }
+                                                //
+                                                echo 'error';
+
+                                                // Tutup koneksi ke database
+                                                mysqli_close($koneksi);
+                                                ?>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- jumlah budget dan stok 1 -->
+                                    <div class="col-md-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="deskripsi"><b>Detail Barang 1 :</b></label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">Code :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">BGT :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="price_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">QTY :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="qty_test1" readonly>
+                                                </div>
+                                            </li>
+
+                                            <p class="mt-2" style="color:orange;">Disini nanti mau di taru alert split budget berhasil !!! </p>
+                                            <!-- <li class="list-group-item">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text border-0">Price UNT :</span>
+                                            </div>
+                                            <input type="text" class="form-control border-0" name="price" id="perice_perUnit" readonly>
+                                        </div>
+                                    </li> -->
+                                            <a href="#split" data-toggle="modal" class="btn btn-primary btn-sm col-3 text-white"><b>+</b> Barang</a>
+                                        </ul>
+                                    </div>
+
+
+                                    <!-- jumlah budget dan stok 2 -->
+
+
+                                    <!-- input untuk mengambil budget dari budget 1 -->
+                                    <!-- <div class="col-md-3 mt-3">
+                                <label for="deskripsi">Test QTY:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="price" id="">
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="merek_id">Split dengan :</label>
-                                    <select name="kategori_id" id="barang2" class="form-select select2" style="width:100%;" hidden>
-                                        <option value="">-- PILIH --</option>
-                                        <?= aset_prodev(); ?>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- jumlah budget dan stok 1 -->
-                            <div class="col-md-2">
-                                <label for="deskripsi">BGT 1:</label>
-                                <input width="20" type="text" class="form-control" name="price" id="price_budget" readonly>
-                            </div>
-
-                            <!-- <div class="col-md-2">
-                                <label for="deskripsi">QTY 1:</label>
-                                <input width="20" type="text" class="form-control" name="deskripsi" id="jab_atasan" readonly>
                             </div> -->
 
-                            <!-- jumlah budget dan stok 2 -->
-                            <div class="col-md-2" style="margin-left: 33.5%;">
-                                <label for="deskripsi">BGT 2:</label>
-                                <input width="20" type="number" class="form-control" name="deskripsi" id="deskripsi">
-                            </div>
 
-                            <!-- <div class="col-md-2">
+                                    <div class="col-md-6 mt-3 ">
+                                        <ul class="list-group">
+                                            <label for="deskripsi"><b>Detail Barang 2 :</b></label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">Code :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="kode_budget2" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">BGT :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="split2" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">QTY :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="qty_test" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <a class="btn btn-primary input-group-text"><span><b>Ambil BGT</b></span></a>
+                                                    </div>
+                                                    <input type="number" class="form-control " name="price" id="">
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+
+
+                                    <!-- <div class="col-md-2">
                                 <label for="deskripsi">QTY 2:</label>
                                 <input width="20" type="number" class="form-control" name="deskripsi" id="deskripsi" readonly>
                             </div> -->
 
 
-                            <!-- end form -->
+                                    <!-- end form -->
 
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- ini nanti akan di ganti dengan get data dari excel -->
+
+                        <!-- // -->
+
+
+
+                        <!-- keterangan untuk split budget -->
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label for="keterangan">Keterangan (Wajib di isi) <span class="text-danger">*</span></label>
+                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" required></textarea>
+                            </div>
                         </div>
 
                     </div>
-                </div>
+                    <hr class="sidebar-divider">
 
-                <!-- ini nanti akan di ganti dengan get data dari excel -->
+                    <button class="btn btn-primary float-right" type="submit" name="ubah"><i class="fas fa-save"></i>
+                        Request Split</button>
 
-                <!-- // -->
-
-
-
-                <!-- keterangan untuk split budget -->
-                <div class="col-md-12 mt-3">
-                    <div class="form-group">
-                        <label for="keterangan">Keterangan (Wajib di isi) <span class="text-danger">*</span></label>
-                        <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" require></textarea>
-                    </div>
-                </div>
+                </form>
 
             </div>
-            <hr class="sidebar-divider">
+        </div>
 
-            <button class="btn btn-primary float-right" type="submit" name="ubah"><i class="fas fa-save"></i>
-                Split</button>
+    </div>
+</div>
 
-        </form>
+<!-- Modal Ubah Price Unit -->
+<div class="modal fade" id="split" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="" method="post">
+                <div class="modal-header">
+                    <!-- <h5 class="modal-title" id="exampleModalLabel"></h5> -->
+                    <h5>Action Tambah Barang</h5>
 
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+                                <!-- <input type="hidden" name="idbarang" class="form-control">
+                                <input type="hidden" name="kode_budget" class="form-control">
+                                <input type="hidden" name="departemen" class="form-control">
+                                <input type="hidden" name="stok_update" class="form-control">
+                                <input type="hidden" name="price_perUnit_upd" class="form-control">
+                                <input type="hidden" name="trnsk" value="price" class="form-control"> -->
+
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <label for="deskripsi">Kode Budget:</label>
+                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="deskripsi">Peruntukan:</label>
+                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="deskripsi">Deskripsi:</label>
+                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi">
+                                    </div>
+
+                                    <div class="col-md-6 mt-2">
+                                        <label for="deskripsi">Price Unit:</label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">Rp.</span>
+                                            </div>
+                                            <input width="20" type="number" class="form-control " name="price" id="">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 mt-2">
+                                        <label for="deskripsi">QTY:</label>
+                                        <input width="20" type="number" class="form-control" name="deskripsi" id="deskripsi">
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- ini nanti akan di ganti dengan get data dari excel -->
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="merek_id">Perusahaan :</label>
+                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;" hidden>
+                                    <option value="">-- Perusahaan --</option>
+                                    <?= list_merek(); ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="merek_id">Kategori :</label>
+                                <select name="kategori_id" id="kategori_id" class="form-select select2" style="width:100%;" hidden>
+                                    <option value="">-- Kategori Barang --</option>
+                                    <?= list_kategori(); ?>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- // -->
+
+
+                        <div class="col-md-12 mt-3">
+                            <div class="form-group">
+                                <label for="keterangan">Keterangan (Wajib di isi) <span class="text-danger">*</span></label>
+                                <textarea name="ket" id="ket" cols="30" rows="5" class="form-control" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="sidebar-divider">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fas fa-times"></i>
+                        Batal</button>
+                    <button class="btn btn-primary float-right" type="submit" name="ubah"><b>+</b>
+                        Tambah</button>
+                </div>
+            </form>
+            <br>
+            <!-- <div class="container">
+                <p><i><span style="color: red">Kode Budget akan otomatis dibuat saat anda menambahkan barang !!</span></i></p>
+            </div> -->
+        </div>
     </div>
 </div>

@@ -223,7 +223,6 @@ include('./config/conn.php');
     }
 </script>
 
-
 <!-- script untuk ambil stok -->
 <script>
     function konfirmasiPenambahanStok() {
@@ -294,6 +293,7 @@ include('./config/conn.php');
                             <th>KATEGORI</th>
                             <th width="500">DESKRIPSI</th>
                             <th>PERUNTUKAN</th>
+                            <th>UNIT/SATUAN</th>
 
                             <?php if ($_SESSION['level'] == 'admin') : ?>
                                 <th width="200">UNIT PRICE</th>
@@ -342,6 +342,8 @@ include('./config/conn.php');
 
                                 <td><?= $row['peruntukan']; ?></td>
 
+                                <td></td>
+
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
                                     <td>Rp. <?= number_format($row['price_perUnit'], 0, ',', '.'); ?></td>
                                     <!-- <td>Rp. <?= number_format($selisihPirceUnit, 0, ',', '.'); ?></td> -->
@@ -359,7 +361,6 @@ include('./config/conn.php');
                                     <td>Rp. <?= number_format($row['price'], 0, ',', '.'); ?></td>
 
                                 <?php endif; ?>
-
 
 
                                 <?php if ($_SESSION['level'] == 'user') : ?>
@@ -401,7 +402,6 @@ include('./config/conn.php');
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-
 
                                 <input type="hidden" name="idbarang" class="form-control">
                                 <input type="hidden" name="kode_budget" class="form-control">

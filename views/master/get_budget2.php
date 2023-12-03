@@ -26,13 +26,13 @@ if ($stmt) {
             $row = $result->fetch_assoc();
             $harga = $row['price'];
             $stok = $row['stok'];
-            $kode_budget = $row['kode_budget'];
+            $kode_budget2 = $row['kode_budget'];
 
             // Memformat harga dengan titik sebagai pemisah ribuan
             $harga_formatted = number_format($harga, 0, ',', '.');
 
             // Mengirim respons sebagai JSON dengan harga dan stok
-            echo json_encode(array('harga' => $harga_formatted, 'stok' => $stok, 'kode_budget' => $kode_budget));
+            echo json_encode(array('harga' => $harga_formatted, 'stok' => $stok, 'kode_budget2' => $kode_budget2));
         } else {
             echo "error";
         }
