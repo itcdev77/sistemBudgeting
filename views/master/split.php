@@ -68,7 +68,7 @@ include('./config/conn.php');
                                         $query2 = mysqli_query($con, "$sau") or die('mysql_error');
 
                                         // Loop melalui hasil query dan membuat pilihan dropdown
-                                        echo '<option value="">-- Pilih Atasan --</option>';
+                                        echo '<option value="">-- Pilih Barang --</option>';
                                         while ($user_data = mysqli_fetch_array($query2)) {
                                             echo '<option value="' . $user_data['deskripsi'] . '">' . $user_data['deskripsi'] . '</option>';
                                         }
@@ -97,21 +97,21 @@ include('./config/conn.php');
                                 <input width="20" type="text" class="form-control" name="price" id="price_budget" readonly>
                             </div>
 
-                            <div class="col-md-2">
+                            <!-- <div class="col-md-2">
                                 <label for="deskripsi">QTY 1:</label>
                                 <input width="20" type="text" class="form-control" name="deskripsi" id="jab_atasan" readonly>
-                            </div>
+                            </div> -->
 
                             <!-- jumlah budget dan stok 2 -->
-                            <div class="col-md-2" style="margin-left: 17%;">
+                            <div class="col-md-2" style="margin-left: 33.5%;">
                                 <label for="deskripsi">BGT 2:</label>
                                 <input width="20" type="number" class="form-control" name="deskripsi" id="deskripsi">
                             </div>
 
-                            <div class="col-md-2">
+                            <!-- <div class="col-md-2">
                                 <label for="deskripsi">QTY 2:</label>
                                 <input width="20" type="number" class="form-control" name="deskripsi" id="deskripsi" readonly>
-                            </div>
+                            </div> -->
 
 
                             <!-- end form -->

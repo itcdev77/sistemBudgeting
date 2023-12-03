@@ -67,6 +67,7 @@ include('./config/conn.php');
                     $('[name="kode_budget"]').val(data.kode_budget);
                     $('[name="ket"]').val(data.ket);
                     $('[name="price_perUnit_upd"]').val(data.price_perUnit_upd);
+                    $('[name="peruntukan"]').val(data.peruntukan);
                     // $('[name="departemen"]').val(data.departemen);
 
                     //split budget
@@ -389,7 +390,9 @@ include('./config/conn.php');
         <div class="modal-content">
             <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <!-- <h5 class="modal-title" id="exampleModalLabel"></h5> -->
+                    <h5>Kode Budget - <input type="text" name="kode_budget" style="border: 0;"></h5>
+
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -408,14 +411,15 @@ include('./config/conn.php');
                                 <input type="hidden" name="trnsk" value="price" class="form-control">
 
                                 <div class="row">
+
                                     <div class="col-md-6">
                                         <label for="deskripsi">Deskripsi:</label>
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <!-- <label for="price">Budget:</label> -->
-                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly hidden>
+                                        <label for="price">Budget:</label>
+                                        <input type="number" class="form-control" name="price" id="price" onchange="" readonly>
                                     </div>
 
 
@@ -492,7 +496,10 @@ include('./config/conn.php');
         <div class="modal-content">
             <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <!-- <h5 class="modal-title" id="exampleModalLabel"></h5> -->
+
+                    <h5>Kode Budget - <input type="text" name="kode_budget" style="border: 0;"></h5>
+
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -511,6 +518,9 @@ include('./config/conn.php');
 
 
                                 <div class="row">
+
+
+
                                     <div class="col-md-6">
                                         <label for="deskripsi">Deskripsi:</label>
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
