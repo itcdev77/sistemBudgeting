@@ -8,7 +8,22 @@ include('./config/conn.php');
 <script>
     function submit(x) {
         if (x == 'add') {
-            // kosong
+            $('[name="deskripsi"]').val("");
+            $('[name="merek_id"]').val("").trigger('change');
+            $('[name="kategori_id"]').val("").trigger('change');
+
+            $('[name="kode_budget"]').val("");
+            $('[name="ket"]').val("");
+            $('[name="dapartemen"]').val("");
+
+            //insert jenis transaksi
+
+            $('[name="trnsk"]').val("");
+
+
+            // $('#barangModal .modal-title').html('Tambah Barang');
+            $('[name="ubah"]').hide();
+            $('[name="tambah"]').show();
         } else {
             $('#split .modal-title').html('Action Tambah Barang');
             $('[name="tambah"]').hide();
@@ -26,17 +41,16 @@ include('./config/conn.php');
                     // var formattedPrice = 'Rp. ' + data.price;
 
                     // $('[name="idbarang"]').val(data.idbarang);
-                    // $('[name="merek_id"]').val(data.merek_id).trigger('change');
-                    // $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
-                    // $('[name="deskripsi"]').val(data.deskripsi);
-                    // $('[name="price"]').val(data.price);
-                    // $('[name="stok"]').val(data.stok);
-                    // $('[name="kode_budget"]').val(data.kode_budget);
-                    // $('[name="ket"]').val(data.ket);
-                    // $('[name="departemen"]').val(data.departemen);
-                    // $('[name="stok_upd"]').val(data.stok_upd);
-                    // $('[name="di_ambil"]').val(data.di_ambil);
-                    // $('[name="waktu_trnsk"]').val(data.waktu_trnsk);
+                    $('[name="merek_id"]').val(data.merek_id).trigger('change');
+                    $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
+                    $('[name="deskripsi"]').val(data.deskripsi);
+                    $('[name="kode_budget"]').val(data.kode_budget);
+                    $('[name="ket"]').val(data.ket);
+                    $('[name="departemen"]').val(data.departemen);
+                    // $('[name="waktu_input"]').val(data.waktu_input);
+
+                    //untuk update di table transaksi barang
+                    $('[name="trnsk"]').val(data.waktu_trnsk);
 
                     //split budget
                     // $('[name="split"]').val(data.split);
@@ -140,7 +154,7 @@ include('./config/conn.php');
                                             <label for="deskripsi"><b>Detail Barang 1 :</b></label>
                                             <li class="list-group-item">
                                                 <div class="input-group">
-                                                    <div class="input-group-prepend">
+                                                    <div class="input-group-prepend ">
                                                         <span class="input-group-text border-0">Code :</span>
                                                     </div>
                                                     <input type="text" class="form-control border-0" name="price" id="kode_budget" readonly>
@@ -157,6 +171,14 @@ include('./config/conn.php');
                                             <li class="list-group-item">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">Price UNT :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="price_perUnit" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">QTY :</span>
                                                     </div>
                                                     <input type="text" class="form-control border-0" name="price" id="qty_test1" readonly>
@@ -164,15 +186,10 @@ include('./config/conn.php');
                                             </li>
 
                                             <p class="mt-2" style="color:orange;">Disini nanti mau di taru alert split budget berhasil !!! </p>
-                                            <!-- <li class="list-group-item">
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text border-0">Price UNT :</span>
-                                            </div>
-                                            <input type="text" class="form-control border-0" name="price" id="perice_perUnit" readonly>
-                                        </div>
-                                    </li> -->
+
+                                            <!-- button untuk membuka modal -->
                                             <a href="#split" data-toggle="modal" class="btn btn-primary btn-sm col-3 text-white"><b>+</b> Barang</a>
+                                            <p class="mt-2" style="font-size: 11px;"><i>( Fitur untuk menambah barang yang tidak ada di budget )</i></p>
                                         </ul>
                                     </div>
 
@@ -189,7 +206,7 @@ include('./config/conn.php');
                             </div> -->
 
 
-                                    <div class="col-md-6 mt-3 ">
+                                    <div class="col-md-6 mt-3">
                                         <ul class="list-group">
                                             <label for="deskripsi"><b>Detail Barang 2 :</b></label>
                                             <li class="list-group-item">
@@ -206,6 +223,14 @@ include('./config/conn.php');
                                                         <span class="input-group-text border-0">BGT :</span>
                                                     </div>
                                                     <input type="text" class="form-control border-0" name="price" id="split2" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">Price UNT :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="price_perUnit2" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -270,11 +295,11 @@ include('./config/conn.php');
     </div>
 </div>
 
-<!-- Modal Ubah Price Unit -->
+<!-- Modal Tambah Barang -->
 <div class="modal fade" id="split" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <form action="" method="post">
+            <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
                 <div class="modal-header">
                     <!-- <h5 class="modal-title" id="exampleModalLabel"></h5> -->
                     <h5>Action Tambah Barang</h5>
@@ -288,48 +313,39 @@ include('./config/conn.php');
                         <div class="col-md-12">
                             <div class="form-group">
 
-                                <!-- <input type="hidden" name="idbarang" class="form-control">
-                                <input type="hidden" name="kode_budget" class="form-control">
+
                                 <input type="hidden" name="departemen" class="form-control">
-                                <input type="hidden" name="stok_update" class="form-control">
-                                <input type="hidden" name="price_perUnit_upd" class="form-control">
-                                <input type="hidden" name="trnsk" value="price" class="form-control"> -->
+                                <input type="hidden" name="trnsk" value="barang" class="form-control">
+                                <input type="hidden" name="departemen" value="<?= strtoupper($_SESSION['fullname']); ?>" class="form-control">
 
                                 <div class="row">
 
                                     <div class="col-md-6">
                                         <label for="deskripsi">Kode Budget:</label>
-                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi">
+                                        <input width="20" type="text" class="form-control" name="kode_budget" id="deskripsi">
                                     </div>
                                     <div class="col-md-6">
                                         <label for="deskripsi">Peruntukan:</label>
-                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi">
+                                        <input width="20" type="text" class="form-control" name="peruntukan" id="deskripsi">
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 mt-2">
                                         <label for="deskripsi">Deskripsi:</label>
                                         <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi">
                                     </div>
 
-                                    <div class="col-md-6 mt-2">
-                                        <label for="deskripsi">Price Unit:</label>
-                                        <div class="input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text">Rp.</span>
-                                            </div>
-                                            <input width="20" type="number" class="form-control " name="price" id="">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="row">
 
                                     <div class="col-md-6 mt-2">
                                         <label for="deskripsi">QTY:</label>
-                                        <input width="20" type="number" class="form-control" name="deskripsi" id="deskripsi">
+                                        <input width="20" type="number" class="form-control" name="stok" id="deskripsi">
                                     </div>
 
+
                                 </div>
+
+
+
+
+
 
                             </div>
                         </div>
@@ -338,7 +354,7 @@ include('./config/conn.php');
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="merek_id">Perusahaan :</label>
-                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;" hidden>
+                                <select name="merek_id" id="merek_id" class="form-select select2" style="width:100%;" hidden required>
                                     <option value="">-- Perusahaan --</option>
                                     <?= list_merek(); ?>
                                 </select>
@@ -347,7 +363,7 @@ include('./config/conn.php');
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="merek_id">Kategori :</label>
-                                <select name="kategori_id" id="kategori_id" class="form-select select2" style="width:100%;" hidden>
+                                <select name="kategori_id" id="kategori_id" class="form-select select2" style="width:100%;" hidden required>
                                     <option value="">-- Kategori Barang --</option>
                                     <?= list_kategori(); ?>
                                 </select>
@@ -366,7 +382,7 @@ include('./config/conn.php');
                     <hr class="sidebar-divider">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fas fa-times"></i>
                         Batal</button>
-                    <button class="btn btn-primary float-right" type="submit" name="ubah"><b>+</b>
+                    <button class="btn btn-primary float-right" type="submit" name="tambah"><b>+</b>
                         Tambah</button>
                 </div>
             </form>

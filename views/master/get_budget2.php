@@ -12,7 +12,7 @@ if ($conn->connect_error) {
 
 $merekId = $_POST['merek_id'];
 
-$sql = "SELECT price, stok, kode_budget FROM prodev WHERE deskripsi = ?";
+$sql = "SELECT price, stok, kode_budget, price_perUnit FROM prodev WHERE deskripsi = ?";
 $stmt = $conn->prepare($sql);
 
 if ($stmt) {
@@ -27,12 +27,14 @@ if ($stmt) {
             $harga = $row['price'];
             $stok = $row['stok'];
             $kode_budget2 = $row['kode_budget'];
+            $price_perUnit2 = $row['price_perUnit'];
 
             // Memformat harga dengan titik sebagai pemisah ribuan
             $harga_formatted = number_format($harga, 0, ',', '.');
+            $price = number_format($price_perUnit2, 0, ',', '.');
 
-            // Mengirim respons sebagai JSON dengan harga dan stok
-            echo json_encode(array('harga' => $harga_formatted, 'stok' => $stok, 'kode_budget2' => $kode_budget2));
+            // Mengirim respons sebagai JSON dengan harga, stok, dan kode_budget
+            echo json_encode(array('harga' => $harga_formatted, 'stok' => $stok, 'kode_budget2' => $kode_budget2, 'price_perUnit2' => $price));
         } else {
             echo "error";
         }

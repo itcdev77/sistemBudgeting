@@ -3,23 +3,28 @@ session_start();
 include('../config/conn.php');
 include('../config/function.php');
 
-// if (isset($_POST['tambah'])) {
-//     $nama_barang = $_POST['nama_barang'];
-//     $merek_id = $_POST['merek_id'];
-//     $kategori_id = $_POST['kategori_id'];
-//     $keterangan = $_POST['keterangan'];
-//     $stok = 0;
+// untuk tambah barang..
+if (isset($_POST['tambah'])) {
+    $merek_id = $_POST['merek_id'];
+    $kategori_id = $_POST['kategori_id'];
+    $deskripsi = $_POST['deskripsi'];
+    $keterangan = $_POST['ket'];
+    $kode_budget = $_POST['kode_budget'];
+    $departemen = $_POST['departemen'];
+    $waktu_input = date("Y-m-d H:i:s");
+    $peruntukan = $_POST['peruntukan'];
 
-//     $insert = mysqli_query($con, "INSERT INTO barang (merek_id, kategori_id, nama_barang, keterangan, stok) VALUES ('$merek_id','$kategori_id','$nama_barang','$keterangan','$stok')") or die(mysqli_error($con));
-//     if ($insert) {
-//         $success = 'Berhasil menambahkan data barang';
-//     } else {
-//         $error = 'Gagal menambahkan data barang';
-//     }
-//     $_SESSION['success'] = $success;
-//     $_SESSION['error'] = $error;
-//     header('Location:../?barang');
-// }
+
+    $insert = mysqli_query($con, "INSERT INTO prodev (merek_id, kategori_id, deskripsi, keterangan, kode_budget, departemen, waktu_input, peruntukan, price, price_update, price_perUnit) VALUES ('$merek_id','$kategori_id','$deskripsi','$keterangan','$kode_budget', '$departemen', '$waktu_input', '$peruntukan', NULL, NULL, NULL)") or die(mysqli_error($con));
+    if ($insert) {
+        $success = 'Berhasil menambahkan data barang';
+    } else {
+        $error = 'Gagal menambahkan data barang';
+    }
+    $_SESSION['success'] = $success;
+    $_SESSION['error'] = $error;
+    header('Location:../?prodev');
+}
 
 if (isset($_POST['ubah'])) {
     $id = $_POST['idbarang'];

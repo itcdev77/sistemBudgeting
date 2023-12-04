@@ -109,7 +109,8 @@
 
                     $('#kode_budget').val(response.kode_budget);
 
-                    $('#perice_perUnit').val(response.perice_perUnit);
+                    $('#price_perUnit').val(response.price_perUnit);
+
                 }
             });
         });
@@ -139,6 +140,8 @@
                     $('#qty_test').val(response.stok);
 
                     $('#kode_budget2').val(response.kode_budget2);
+
+                    $('#price_perUnit2').val(response.price_perUnit2);
                 }
             });
         });

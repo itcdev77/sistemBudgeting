@@ -89,13 +89,14 @@
         <li class="nav-item <?= isset($transaksi) ? 'active' : ''; ?>">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#transaksi" aria-expanded="true" aria-controls="transaksi">
                 <i class="fas fa-fw fa-folder"></i>
-                <span>Log Transaksi</span>
+                <span>Transaksi</span>
             </a>
             <div id="transaksi" class="collapse <?= isset($transaksi) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <!-- <a class="collapse-item <?= isset($barang_masuk) ? 'active' : ''; ?>" href="?barang_masuk">Barang Masuk</a> -->
                     <a class="collapse-item <?= isset($trnsk_prodev) ? 'active' : ''; ?>" href="?trnsk_prodev">Transaksi Price</a>
                     <a class="collapse-item <?= isset($trnsk_stok) ? 'active' : ''; ?>" href="?trnsk_stok">Transaksi Stok</a>
+                    <a class="collapse-item <?= isset($trnsk_split) ? 'active' : ''; ?>" href="?trnsk_split">Transaksi Split</a>
                 </div>
             </div>
         </li>

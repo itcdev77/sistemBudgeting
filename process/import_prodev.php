@@ -23,13 +23,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Loop melalui baris data Excel dan simpan ke database
         foreach ($rows as $row) {
             $data1 = 'PRODEV';
-            $data2 = $con->real_escape_string($row['A']);
-            $data3 = $con->real_escape_string($row['B']);
+            $data2 = $con->real_escape_string($row['D']); //deskripsi
+            $data3 = $con->real_escape_string($row['E']); //peruntukan
             $data4 = 8;
             $data5 = 4;
             $data6 = date("Y-m-d H:i:s");
+            $data7 = $con->real_escape_string($row['B']); //perusahaan
+            $data8 = $con->real_escape_string($row['C']); //kategori
+            $data9 = $con->real_escape_string($row['F']); //satuan/unit
+            $data10 = $con->real_escape_string($row['A']); //satuan/unit
 
-            $sql = "INSERT INTO prodev (departemen, deskripsi, peruntukan, merek_id, kategori_id, waktu_input) VALUES ('$data1', '$data2', '$data3', '$data4', '$data5', '$data6')";
+            $sql = "INSERT INTO prodev (departemen, deskripsi, peruntukan, merek_id, kategori_id, waktu_input, perusahaan, kategori, satuanUnit, kode_budget) VALUES ('$data1', '$data2', '$data3', '$data4', '$data5', '$data6', '$data7', '$data8', '$data9', '$data10')";
 
             if ($con->query($sql) === TRUE) {
                 echo "Data berhasil disimpan ke database.<br>";

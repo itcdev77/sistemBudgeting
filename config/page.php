@@ -60,8 +60,7 @@ else if (isset($_GET['prodev'])) {
 } else if (isset($_GET['get_budget'])) {
     $master = $get_budget = true;
     $views = 'views/master/get_budget.php';
-}
-else if (isset($_GET['get_budget2'])) {
+} else if (isset($_GET['get_budget2'])) {
     $master = $get_budget = true;
     $views = 'views/master/get_budget2.php';
 }
@@ -78,6 +77,9 @@ else if (isset($_GET['trnsk_prodev'])) {
 } else if (isset($_GET['trnsk_stok'])) {
     $transaksi = $trnsk_stok = true;
     $views = 'views/transaksi/trnsk_stok.php';
+} else if (isset($_GET['trnsk_split'])) {
+    $transaksi = $trnsk_split = true;
+    $views = 'views/transaksi/trnsk_split.php';
 }
 // 
 
