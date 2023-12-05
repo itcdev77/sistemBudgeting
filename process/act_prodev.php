@@ -26,6 +26,7 @@ if (isset($_POST['tambah'])) {
     header('Location:../?prodev');
 }
 
+//untuk update barang
 if (isset($_POST['ubah'])) {
     $id = $_POST['idbarang'];
     $merek_id = $_POST['merek_id'];

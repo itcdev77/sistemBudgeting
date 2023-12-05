@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_FILES["excel_file"])) {
         $file = $_FILES["excel_file"]["tmp_name"];
 
-        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv"); // Ganti dengan format yang sesuai
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader("Csv"); // Bilang ke user emang harus CSV (biar gampang aja hehe)
         $spreadsheet = $reader->load($file);
         $worksheet = $spreadsheet->getActiveSheet();
         $rows = $worksheet->toArray(null, true, true, true);
@@ -31,9 +31,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $data7 = $con->real_escape_string($row['B']); //perusahaan
             $data8 = $con->real_escape_string($row['C']); //kategori
             $data9 = $con->real_escape_string($row['F']); //satuan/unit
-            $data10 = $con->real_escape_string($row['A']); //satuan/unit
+            $data10 = $con->real_escape_string($row['A']); //kode budget
 
-            $sql = "INSERT INTO prodev (departemen, deskripsi, peruntukan, merek_id, kategori_id, waktu_input, perusahaan, kategori, satuanUnit, kode_budget) VALUES ('$data1', '$data2', '$data3', '$data4', '$data5', '$data6', '$data7', '$data8', '$data9', '$data10')";
+            //unutuk import data dengan format float
+            $data11 = floatval(str_replace(['.', ','], '', $con->real_escape_string($row['G'])));
+            $data12 = floatval(str_replace(['.', ','], '', $con->real_escape_string($row['H'])));
+            $data13 = floatval(str_replace(['.', ','], '', $con->real_escape_string($row['I'])));
+
+
+            $sql = "INSERT INTO prodev (departemen, deskripsi, peruntukan, merek_id, kategori_id, waktu_input, perusahaan, kategori, satuanUnit, kode_budget, price_perUnit, stok, stok_update, price, price_update) VALUES ('$data1', '$data2', '$data3', '$data4', '$data5', '$data6', '$data7', '$data8', '$data9', '$data10', '$data11', '$data12', '$data12', '$data13', '$data13')";
 
             if ($con->query($sql) === TRUE) {
                 echo "Data berhasil disimpan ke database.<br>";

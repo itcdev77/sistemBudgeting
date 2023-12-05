@@ -316,8 +316,8 @@ include('./config/conn.php');
                     <tbody>
                         <?php
                         $n = 1;
-                        // $query = mysqli_query($con, "SELECT * FROM barang  ORDER BY idbarang DESC") or die(mysqli_error($con));
-                        $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang ASC") or die(mysqli_error($con));
+                        $query = mysqli_query($con, "SELECT * FROM prodev  ORDER BY idbarang ASC") or die(mysqli_error($con));
+                        // $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang ASC") or die(mysqli_error($con));
 
                         while ($row = mysqli_fetch_array($query)) :
 
@@ -334,15 +334,15 @@ include('./config/conn.php');
 
                                 <td><?= $row['waktu_input']; ?></td>
 
-                                <td><?= $row['keterangan']; ?></td>
+                                <td><?= $row['perusahaan']; ?></td>
 
-                                <td><?= $row['nama_kategori']; ?></td>
+                                <td><?= $row['kategori']; ?></td>
 
                                 <td><?= $row['deskripsi']; ?></td>
 
                                 <td><?= $row['peruntukan']; ?></td>
 
-                                <td></td>
+                                <td><?= $row['satuanUnit']; ?></td>
 
                                 <?php if ($_SESSION['level'] == 'admin') : ?>
                                     <td>Rp. <?= number_format($row['price_perUnit'], 0, ',', '.'); ?></td>
