@@ -81,8 +81,14 @@
     })
 </script>
 
+<!-- Include SweetAlert library (you can use a CDN) -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.1/dist/sweetalert2.all.min.js"></script>
+
+
 <!-- SCRIPT UNTUK FUNGSI SPLIT BUDGET -->
 
+<!-- script untuk memilih barang yang akan mau di ambil budgetnya -->
 <script>
     $(document).ready(function() {
         // Menangani perubahan pada pilihan barang
@@ -103,6 +109,11 @@
                 success: function(response) {
                     // Menetapkan nilai harga ke input dengan id 'split2'
                     $('#price_budget').val(response.harga);
+
+                    $('#price_bgt').val(response.Dharga);
+
+                    // $('#price_budget').val(parseFloat(response.harga));
+
 
                     // Menetapkan nilai stok ke input dengan id 'qty_test'
                     $('#qty_test1').val(response.stok);
@@ -134,13 +145,17 @@
                 dataType: 'json', // Menetapkan tipe data yang diharapkan
                 success: function(response) {
                     // Menetapkan nilai harga ke input dengan id 'split2'
-                    $('#split2').val(response.harga);
+                    $('#split2').val(parseFloat(response.harga));
+
+                    $('#bgt_price').val(response.Dharga);
 
                     // Menetapkan nilai stok ke input dengan id 'qty_test'
-                    $('#qty_test').val(response.stok);
+                    $('#qty_test').val(response.stok); // Assuming stok is an integer
 
+                    // Assuming kode_budget2 is a number, set its value
                     $('#kode_budget2').val(response.kode_budget2);
 
+                    // Assuming price_perUnit2 is a number, set its value
                     $('#price_perUnit2').val(response.price_perUnit2);
                 }
             });
@@ -149,32 +164,63 @@
 </script>
 <!--  -->
 
-<!-- script untuk barang yang akan di split -->
-<!-- <script>
+<!-- script untuk logic split budget -->
+
+
+<script>
     $(document).ready(function() {
-        // Menangani perubahan pada pilihan barang
-        $('#split1').change(function() {
-            var merekId = $(this).val(); // Mengambil nilai merek_id yang dipilih
+        // Menangani peristiwa ketika tombol "Ambil BGT" diklik
+        $("#ambilBGT").click(function() {
+            // Mendapatkan nilai dari input Ambil Budget
+            var ambilBudgetValue = parseFloat($("#ambilBudget").val());
 
-            // Mengambil base URL secara dinamis
-            // var baseUrl = window.location.origin;
+            // Validasi bahwa nilai yang dimasukkan adalah angka yang valid
+            if (!isNaN(ambilBudgetValue)) {
+                // konfirmasi untuk sweet alert...
+                Swal.fire({
+                    title: 'Konfirmasi',
+                    text: 'Anda yakin ingin mengambil budget ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Mendapatkan nilai saat ini dari input BGT dengan id price_budget
+                        var currentPriceBudgetValue = parseFloat($("#price_budget").val());
 
-            // Mengirim permintaan AJAX
-            $.ajax({
-                type: 'POST',
-                // url: baseUrl + '/?get_budget', // Menggunakan base URL
-                url: './views/master/get_budget2.php', // Menggunakan base URL
-                data: {
-                    merek_id: merekId
-                },
-                success: function(response) {
-                    // Menetapkan nilai harga ke input dengan id 'price'
-                    $('#split2').val(response);
-                }
-            });
+                        // Mengurangkan nilai Ambil Budget dari nilai saat ini di input BGT
+                        var newPriceBudgetValue = currentPriceBudgetValue - ambilBudgetValue;
+
+                        // Menambahkan nilai baru ke input BGT dengan id price_budget
+                        $("#price_budget").val(newPriceBudgetValue);
+
+                        // Mendapatkan nilai saat ini dari input BGT dengan id split2
+                        var currentSplit2Value = parseFloat($("#split2").val());
+
+                        // Menambahkan nilai Ambil Budget ke nilai saat ini di input BGT dengan id split2
+                        var newSplit2Value = currentSplit2Value + ambilBudgetValue;
+
+                        // Menambahkan nilai baru ke input BGT dengan id split2
+                        $("#split2").val(newSplit2Value);
+
+                        Swal.fire('Berhasil!', 'Budget telah diambil, Lihat detail transaksi.', 'success');
+                    }
+                });
+            } else {
+                // Menampilkan pesan kesalahan jika nilai yang dimasukkan bukan angka valid
+                Swal.fire('Error', 'Masukkan angka yang valid.', 'error');
+            }
         });
     });
-</script> -->
+</script>
+
+
+
+<!-- end of logic split -->
+
 
 <!-- END OF SCRIPT FUNGSI SPLIT BUDGET -->
 

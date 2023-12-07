@@ -165,7 +165,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">BGT :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="price_budget" readonly>
+                                                    <input type="text" class="form-control border-0" name="price" id="price_bgt" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -185,25 +185,18 @@ include('./config/conn.php');
                                                 </div>
                                             </li>
 
-                                            <p class="mt-2" style="color:orange;">Disini nanti mau di taru alert split budget berhasil !!! </p>
+                                            <!-- <p class="mt-2" style="color:orange;">Disini nanti mau di taru alert split budget berhasil !!! </p> -->
 
                                             <!-- button untuk membuka modal -->
-                                            <a href="#split" data-toggle="modal" class="btn btn-primary btn-sm col-3 text-white"><b>+</b> Barang</a>
+                                            <a href="#split" data-toggle="modal" class="btn btn-primary btn-sm col-3 text-white mt-3"><b>+</b> Barang</a>
                                             <p class="mt-2" style="font-size: 11px;"><i>( Fitur untuk menambah barang yang tidak ada di budget )</i></p>
                                         </ul>
                                     </div>
 
 
+
+
                                     <!-- jumlah budget dan stok 2 -->
-
-
-                                    <!-- input untuk mengambil budget dari budget 1 -->
-                                    <!-- <div class="col-md-3 mt-3">
-                                <label for="deskripsi">Test QTY:</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" name="price" id="">
-                                </div>
-                            </div> -->
 
 
                                     <div class="col-md-6 mt-3">
@@ -222,7 +215,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">BGT :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="split2" readonly>
+                                                    <input type="text" class="form-control border-0" name="price" id="bgt_price" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -244,13 +237,100 @@ include('./config/conn.php');
                                             <li class="list-group-item">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                        <a class="btn btn-primary input-group-text"><span><b>Ambil BGT</b></span></a>
+                                                        <a class="btn btn-primary input-group-text" id="ambilBGT"><span><b>Ambil BGT</b></span></a>
                                                     </div>
-                                                    <input type="number" class="form-control " name="price" id="">
+                                                    <input type="number" class="form-control " name="price" id="ambilBudget">
                                                 </div>
                                             </li>
                                         </ul>
                                     </div>
+
+                                    <!-- detail transaksi -->
+                                    <div class="col-md-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="deskripsi"><b>Detail Transaksi :</b></label>
+
+                                            <li class="list-group-item border-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">(BGT) Rp :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="price_budget" readonly>
+                                                </div>
+                                                <hr>
+                                            </li>
+                                            <!-- selisih 1 -->
+                                            <!-- <li class="list-group-item border-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">(BGT Terkurang) Rp :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="selisih" readonly>
+                                                </div>
+                                                <hr>
+                                            </li> -->
+                                            <p class="mt-2"><i>( Detail Transaksi 1 )</i></p>
+
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-6 mt-5">
+                                        <ul class="list-group">
+                                            <li class="list-group-item border-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">(BGT) Rp :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="split2" readonly>
+                                                </div>
+                                                <hr>
+                                            </li>
+                                            <!-- selisih 2 -->
+                                            <!-- <li class="list-group-item border-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">(BGT di Ambil) Rp :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="selisih" readonly>
+                                                </div>
+                                                <hr>
+                                            </li> -->
+                                            <p class="mt-2"><i>( Detail Transaksi 2 )</i></p>
+
+                                        </ul>
+                                    </div>
+
+                                    <!-- <div class="col-md-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="deskripsi"><b>test :</b></label>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">Rp :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="" readonly>
+                                                </div>
+                                            </li>
+
+
+                                        </ul>
+                                    </div>
+
+                                    <div class="col-md-6 mt-5">
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text border-0">Rp :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="" readonly>
+                                                </div>
+                                            </li>
+
+
+                                        </ul>
+                                    </div> -->
 
 
 

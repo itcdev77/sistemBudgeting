@@ -28,13 +28,14 @@ if ($stmt) {
             $stok = $row['stok'];
             $kode_budget = $row['kode_budget'];
             $price_perUnit = $row['price_perUnit'];
+            $Dharga = $row['price'];
 
             // Memformat harga dengan titik sebagai pemisah ribuan
-            $harga_formatted = number_format($harga, 0, ',', '.');
+            $harga_formatted = number_format($Dharga, 0, ',', '.');
             $price = number_format($price_perUnit, 0, ',', '.');
 
             // Mengirim respons sebagai JSON dengan harga dan stok
-            echo json_encode(array('harga' => $harga_formatted, 'stok' => $stok, 'kode_budget' => $kode_budget, 'price_perUnit' => $price));
+            echo json_encode(array('harga' => $harga, 'stok' => $stok, 'kode_budget' => $kode_budget, 'price_perUnit' => $price, 'Dharga' => $harga_formatted));
         } else {
             echo "error";
         }
