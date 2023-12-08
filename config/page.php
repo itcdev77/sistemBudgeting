@@ -70,7 +70,7 @@ else if (isset($_GET['split'])) {
     $master = $split = true;
     $views = 'views/master/split.php';
 }
-//
+//Transaksi
 else if (isset($_GET['trnsk_prodev'])) {
     $transaksi = $trnsk_prodev = true;
     $views = 'views/transaksi/trnsk_prodev.php';
@@ -80,6 +80,16 @@ else if (isset($_GET['trnsk_prodev'])) {
 } else if (isset($_GET['trnsk_split'])) {
     $transaksi = $trnsk_split = true;
     $views = 'views/transaksi/trnsk_split.php';
+}
+// 
+
+// Log Transaksi...
+else if (isset($_GET['trnsk_berhasil'])) {
+    $log_transaksi = $trnsk_berhasil = true;
+    $views = 'views/log_transaksi/trnsk_berhasil.php';
+} else if (isset($_GET['trnsk_gagal'])) {
+    $log_transaksi = $trnsk_gagal = true;
+    $views = 'views/log_transaksi/trnsk_gagal.php';
 }
 // 
 

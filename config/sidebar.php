@@ -117,6 +117,20 @@
                 </div>
             </div>
         </li> -->
+        <li class="nav-item <?= isset($log_transaksi) ? 'active' : ''; ?>">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#log_transaksi" aria-expanded="true" aria-controls="log_transaksi">
+                <i class="fas fa-fw fa-folder"></i>
+                <span>Log Transaksi</span>
+            </a>
+            <div id="log_transaksi" class="collapse <?= isset($log_transaksi) ? 'show' : ''; ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div class="bg-white py-2 collapse-inner rounded">
+                    <a class="collapse-item <?= isset($trnsk_berhasil) ? 'active' : ''; ?>" href="?trnsk_berhasil">Log Transaksi Berhasil</a>
+                    <a class="collapse-item <?= isset($trnsk_gagal) ? 'active' : ''; ?>" href="?trnsk_gagal">Log Transaksi Gagal</a>
+                </div>
+            </div>
+        </li>
+
+
     <?php endif; ?>
 
     <!-- Divider -->

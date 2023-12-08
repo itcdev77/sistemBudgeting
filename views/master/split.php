@@ -20,7 +20,6 @@ include('./config/conn.php');
 
             $('[name="trnsk"]').val("");
 
-
             // $('#barangModal .modal-title').html('Tambah Barang');
             $('[name="ubah"]').hide();
             $('[name="tambah"]').show();
@@ -61,6 +60,50 @@ include('./config/conn.php');
     }
 </script>
 
+<!-- scrip untuk mengirim data split budget -->
+<script>
+    function submit(x) {
+        if (x == 'add') {
+            $('[name="deskripsi"]').val("");
+            $('[name="deskripsi2"]').val("");
+            $('[name="kode_budget"]').val("");
+            $('[name="price_bgt"]').val("");
+            $('[name="price_perUnit"]').val("");
+            $('[name="qty_test1"]').val("");
+            $('[name="kode_budget2"]').val("");
+            $('[name="bgt_price"]').val("");
+            $('[name="price_perUnit2"]').val("");
+            $('[name="qty_test"]').val("");
+            $('[name="ambilBudget"]').val("");
+            $('[name="price_budget"]').val("");
+            $('[name="split2"]').val("");
+            $('[name="ket"]').val("");
+
+            // $('#barangModal .modal-title').html('Tambah Barang');
+            $('[name="ubah"]').hide();
+            $('[name="tambah_split"]').show();
+        } else {
+            $('#split .modal-title').html('Action Tambah Barang');
+            $('[name="tambah"]').hide();
+            $('[name="ubah"]').show();
+
+            $.ajax({
+                type: "POST",
+                data: {
+                    id: x
+                },
+                url: '<?= base_url(); ?>process/view_prodev.php',
+                dataType: 'json',
+                success: function(data) {
+
+                    //    kosong
+
+                }
+            });
+        }
+    }
+</script>
+
 <div class="container-fluid">
 
     <div class="card">
@@ -72,7 +115,8 @@ include('./config/conn.php');
                     <h1 class="h3 mb-0 text-gray-800 text-center">REQUEST SPLIT BUDGET <?= strtoupper($_SESSION['fullname']); ?></h1>
 
                 </div>
-                <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
+                <!-- open form split -->
+                <form action="<?= base_url(); ?>process/act_prodev.php" method="post" enctype="multipart/form-data">
                     <div class="row">
                         <div class="col-md-12 mt-3">
                             <div class="form-group">
@@ -86,7 +130,7 @@ include('./config/conn.php');
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="merek_id">Pilih barang :</label>
-                                            <select class="form-control select2" type="text" name="atasan" id="deskripsi_budget" required>
+                                            <select class="form-control select2" type="text" name="deskripsi1" id="deskripsi_budget" required>
                                                 <?php
 
                                                 // Menghubungkan ke database
@@ -119,7 +163,7 @@ include('./config/conn.php');
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label for="merek_id">Split dengan :</label>
-                                            <select class="form-control select2" type="text" name="atasan" id="split1" required>
+                                            <select class="form-control select2" type="text" name="deskripsi2" id="split1" required>
                                                 <?php
 
                                                 // Menghubungkan ke database
@@ -157,7 +201,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend ">
                                                         <span class="input-group-text border-0">Code :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="kode_budget" readonly>
+                                                    <input type="text" class="form-control border-0" name="kode_budget" id="kode_budget" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -165,7 +209,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">BGT :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="price_bgt" readonly>
+                                                    <input type="text" class="form-control border-0" name="price_bgt" id="price_bgt" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -173,7 +217,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">Price UNT :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="price_perUnit" readonly>
+                                                    <input type="text" class="form-control border-0" name="price_perUnit" id="price_perUnit" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -181,7 +225,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">QTY :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="qty_test1" readonly>
+                                                    <input type="text" class="form-control border-0" name="qty_test1" id="qty_test1" readonly>
                                                 </div>
                                             </li>
 
@@ -207,7 +251,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">Code :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="kode_budget2" readonly>
+                                                    <input type="text" class="form-control border-0" name="kode_budget2" id="kode_budget2" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -215,7 +259,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">BGT :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="bgt_price" readonly>
+                                                    <input type="text" class="form-control border-0" name="bgt_price" id="bgt_price" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -223,7 +267,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">Price UNT :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="price_perUnit2" readonly>
+                                                    <input type="text" class="form-control border-0" name="price_perUnit2" id="price_perUnit2" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -231,7 +275,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">QTY :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="qty_test" readonly>
+                                                    <input type="text" class="form-control border-0" name="qty_test" id="qty_test" readonly>
                                                 </div>
                                             </li>
                                             <li class="list-group-item">
@@ -239,7 +283,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <a class="btn btn-primary input-group-text" id="ambilBGT"><span><b>Ambil BGT</b></span></a>
                                                     </div>
-                                                    <input type="number" class="form-control " name="price" id="ambilBudget">
+                                                    <input type="number" class="form-control " name="ambilBudget" id="ambilBudget">
                                                 </div>
                                             </li>
                                         </ul>
@@ -255,7 +299,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">(BGT) Rp :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="price_budget" readonly>
+                                                    <input type="text" class="form-control border-0" name="price_budget" id="price_budget" readonly>
                                                 </div>
                                                 <hr>
                                             </li>
@@ -281,7 +325,7 @@ include('./config/conn.php');
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text border-0">(BGT) Rp :</span>
                                                     </div>
-                                                    <input type="text" class="form-control border-0" name="price" id="split2" readonly>
+                                                    <input type="text" class="form-control border-0" name="split2" id="split2" readonly>
                                                 </div>
                                                 <hr>
                                             </li>
@@ -364,7 +408,7 @@ include('./config/conn.php');
                     </div>
                     <hr class="sidebar-divider">
 
-                    <button class="btn btn-primary float-right" type="submit" name="ubah"><i class="fas fa-save"></i>
+                    <button class="btn btn-primary float-right" type="submit" name="tambah_split"><i class="fas fa-save"></i>
                         Request Split</button>
 
                 </form>

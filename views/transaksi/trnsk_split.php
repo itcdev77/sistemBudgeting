@@ -7,7 +7,7 @@
         if (x == 'add') {
             // kosong
         } else {
-            $('#detailModal .modal-title').html('Detail Transaksi Stok');
+            $('#detailModal .modal-title').html('Detail Transaksi Split Budget');
             $('[name="tambah"]').hide();
             $('[name="ubah"]').show();
 
@@ -26,14 +26,24 @@
                     $('[name="merek_id"]').val(data.merek_id).trigger('change');
                     $('[name="kategori_id"]').val(data.kategori_id).trigger('change');
                     $('[name="deskripsi"]').val(data.deskripsi);
+                    $('[name="deskripsi2"]').val(data.deskripsi2);
                     $('[name="price"]').val(data.price);
+                    $('[name="price2"]').val(data.price2);
                     $('[name="stok"]').val(data.stok);
+                    $('[name="stok2"]').val(data.stok2);
                     $('[name="kode_budget"]').val(data.kode_budget);
+                    $('[name="kode_budget2"]').val(data.kode_budget2);
                     $('[name="ket"]').val(data.ket);
                     $('[name="departemen"]').val(data.departemen);
                     $('[name="stok_upd"]').val(data.stok_upd);
-                    $('[name="di_ambil"]').val(data.di_ambil);
+                    $('[name="stok_upd2"]').val(data.stok_upd2);
                     $('[name="waktu_trnsk"]').val(data.waktu_trnsk);
+                    $('[name="trans_price1"]').val(data.trans_price1);
+                    $('[name="trans_price2"]').val(data.trans_price2);
+                    $('[name="jenis_trnsk"]').val(data.jenis_trnsk);
+                    $('[name="price_perUnit"]').val(data.price_perUnit);
+                    $('[name="price_perUnit2"]').val(data.price_perUnit2);
+                    $('[name="split_price"]').val(data.split_price);
 
                     //split budget
                     // $('[name="split"]').val(data.split);
@@ -74,60 +84,66 @@
                     <thead>
                         <tr>
                             <th width="10">NO</th>
-                            <th width="20">KODE BUDGET</th>
+                            <th width="100">KODE 1</th>
+                            <th width="100">KODE 2</th>
                             <th>WAKTU TRANSAKSI</th>
                             <th>DEPARTEMEN</th>
-                            <th>DESKRIPSI</th>
+                            <th>DESKRIPSI 1</th>
+                            <th>DESKRIPSI 2</th>
                             <th>KETERANGAN</th>
                             <th>TRANSAKSI</th>
+                            <th width="10" class="text-center">ACTION</th>
 
                             <?php if ($_SESSION['level'] == 'admin') : ?>
-                                <th width="100">BGT SISA</th>
                             <?php endif; ?>
-
-                            <th>QTY BF</th>
-                            <th>QTY UPD</th>
-                            <th>DI AMBIL</th>
-                            <th>SELISIH</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $n = 1;
-                        $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
+                        // $query = mysqli_query($con, "SELECT x.*,x1.keterangan,x2.nama_kategori FROM trnsk_prodev x JOIN merek x1 ON x1.idmerek=x.merek_id JOIN kategori x2 ON x2.idkategori=x.kategori_id ORDER BY x.idbarang DESC") or die(mysqli_error($con));
+                        $query = mysqli_query($con, "SELECT * FROM trnsk_prodev  ORDER BY idbarang ASC") or die(mysqli_error($con));
 
                         if (mysqli_num_rows($query) > 0) {
                             while ($row = mysqli_fetch_array($query)) :
 
                                 //rumus untuk melihat selisih stok keluar..
-                                $stokAwal = $row['stok_upd'];
-                                $stokKurang = $row['stok'];
-                                $selisihStok = $stokAwal - $stokKurang;
+                                // $stokAwal = $row['stok_upd'];
+                                // $stokKurang = $row['stok'];
+                                // $selisihStok = $stokAwal - $stokKurang;
 
                                 // Tambahkan kondisi untuk menentukan jenis transaksi yang ingin ditampilkan
-                                $jenisTransaksiYangInginDitampilkan = "stok"; // Ganti dengan "price" jika ingin menampilkan transaksi price
-                                if ($row['jenis_trnsk'] == $jenisTransaksiYangInginDitampilkan && $row['departemen'] == $_SESSION['fullname']) :
+                                $jenisTransaksiYangInginDitampilkan = "split"; // Ganti dengan "price" jika ingin menampilkan transaksi price
+                                if ($row['jenis_trnsk'] == $jenisTransaksiYangInginDitampilkan && $row['departemen'] == $_SESSION['fullname'] && $_SESSION['level'] == 'admin') :
                         ?>
                                     <tr>
                                         <td><?= $n++ ?></td>
-                                        <td><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><?= $row['kode_budget']; ?></a></td>
+                                        <td><a href="#detailModal2" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><?= $row['kode_budget']; ?></a></td>
+
+                                        <td><?= $row['kode_budget2']; ?></td>
                                         <td><?= $row['waktu_trnsk']; ?></td>
                                         <td><?= $row['departemen']; ?></td>
                                         <td><?= $row['deskripsi']; ?></td>
+                                        <td><?= $row['deskripsi2']; ?></td>
                                         <td><?= $row['ket']; ?></td>
                                         <td><?= $row['jenis_trnsk']; ?></td>
 
-                                        <?php if ($_SESSION['level'] == 'admin') : ?>
-                                            <td>Rp. <?= number_format($row['price'], 0, ',', '.'); ?></td>
+                                        <?php if ($row['status'] == 'approved') : ?>
+
+                                            <!-- action untuk display detail transaksi -->
+                                            <td class="text-center"><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-primary"><i class="fas fa-edit"></i></a> <span class="text-primary">Approved</span></td>
+
                                         <?php endif; ?>
 
-                                        <td><?= $row['stok_upd']; ?>
+                                        <?php if ($row['status'] == NULL) : ?>
 
-                                        </td>
-                                        <td><?= $row['stok']; ?> <i class="fas fa-arrow-down" style="color: orange"></i></td>
-                                        <td><?= $row['di_ambil']; ?></td>
-                                        <td><?= $selisihStok ?></td>
+                                            <!-- action untuk display detail transaksi -->
+                                            <td class="text-center" style="color: orange;"><i class="fas fa-clock"></i> Pending</td>
+
+                                        <?php endif; ?>
+
+
                                     </tr>
                         <?php
                                 endif;
@@ -171,47 +187,359 @@
 
 
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        <label for="deskripsi">Kode Budget:</label>
-                                        <input width="20" type="text" class="form-control" name="kode_budget" id="kode_budget" readonly>
+
+                                    <div class="col col-6">
+                                        <ul class="list-group">
+                                            <label for="">Detail Barang 1</label>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Code 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="kode_budget" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Deskripsi 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="deskripsi" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT UNT 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price_perUnit" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">QTY :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="stok" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+                                        </ul>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="deskripsi">Deskripsi:</label>
-                                        <input width="20" type="text" class="form-control" name="deskripsi" id="deskripsi" readonly>
+
+                                    <div class="col col-6">
+                                        <ul class="list-group">
+                                            <label for="">Detail Barang 2</label>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Code 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="kode_budget2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Deskripsi 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="deskripsi2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT UNT 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price_perUnit2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">QTY 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="stok2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+
+                                        </ul>
                                     </div>
 
-                                    <?php if ($_SESSION['level'] == 'admin') : ?>
-                                        <div class="col-md-6 mt-3">
-                                            <label for="price"><span style="color: red;">Budget :</span></label>
-                                            <input type="number" class="form-control" name="price" id="ambil-price" readonly>
-                                        </div>
-                                    <?php endif; ?>
-
-                                    <div class="col-md-3 mt-3">
-                                        <label for="stok">Qty Sebelumnya:</label>
-
-                                        <input type="number" class="form-control text-center" name="stok_upd" id="ambil-stok" readonly>
-
-                                    </div>
-                                    <div class="col-md-2 mt-3">
-                                        <label for="stok">Qty Update:</label>
-
-                                        <input type="number" class="form-control text-center" name="stok" id="ambil-stok" readonly>
-
-                                    </div>
-                                    <div class="col-md-3 mt-3">
-                                        <label for="stok">Jumlah Transaksi:</label>
-
-                                        <input type="number" class="form-control text-center" name="di_ambil" id="di_ambil" readonly>
-
-                                    </div>
-                                    <div class="col-md-3 mt-3">
-                                        <label for="stok">Waktu Transaksi:</label>
-
-                                        <input type="text" class="form-control text-center" name="waktu_trnsk" id="waktu_trnsk" readonly>
-
+                                    <div class="col col-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="">Detail Transaksi 1</label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-arrow-down" style="color: red"></i>Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="trans_price1" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-minus" style="color:#EF4040"></i> Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="split_price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                        </ul>
                                     </div>
 
+                                    <div class="col col-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="">Detail Transaksi 2</label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-arrow-up" style="color: green"></i> Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="trans_price2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-plus" style="color:#8ADAB2"></i> Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="split_price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col col-12 mt-3">
+                                        <ul class="list-group">
+                                            <label for="">Keterangan</label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+
+                                                    <input type="text" class="form-control border-0" name="ket" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <hr class="sidebar-divider">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal"><i class="fas fa-times"></i>
+                        Batal</button>
+                    <button class="btn btn-primary float-right" type="submit" name="ubah"><i class="fas fa-save"></i>
+                        Ubah</button>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- modal yang hanya bisa melihat detail -->
+<div class="modal fade" id="detailModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <form action="<?= base_url(); ?>process/act_prodev.php" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel"></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+
+
+                                <input type="hidden" name="idbarang" class="form-control">
+                                <input type="hidden" name="kode_budget" class="form-control">
+
+
+                                <div class="row">
+
+                                    <div class="col col-6">
+                                        <ul class="list-group">
+                                            <label for="">Detail Barang 1</label>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Code 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="kode_budget" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Deskripsi 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="deskripsi" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT UNT 1 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price_perUnit" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">QTY :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="stok" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+
+                                    <div class="col col-6">
+                                        <ul class="list-group">
+                                            <label for="">Detail Barang 2</label>
+
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Code 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="kode_budget2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">Deskripsi 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="deskripsi2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">BGT UNT 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="price_perUnit2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0">QTY 2 :</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="stok2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+
+
+                                        </ul>
+                                    </div>
+
+                                    <div class="col col-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="">Detail Transaksi 1</label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-arrow-down" style="color: red"></i>Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="trans_price1" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-minus" style="color:#EF4040"></i> Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="split_price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col col-6 mt-3">
+                                        <ul class="list-group">
+                                            <label for="">Detail Transaksi 2</label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-arrow-up" style="color: green"></i> Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="trans_price2" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend ">
+                                                        <span class="input-group-text border-0"><i class="fas fa-plus" style="color:#8ADAB2"></i> Rp.</span>
+                                                    </div>
+                                                    <input type="text" class="form-control border-0" name="split_price" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="col col-12 mt-3">
+                                        <ul class="list-group">
+                                            <label for="">Keterangan</label>
+                                            <li class="list-group-item">
+                                                <div class="input-group">
+
+                                                    <input type="text" class="form-control border-0" name="ket" id="kode_budget" readonly>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
 
                                 </div>
 
