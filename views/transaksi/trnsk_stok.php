@@ -89,6 +89,8 @@
                             <th>QTY UPD</th>
                             <th>DI AMBIL</th>
                             <th>SELISIH</th>
+                            <th width="10" class="text-center">ACTION</th>
+
 
                         </tr>
                     </thead>
@@ -107,7 +109,7 @@
 
                                 // Tambahkan kondisi untuk menentukan jenis transaksi yang ingin ditampilkan
                                 $jenisTransaksiYangInginDitampilkan = "stok"; // Ganti dengan "price" jika ingin menampilkan transaksi price
-                                if ($row['jenis_trnsk'] == $jenisTransaksiYangInginDitampilkan && $row['departemen'] == $_SESSION['fullname']) :
+                                if ($row['jenis_trnsk'] == $jenisTransaksiYangInginDitampilkan && $row['departemen'] == $_SESSION['fullname'] || $_SESSION['level'] == 'admin' && $row['jenis_trnsk'] != 'price' && $row['jenis_trnsk'] != 'split') :
                         ?>
                                     <tr>
                                         <td><?= $n++ ?></td>
@@ -128,6 +130,42 @@
                                         <td><?= $row['stok']; ?> <i class="fas fa-arrow-down" style="color: orange"></i></td>
                                         <td><?= $row['di_ambil']; ?></td>
                                         <td><?= $selisihStok ?></td>
+
+                                        <?php if ($row['status'] == 'approved') : ?>
+
+                                            <!-- action untuk display detail transaksi -->
+                                            <td class="text-center"><a href="#detailModal" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)" class="btn btn-sm btn-circle btn-primary"><i class="fas fa-edit"></i></a> <span class="text-primary">Approved</span></td>
+
+                                        <?php endif; ?>
+
+                                        <?php if ($row['status'] == 'approved' && $_SESSION['level'] == 'admin') : ?>
+
+                                            <!-- action untuk display detail transaksi -->
+                                            <td class="text-center" style="color: #65B741;"><i class="fas fa-check"></i></td>
+
+                                        <?php endif; ?>
+
+                                        <?php if ($row['status'] == NULL && $_SESSION['level'] != 'admin') : ?>
+
+                                            <!-- action untuk display detail transaksi -->
+                                            <td class="text-center" style="color: orange;"><i class="fas fa-clock"></i> Pending</td>
+
+                                        <?php endif; ?>
+
+                                        <!-- action ketika status masih pending dan approval untuk admin -->
+                                        <?php if ($row['status'] == NULL && $_SESSION['level'] == 'admin') : ?>
+
+                                            <td class="text-center"><a class="btn btn-sm btn-circle btn-primary" href="#detailModal2" data-toggle="modal" onclick="submit(<?= $row['idbarang']; ?>)"><i class="fas fa-edit"></i></a></td>
+
+                                        <?php endif; ?>
+
+                                        <!-- info yang akan muncul ketika transaksi gagal -->
+                                        <?php if ($row['status'] == 'gagal') : ?>
+
+                                            <td class="text-center" style="color: red;"><i class="fas fa-times"></i> Di Tolak</td>
+
+                                        <?php endif; ?>
+
                                     </tr>
                         <?php
                                 endif;

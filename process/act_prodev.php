@@ -48,9 +48,7 @@ if (isset($_POST['tambah_split'])) {
     $ket = $_POST['ket']; //ke table ket
     $jenis_trnsk = 'split'; // ke table jenis_trnsk
 
-
     $waktu_trnsk = date("Y-m-d H:i:s");
-
 
     $insert = mysqli_query($con, "INSERT INTO trnsk_prodev (deskripsi, deskripsi2, kode_budget, price, price_perUnit, stok, stok_upd, kode_budget2, price2, price_perUnit2, stok2, stok_upd2, split_price, trans_price1, trans_price2, ket, jenis_trnsk, waktu_trnsk) VALUES ('$deskripsi1','$deskripsi2','$kode_budget','$price_bgt','$price_perUnit','$qty_test1','$qty_test1','$kode_budget2','$bgt_price','$price_perUnit2','$qty_test','$qty_test','$ambilBudget','$price_budget','$split2','$ket','$jenis_trnsk','$waktu_trnsk')") or die(mysqli_error($con));
 
@@ -64,7 +62,7 @@ if (isset($_POST['tambah_split'])) {
     header('Location:../?trnsk_split');
 }
 
-//untuk update barang
+//untuk update barang (insert akan di hapus)
 if (isset($_POST['ubah'])) {
     $id = $_POST['idbarang'];
     $merek_id = $_POST['merek_id'];
@@ -77,7 +75,7 @@ if (isset($_POST['ubah'])) {
 
 
 
-    //unutk update di table departement terkait
+    //untuk update di table departement terkait
     $update = mysqli_query($con, "UPDATE prodev SET merek_id='$merek_id', kategori_id='$kategori_id', deskripsi='$deskripsi', price='$price', stok='$stok', price_perUnit='$price_perUnit', price_perUnit_upd='$price_perUnit_upd' WHERE idbarang='$id'") or die("Error: " . mysqli_error($con));
 
     $kode_budget = $_POST['kode_budget'];
